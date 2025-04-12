@@ -10,11 +10,18 @@ import {
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { formatDistanceToNow } from "date-fns";
+import { 
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem
+} from "@/components/ui/dropdown-menu";
 
 interface ProgressTrackerProps {
   project: Project;
   results: TestResult[];
   onRequestHelp: (taskId: string) => void;
+  onStatusChange?: (taskId: string, status: TestResult['status']) => void;
 }
 
 const TaskStatusIcon = ({ status }: { status: TestResult['status'] | 'not-started' }) => {
@@ -60,7 +67,7 @@ const TaskStatusIcon = ({ status }: { status: TestResult['status'] | 'not-starte
   );
 };
 
-const ProgressTracker = ({ project, results, onRequestHelp }: ProgressTrackerProps) => {
+const ProgressTracker = ({ project, results, onRequestHelp, onStatusChange }: ProgressTrackerProps) => {
   const getTaskStatus = (taskId: string): TestResult['status'] | 'not-started' => {
     const result = results.find(r => r.taskId === taskId);
     return result ? result.status : 'not-started';
@@ -69,6 +76,12 @@ const ProgressTracker = ({ project, results, onRequestHelp }: ProgressTrackerPro
   const getTaskTimestamp = (taskId: string): string | null => {
     const result = results.find(r => r.taskId === taskId);
     return result ? result.timestamp : null;
+  };
+
+  const handleStatusChange = (taskId: string, status: TestResult['status']) => {
+    if (onStatusChange) {
+      onStatusChange(taskId, status);
+    }
   };
 
   return (
@@ -113,17 +126,39 @@ const ProgressTracker = ({ project, results, onRequestHelp }: ProgressTrackerPro
                     </div>
                   )}
                   
-                  {(status === 'failed' || status === 'not-attempted') && (
-                    <div className="mt-3">
-                      <Button 
-                        variant="outline" 
-                        size="sm"
-                        onClick={() => onRequestHelp(task.id)}
-                      >
-                        Request Help
-                      </Button>
-                    </div>
-                  )}
+                  <div className="mt-3 flex gap-2">
+                    {onStatusChange && (
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button variant="outline" size="sm">
+                            Update Status
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent>
+                          <DropdownMenuItem onClick={() => handleStatusChange(task.id, 'passed')}>
+                            <CheckCircle className="mr-2 h-4 w-4 text-green-500" />
+                            <span>Mark as Passed</span>
+                          </DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => handleStatusChange(task.id, 'failed')}>
+                            <CircleAlert className="mr-2 h-4 w-4 text-red-500" />
+                            <span>Mark as Failed</span>
+                          </DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => handleStatusChange(task.id, 'not-attempted')}>
+                            <Clock className="mr-2 h-4 w-4 text-yellow-500" />
+                            <span>Mark as In Progress</span>
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    )}
+                    
+                    <Button 
+                      variant="outline" 
+                      size="sm"
+                      onClick={() => onRequestHelp(task.id)}
+                    >
+                      Request Help
+                    </Button>
+                  </div>
                 </div>
               </div>
             </div>

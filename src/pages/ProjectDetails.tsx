@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
@@ -22,14 +21,17 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/components/ui/use-toast";
+import { toast } from "sonner";
 import Navbar from "@/components/Navbar";
 import ProgressTracker from "@/components/ProgressTracker";
 import { Project, TestResult, User } from "@/lib/types";
-import { getProject, getTaskResults, calculateProjectCompletion } from "@/lib/data";
+import { getProject } from "@/lib/data";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import HelpRequestForm from "@/components/HelpRequestForm";
 import { Link } from "react-router-dom";
 import { projects } from "@/lib/data";
+import { useUserProgress } from "@/hooks/useUserProgress";
+import { supabase } from "@/integrations/supabase/client";
 
 const ProjectDetails = () => {
   const { id } = useParams<{ id: string }>();
@@ -42,8 +44,9 @@ const ProjectDetails = () => {
   const [selectedTaskId, setSelectedTaskId] = useState<string | undefined>(undefined);
   const [isHelpDialogOpen, setIsHelpDialogOpen] = useState(false);
   
+  const { updateProjectProgress, calculateCompletion } = useUserProgress(user?.id || null);
+  
   useEffect(() => {
-    // Check if user is logged in
     const userStr = localStorage.getItem("user");
     if (!userStr) {
       navigate("/auth");
@@ -53,30 +56,94 @@ const ProjectDetails = () => {
     const userData = JSON.parse(userStr) as User;
     setUser(userData);
     
-    // Get project data
     if (id) {
       const projectData = getProject(id);
       if (projectData) {
         setProject(projectData);
         
-        // Get test results for this project
-        const results = getTaskResults(userData.id, id);
-        setTestResults(results);
-        
-        // Calculate completion percentage
-        const completionPercentage = calculateProjectCompletion(userData.id, id);
-        setCompletion(completionPercentage);
+        fetchTaskResults(userData.id, id);
       } else {
         navigate("/dashboard");
       }
     }
   }, [id, navigate]);
   
+  const fetchTaskResults = async (userId: string, projectId: string) => {
+    try {
+      import("@/lib/data").then(async ({ mockTestResults }) => {
+        const results = mockTestResults.filter(
+          result => result.userId === userId && result.projectId === projectId
+        );
+        
+        setTestResults(results);
+        
+        const { data: progressData } = await supabase
+          .from('user_progress')
+          .select('*')
+          .eq('user_id', userId)
+          .eq('project_id', projectId)
+          .single();
+        
+        if (progressData) {
+          if (project) {
+            const completionPercentage = 
+              (progressData.completed_tasks.length / project.tasks.length) * 100;
+            setCompletion(completionPercentage);
+          }
+          
+          const updatedResults = results.map(result => {
+            if (progressData.completed_tasks.includes(result.taskId)) {
+              return { ...result, status: 'passed' as const };
+            }
+            return result;
+          });
+          
+          setTestResults(updatedResults);
+        } else if (results.length > 0) {
+          const completedTasks = results
+            .filter(result => result.status === 'passed')
+            .map(result => result.taskId);
+          
+          if (project && completedTasks.length > 0) {
+            await supabase
+              .from('user_progress')
+              .insert({
+                user_id: userId,
+                project_id: projectId,
+                completed_tasks: completedTasks,
+                started_at: new Date().toISOString(),
+                last_updated_at: new Date().toISOString(),
+                is_completed: completedTasks.length === project.tasks.length
+              });
+            
+            setCompletion((completedTasks.length / project.tasks.length) * 100);
+          }
+        } else {
+          if (project) {
+            await supabase
+              .from('user_progress')
+              .insert({
+                user_id: userId,
+                project_id: projectId,
+                completed_tasks: [],
+                started_at: new Date().toISOString(),
+                last_updated_at: new Date().toISOString(),
+                is_completed: false
+              });
+          }
+          
+          setCompletion(0);
+        }
+      });
+    } catch (error) {
+      console.error("Error fetching task results:", error);
+      toast.error("Failed to load project progress");
+    }
+  };
+  
   const handleDownloadTemplate = () => {
     if (!project) return;
     
-    // In a real app, this would trigger a download of the project template
-    // For demo purposes, we'll just show a toast
     toast({
       title: "Template downloaded",
       description: `You have downloaded the starter template for ${project.title}.`,
@@ -86,6 +153,37 @@ const ProjectDetails = () => {
   const handleRequestHelp = (taskId: string) => {
     setSelectedTaskId(taskId);
     setIsHelpDialogOpen(true);
+  };
+  
+  const handleTaskStatusChange = async (taskId: string, status: 'passed' | 'failed' | 'not-attempted') => {
+    if (!project || !user || !id) return;
+    
+    const updatedResults = testResults.map(result => 
+      result.taskId === taskId 
+        ? { ...result, status, timestamp: new Date().toISOString() } 
+        : result
+    );
+    
+    if (!updatedResults.some(r => r.taskId === taskId)) {
+      updatedResults.push({
+        taskId,
+        projectId: id,
+        userId: user.id,
+        status,
+        timestamp: new Date().toISOString()
+      });
+    }
+    
+    setTestResults(updatedResults);
+    
+    await updateProjectProgress(id, taskId, status);
+    
+    if (project) {
+      const completedTasks = updatedResults.filter(r => r.status === 'passed');
+      setCompletion((completedTasks.length / project.tasks.length) * 100);
+    }
+    
+    toast.success(`Task marked as ${status}`);
   };
   
   if (!project || !user) return null;
@@ -192,6 +290,7 @@ const ProjectDetails = () => {
                 project={project}
                 results={testResults}
                 onRequestHelp={handleRequestHelp}
+                onStatusChange={handleTaskStatusChange}
               />
             </TabsContent>
             

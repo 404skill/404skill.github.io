@@ -5,17 +5,15 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, Clock } from "lucide-react";
 import { Project } from "@/lib/types";
 import { Link } from "react-router-dom";
-import { calculateProjectCompletion } from "@/lib/data";
 
 interface ProjectCardProps {
   project: Project;
   userId: string;
   inProgress?: boolean;
+  completion?: number;
 }
 
-const ProjectCard = ({ project, userId, inProgress = false }: ProjectCardProps) => {
-  const completion = inProgress ? calculateProjectCompletion(userId, project.id) : 0;
-  
+const ProjectCard = ({ project, userId, inProgress = false, completion = 0 }: ProjectCardProps) => {
   return (
     <Card className="overflow-hidden transition-all hover:shadow-md hover:border-primary/50 flex flex-col h-full">
       <CardHeader className="pb-2">

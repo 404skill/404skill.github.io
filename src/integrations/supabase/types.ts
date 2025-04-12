@@ -9,6 +9,36 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      user_progress: {
+        Row: {
+          completed_tasks: string[] | null
+          id: string
+          is_completed: boolean | null
+          last_updated_at: string | null
+          project_id: string
+          started_at: string | null
+          user_id: string
+        }
+        Insert: {
+          completed_tasks?: string[] | null
+          id?: string
+          is_completed?: boolean | null
+          last_updated_at?: string | null
+          project_id: string
+          started_at?: string | null
+          user_id: string
+        }
+        Update: {
+          completed_tasks?: string[] | null
+          id?: string
+          is_completed?: boolean | null
+          last_updated_at?: string | null
+          project_id?: string
+          started_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       waitlist: {
         Row: {
           created_at: string | null

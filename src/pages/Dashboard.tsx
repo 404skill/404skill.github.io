@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -12,7 +13,7 @@ import { BookOpen, Filter, PlusCircle, Search } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import ProjectCard from "@/components/ProjectCard";
 import { Project, User } from "@/lib/types";
-import { projects, getUserProjects } from "@/lib/data";
+import { projects } from "@/lib/data";
 import { Input } from "@/components/ui/input";
 import {
   DropdownMenu,
@@ -20,6 +21,7 @@ import {
   DropdownMenuCheckboxItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useUserProgress } from "@/hooks/useUserProgress";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -27,7 +29,9 @@ const Dashboard = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [difficulty, setDifficulty] = useState<string[]>([]);
   const [filteredProjects, setFilteredProjects] = useState<Project[]>(projects);
-  const [userProjects, setUserProjects] = useState<Project[]>([]);
+  
+  // Use the new hook to get user projects from Supabase
+  const { userProjects, loading } = useUserProgress(user?.id || null);
   
   useEffect(() => {
     const userStr = localStorage.getItem("user");
@@ -38,9 +42,6 @@ const Dashboard = () => {
     
     const userData = JSON.parse(userStr) as User;
     setUser(userData);
-    
-    const userProjectsData = getUserProjects(userData.id);
-    setUserProjects(userProjectsData);
   }, [navigate]);
   
   useEffect(() => {
@@ -177,20 +178,37 @@ const Dashboard = () => {
                 </Card>
               ) : (
                 <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                  {filteredProjects.map((project) => (
-                    <ProjectCard 
-                      key={project.id} 
-                      project={project} 
-                      userId={user.id}
-                      inProgress={userProjects.some(p => p.id === project.id)}
-                    />
-                  ))}
+                  {filteredProjects.map((project) => {
+                    // Check if this project is in user's projects
+                    const inProgress = userProjects.some(p => p.id === project.id);
+                    const userProject = userProjects.find(p => p.id === project.id);
+                    const completion = userProject?.progress?.completed_tasks.length 
+                      ? (userProject.progress.completed_tasks.length / project.tasks.length) * 100
+                      : 0;
+                    
+                    return (
+                      <ProjectCard 
+                        key={project.id} 
+                        project={project} 
+                        userId={user.id}
+                        inProgress={inProgress}
+                        completion={inProgress ? completion : 0}
+                      />
+                    );
+                  })}
                 </div>
               )}
             </TabsContent>
             
             <TabsContent value="my-projects">
-              {userProjects.length === 0 ? (
+              {loading ? (
+                <Card>
+                  <CardContent className="flex flex-col items-center justify-center py-16">
+                    <div className="animate-spin h-10 w-10 border-4 border-primary border-t-transparent rounded-full" />
+                    <h3 className="text-lg font-medium mt-4">Loading your projects...</h3>
+                  </CardContent>
+                </Card>
+              ) : userProjects.length === 0 ? (
                 <Card>
                   <CardContent className="flex flex-col items-center justify-center py-16">
                     <BookOpen className="h-10 w-10 text-muted-foreground mb-4" />
@@ -208,14 +226,21 @@ const Dashboard = () => {
                 </Card>
               ) : (
                 <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                  {userProjects.map((project) => (
-                    <ProjectCard 
-                      key={project.id} 
-                      project={project} 
-                      userId={user.id} 
-                      inProgress 
-                    />
-                  ))}
+                  {userProjects.map((project) => {
+                    const completion = project.progress?.completed_tasks.length 
+                      ? (project.progress.completed_tasks.length / project.tasks.length) * 100
+                      : 0;
+                    
+                    return (
+                      <ProjectCard 
+                        key={project.id} 
+                        project={project} 
+                        userId={user.id} 
+                        inProgress={true}
+                        completion={completion}
+                      />
+                    );
+                  })}
                 </div>
               )}
             </TabsContent>

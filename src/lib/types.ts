@@ -14,6 +14,7 @@ export interface Project {
   tasks: Task[];
   technologies: string[];
   templateUrl: string;
+  progress?: UserProgress;
 }
 
 export interface Task {
@@ -44,10 +45,11 @@ export interface HelpRequest {
 }
 
 export interface UserProgress {
-  userId: string;
-  projectId: string;
-  completedTasks: string[];
-  startedAt: string;
-  lastUpdatedAt: string;
-  isCompleted: boolean;
+  id: string;
+  user_id: string;
+  project_id: string;
+  completed_tasks: string[];
+  started_at: string;
+  last_updated_at: string;
+  is_completed: boolean;
 }
