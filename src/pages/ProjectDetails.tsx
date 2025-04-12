@@ -20,7 +20,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import { toast } from "sonner";
 import Navbar from "@/components/Navbar";
 import ProgressTracker from "@/components/ProgressTracker";
@@ -36,7 +36,7 @@ import { supabase } from "@/integrations/supabase/client";
 const ProjectDetails = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { toast } = useToast();
+  const { toast: uiToast } = useToast();
   const [project, setProject] = useState<Project | null>(null);
   const [user, setUser] = useState<User | null>(null);
   const [testResults, setTestResults] = useState<TestResult[]>([]);
@@ -144,7 +144,7 @@ const ProjectDetails = () => {
   const handleDownloadTemplate = () => {
     if (!project) return;
     
-    toast({
+    uiToast({
       title: "Template downloaded",
       description: `You have downloaded the starter template for ${project.title}.`,
     });
@@ -254,7 +254,7 @@ const ProjectDetails = () => {
             </div>
             
             <div className="mt-6">
-              <div className="flex justify-between text-sm mb-1">
+              <div className="flex justify-between text-xs mb-1">
                 <span>Progress</span>
                 <span>{Math.round(completion)}% complete</span>
               </div>

@@ -81,13 +81,13 @@ export const useUserProgress = (userId: string | null) => {
         .eq('project_id', projectId)
         .single();
 
-      let completedTasks = existingProgress?.completed_tasks || [];
+      let completed_tasks = existingProgress?.completed_tasks || [];
       
       // Update completed tasks based on status
-      if (status === 'passed' && !completedTasks.includes(taskId)) {
-        completedTasks = [...completedTasks, taskId];
-      } else if (status !== 'passed' && completedTasks.includes(taskId)) {
-        completedTasks = completedTasks.filter(id => id !== taskId);
+      if (status === 'passed' && !completed_tasks.includes(taskId)) {
+        completed_tasks = [...completed_tasks, taskId];
+      } else if (status !== 'passed' && completed_tasks.includes(taskId)) {
+        completed_tasks = completed_tasks.filter(id => id !== taskId);
       }
 
       if (existingProgress) {
@@ -95,7 +95,7 @@ export const useUserProgress = (userId: string | null) => {
         const { error } = await supabase
           .from('user_progress')
           .update({
-            completed_tasks: completedTasks,
+            completed_tasks,
             last_updated_at: new Date().toISOString(),
             // Set is_completed if all tasks are completed
             is_completed: false // Would need project tasks length to determine
@@ -110,7 +110,7 @@ export const useUserProgress = (userId: string | null) => {
           .insert({
             user_id: userId,
             project_id: projectId,
-            completed_tasks: completedTasks,
+            completed_tasks,
             started_at: new Date().toISOString(),
             last_updated_at: new Date().toISOString(),
             is_completed: false

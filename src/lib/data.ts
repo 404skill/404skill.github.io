@@ -102,20 +102,22 @@ export const mockTestResults: TestResult[] = [
 
 export const mockUserProgress: UserProgress[] = [
   {
-    userId: 'user123',
-    projectId: 'p1',
-    completedTasks: ['t1', 't2'],
-    startedAt: new Date(Date.now() - 86400000 * 3).toISOString(), // 3 days ago
-    lastUpdatedAt: new Date(Date.now() - 86400000).toISOString(), // 1 day ago
-    isCompleted: false,
+    id: 'progress1',
+    user_id: 'user123',
+    project_id: 'p1',
+    completed_tasks: ['t1', 't2'],
+    started_at: new Date(Date.now() - 86400000 * 3).toISOString(), // 3 days ago
+    last_updated_at: new Date(Date.now() - 86400000).toISOString(), // 1 day ago
+    is_completed: false,
   },
   {
-    userId: 'user123',
-    projectId: 'p2',
-    completedTasks: ['t1'],
-    startedAt: new Date(Date.now() - 86400000 * 5).toISOString(), // 5 days ago
-    lastUpdatedAt: new Date(Date.now() - 86400000 * 3).toISOString(), // 3 days ago
-    isCompleted: false,
+    id: 'progress2',
+    user_id: 'user123',
+    project_id: 'p2',
+    completed_tasks: ['t1'],
+    started_at: new Date(Date.now() - 86400000 * 5).toISOString(), // 5 days ago
+    last_updated_at: new Date(Date.now() - 86400000 * 3).toISOString(), // 3 days ago
+    is_completed: false,
   },
 ];
 
@@ -126,8 +128,8 @@ export const getProject = (id: string): Project | undefined => {
 export const getUserProjects = (userId: string): Project[] => {
   // Get project IDs from user progress
   const projectIds = mockUserProgress
-    .filter(progress => progress.userId === userId)
-    .map(progress => progress.projectId);
+    .filter(progress => progress.user_id === userId)
+    .map(progress => progress.project_id);
   
   // Return only projects that the user has started
   return projects.filter(project => projectIds.includes(project.id));
@@ -135,7 +137,7 @@ export const getUserProjects = (userId: string): Project[] => {
 
 export const getProjectProgress = (userId: string, projectId: string): UserProgress | undefined => {
   return mockUserProgress.find(
-    progress => progress.userId === userId && progress.projectId === projectId
+    progress => progress.user_id === userId && progress.project_id === projectId
   );
 };
 
@@ -152,5 +154,5 @@ export const calculateProjectCompletion = (userId: string, projectId: string): n
   const progress = getProjectProgress(userId, projectId);
   if (!progress) return 0;
   
-  return (progress.completedTasks.length / project.tasks.length) * 100;
+  return (progress.completed_tasks.length / project.tasks.length) * 100;
 };
