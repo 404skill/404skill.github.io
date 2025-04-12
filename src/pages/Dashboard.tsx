@@ -79,6 +79,13 @@ const Dashboard = () => {
     );
   };
   
+  const switchToAllProjects = () => {
+    const element = document.querySelector('[data-value="all-projects"]');
+    if (element instanceof HTMLElement) {
+      element.click();
+    }
+  };
+  
   if (!user) return null;
   
   return (
@@ -198,7 +205,7 @@ const Dashboard = () => {
                     </p>
                     <Button 
                       variant="default" 
-                      onClick={() => document.querySelector('[data-value="all-projects"]')?.click()}
+                      onClick={switchToAllProjects}
                     >
                       Browse Projects
                     </Button>

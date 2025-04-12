@@ -107,6 +107,20 @@ const Auth = () => {
     }, 1000);
   }
   
+  const switchToSignup = () => {
+    const element = document.querySelector('[data-value="signup"]');
+    if (element instanceof HTMLElement) {
+      element.click();
+    }
+  };
+  
+  const switchToLogin = () => {
+    const element = document.querySelector('[data-value="login"]');
+    if (element instanceof HTMLElement) {
+      element.click();
+    }
+  };
+  
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
@@ -183,7 +197,7 @@ const Auth = () => {
                 <CardFooter className="flex justify-center">
                   <p className="text-sm text-muted-foreground">
                     Don't have an account?{" "}
-                    <a className="text-primary underline cursor-pointer" onClick={() => document.querySelector('[data-value="signup"]')?.click()}>
+                    <a className="text-primary underline cursor-pointer" onClick={switchToSignup}>
                       Sign up
                     </a>
                   </p>
@@ -296,7 +310,7 @@ const Auth = () => {
                 <CardFooter className="flex justify-center">
                   <p className="text-sm text-muted-foreground">
                     Already have an account?{" "}
-                    <a className="text-primary underline cursor-pointer" onClick={() => document.querySelector('[data-value="login"]')?.click()}>
+                    <a className="text-primary underline cursor-pointer" onClick={switchToLogin}>
                       Log in
                     </a>
                   </p>
