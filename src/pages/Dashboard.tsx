@@ -9,7 +9,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { BookOpen, Filter, PlusCircle, Search } from "lucide-react";
+import { BookOpen, Filter, PlusCircle, Search, Rocket } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import ProjectCard from "@/components/ProjectCard";
 import { Project, User } from "@/lib/types";
@@ -111,7 +111,7 @@ const Dashboard = () => {
                 <BookOpen className="h-4 w-4" />
                 <span>All Projects</span>
               </TabsTrigger>
-              <TabsTrigger value="my-projects" className="flex items-center gap-1">
+              <TabsTrigger value="my-projects" className="flex items-center gap-1" data-testid="my-projects-tab">
                 <BookOpen className="h-4 w-4" />
                 <span>My Projects</span>
                 <span className="ml-1 rounded-full bg-primary/10 px-2 py-0.5 text-xs font-medium">
@@ -211,15 +211,18 @@ const Dashboard = () => {
               ) : userProjects.length === 0 ? (
                 <Card>
                   <CardContent className="flex flex-col items-center justify-center py-16">
-                    <BookOpen className="h-10 w-10 text-muted-foreground mb-4" />
-                    <h3 className="text-lg font-medium">No projects started yet</h3>
-                    <p className="text-muted-foreground mt-1 mb-4">
-                      Choose a project to begin your learning journey
+                    <Rocket className="h-10 w-10 text-muted-foreground mb-4" />
+                    <h3 className="text-lg font-medium">Start your learning journey</h3>
+                    <p className="text-muted-foreground mt-1 mb-4 text-center max-w-md">
+                      You haven't started any projects yet. Browse our catalog and choose a project to begin building your skills.
                     </p>
                     <Button 
                       variant="default" 
                       onClick={switchToAllProjects}
+                      size="lg"
+                      className="gap-2"
                     >
+                      <BookOpen className="h-4 w-4" />
                       Browse Projects
                     </Button>
                   </CardContent>

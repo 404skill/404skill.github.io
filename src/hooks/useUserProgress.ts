@@ -12,6 +12,7 @@ export const useUserProgress = (userId: string | null) => {
   const fetchUserProgress = async () => {
     if (!userId) {
       setLoading(false);
+      setUserProjects([]);
       return;
     }
 
@@ -26,6 +27,13 @@ export const useUserProgress = (userId: string | null) => {
 
       if (progressError) {
         throw progressError;
+      }
+
+      // If no progress found, return empty array
+      if (!progressData || progressData.length === 0) {
+        setUserProjects([]);
+        setLoading(false);
+        return;
       }
 
       // Map progress data to projects
@@ -132,7 +140,7 @@ export const useUserProgress = (userId: string | null) => {
     if (!project || !project.progress) return 0;
     
     const { completed_tasks } = project.progress;
-    return (completed_tasks.length / tasks.length) * 100;
+    return tasks.length > 0 ? (completed_tasks.length / tasks.length) * 100 : 0;
   };
 
   useEffect(() => {
