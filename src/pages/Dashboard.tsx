@@ -1,11 +1,9 @@
-
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -32,7 +30,6 @@ const Dashboard = () => {
   const [userProjects, setUserProjects] = useState<Project[]>([]);
   
   useEffect(() => {
-    // Check if user is logged in
     const userStr = localStorage.getItem("user");
     if (!userStr) {
       navigate("/auth");
@@ -42,13 +39,11 @@ const Dashboard = () => {
     const userData = JSON.parse(userStr) as User;
     setUser(userData);
     
-    // Get user's projects
     const userProjectsData = getUserProjects(userData.id);
     setUserProjects(userProjectsData);
   }, [navigate]);
   
   useEffect(() => {
-    // Filter projects based on search term and difficulty
     let filtered = projects;
     
     if (searchTerm) {
