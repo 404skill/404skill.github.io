@@ -63,7 +63,7 @@ const TaskStatusIcon = ({ status }: { status: TestResult['status'] | undefined }
             <Icon className="h-5 w-5" />
           </div>
         </TooltipTrigger>
-        <TooltipContent className="bg-slate-800 text-slate-200 border-slate-700">
+        <TooltipContent className="bg-white text-slate-800 border-slate-200">
           <p className="font-mono text-xs">{label}</p>
         </TooltipContent>
       </Tooltip>
@@ -99,7 +99,7 @@ const ProgressTracker = ({ project, results, onRequestHelp, onStatusChange }: Pr
 
   return (
     <div className="space-y-4">
-      <h3 className="text-lg font-medium font-mono text-slate-100">Project Tasks</h3>
+      <h3 className="text-lg font-medium font-mono text-slate-800">Project Tasks</h3>
       <div className="space-y-3">
         {project.tasks.map((task, index) => {
           const status = getTaskStatus(task.id);
@@ -113,10 +113,10 @@ const ProgressTracker = ({ project, results, onRequestHelp, onStatusChange }: Pr
               onOpenChange={() => toggleTask(task.id)}
               className={`rounded-lg border ${
                 status === 'passed' 
-                  ? 'border-green-500/20 bg-green-500/5' 
+                  ? 'border-green-500/40 bg-green-50' 
                   : status === 'failed'
-                  ? 'border-red-500/20 bg-red-500/5'
-                  : 'border-slate-700 bg-slate-800/40'
+                  ? 'border-red-500/40 bg-red-50'
+                  : 'border-slate-200 bg-white'
               }`}
             >
               <div className="p-4">
@@ -127,7 +127,7 @@ const ProgressTracker = ({ project, results, onRequestHelp, onStatusChange }: Pr
                   <div className="flex-1">
                     <div className="flex justify-between items-center">
                       <CollapsibleTrigger asChild>
-                        <button className="flex items-center gap-2 text-left font-medium font-mono text-slate-200 focus:outline-none">
+                        <button className="flex items-center gap-2 text-left font-medium font-mono text-slate-800 focus:outline-none">
                           <span>{index + 1}. {task.name}</span>
                           {isOpen ? (
                             <ChevronUp className="h-4 w-4 text-slate-400" />
@@ -144,14 +144,14 @@ const ProgressTracker = ({ project, results, onRequestHelp, onStatusChange }: Pr
                     </div>
                     
                     <CollapsibleContent>
-                      <div className="mt-3 text-sm text-slate-400">
+                      <div className="mt-3 text-sm text-slate-600">
                         <p className="mb-4 font-mono">{task.description}</p>
                         
-                        <div className="bg-slate-900/60 p-4 rounded-md mb-3 space-y-3 border border-slate-700">
-                          <h4 className="font-medium text-sm text-slate-300 font-mono">Detailed Instructions</h4>
-                          <p className="font-mono text-slate-400">Implement the {task.name} following best practices for {project.technologies.join(', ')}.</p>
+                        <div className="bg-slate-50 p-4 rounded-md mb-3 space-y-3 border border-slate-200">
+                          <h4 className="font-medium text-sm text-slate-700 font-mono">Detailed Instructions</h4>
+                          <p className="font-mono text-slate-600">Implement the {task.name} following best practices for {project.technologies.join(', ')}.</p>
                           
-                          <div className="p-3 bg-slate-900 text-slate-300 rounded-md font-mono text-xs border border-slate-800">
+                          <div className="p-3 bg-slate-100 text-slate-700 rounded-md font-mono text-xs border border-slate-200">
                             <pre>{`// Example code for ${task.name}
 function implementation() {
   // Your code goes here
@@ -159,9 +159,9 @@ function implementation() {
 }`}</pre>
                           </div>
                           
-                          <h4 className="font-medium text-sm mt-4 text-slate-300 font-mono">Testing Your Implementation</h4>
-                          <p className="font-mono text-slate-400">Run the provided test suite to verify your implementation meets the requirements:</p>
-                          <ul className="list-disc pl-5 space-y-1 text-xs text-slate-400 font-mono">
+                          <h4 className="font-medium text-sm mt-4 text-slate-700 font-mono">Testing Your Implementation</h4>
+                          <p className="font-mono text-slate-600">Run the provided test suite to verify your implementation meets the requirements:</p>
+                          <ul className="list-disc pl-5 space-y-1 text-xs text-slate-600 font-mono">
                             <li>All function signatures match the expected types</li>
                             <li>Edge cases are properly handled</li>
                             <li>Response formats match the API specification</li>
@@ -170,7 +170,7 @@ function implementation() {
                       </div>
                       
                       {status === 'failed' && (
-                        <div className="mt-2 p-2 bg-red-900/20 border border-red-500/30 rounded text-xs font-mono text-red-400">
+                        <div className="mt-2 p-2 bg-red-50 border border-red-300 rounded text-xs font-mono text-red-600">
                           {results.find(r => r.taskId === task.id)?.errorMessage || 'Test failed'}
                         </div>
                       )}
@@ -179,20 +179,20 @@ function implementation() {
                         {onStatusChange && (
                           <DropdownMenu>
                             <DropdownMenuTrigger asChild>
-                              <Button variant="outline" size="sm" className="border-slate-700 bg-slate-800 text-slate-200 hover:bg-slate-700 font-mono">
+                              <Button variant="outline" size="sm" className="border-slate-200 bg-white text-slate-700 hover:bg-slate-50 font-mono">
                                 Update Status
                               </Button>
                             </DropdownMenuTrigger>
-                            <DropdownMenuContent className="bg-slate-800 border-slate-700">
-                              <DropdownMenuItem onClick={() => handleStatusChange(task.id, 'passed')} className="text-slate-200 focus:bg-slate-700 font-mono">
+                            <DropdownMenuContent className="bg-white border-slate-200">
+                              <DropdownMenuItem onClick={() => handleStatusChange(task.id, 'passed')} className="text-slate-700 focus:bg-slate-50 font-mono">
                                 <CheckCircle className="mr-2 h-4 w-4 text-green-500" />
                                 <span>Mark as Passed</span>
                               </DropdownMenuItem>
-                              <DropdownMenuItem onClick={() => handleStatusChange(task.id, 'failed')} className="text-slate-200 focus:bg-slate-700 font-mono">
+                              <DropdownMenuItem onClick={() => handleStatusChange(task.id, 'failed')} className="text-slate-700 focus:bg-slate-50 font-mono">
                                 <CircleAlert className="mr-2 h-4 w-4 text-red-500" />
                                 <span>Mark as Failed</span>
                               </DropdownMenuItem>
-                              <DropdownMenuItem onClick={() => handleStatusChange(task.id, 'not-attempted')} className="text-slate-200 focus:bg-slate-700 font-mono">
+                              <DropdownMenuItem onClick={() => handleStatusChange(task.id, 'not-attempted')} className="text-slate-700 focus:bg-slate-50 font-mono">
                                 <Clock className="mr-2 h-4 w-4 text-slate-400" />
                                 <span>Mark as Not Started</span>
                               </DropdownMenuItem>
@@ -204,7 +204,7 @@ function implementation() {
                           variant="outline" 
                           size="sm"
                           onClick={() => onRequestHelp(task.id)}
-                          className="border-slate-700 bg-slate-800 text-slate-200 hover:bg-slate-700 font-mono"
+                          className="border-slate-200 bg-white text-slate-700 hover:bg-slate-50 font-mono"
                         >
                           Request Help
                         </Button>
