@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { 
   ArrowRight,
@@ -15,7 +14,9 @@ import {
   Server,
   Shield,
   Terminal,
-  Zap
+  Zap,
+  Briefcase,
+  Users
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import Navbar from "@/components/Navbar";
@@ -29,6 +30,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 interface FeatureProps {
   icon: LucideIcon;
@@ -92,8 +94,19 @@ const PricingTier = ({ title, price, description, features, highlighted = false,
   </Card>
 );
 
+const TeamMember = ({ name, role, company, avatar }: { name: string; role: string; company: string; avatar: string }) => (
+  <div className="flex flex-col items-center p-4">
+    <Avatar className="h-20 w-20 mb-3">
+      <AvatarImage src={avatar} alt={name} />
+      <AvatarFallback className="text-lg">{name.charAt(0)}</AvatarFallback>
+    </Avatar>
+    <h3 className="font-medium text-lg">{name}</h3>
+    <p className="text-sm text-muted-foreground">{role}</p>
+    <Badge variant="outline" className="mt-1">{company}</Badge>
+  </div>
+);
+
 const Index = () => {
-  // Check if user is already logged in
   const isLoggedIn = localStorage.getItem('user') !== null;
   const [isVisible, setIsVisible] = useState(false);
 
@@ -106,10 +119,9 @@ const Index = () => {
       <Navbar />
       
       <main className="flex-1">
-        {/* Hero Section with Animation */}
         <section className="container py-24 space-y-8 md:space-y-12">
           <div className={`mx-auto flex max-w-[58rem] flex-col items-center justify-center gap-4 text-center transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold leading-tight">
+            <h1 className="font-mono text-3xl sm:text-4xl md:text-5xl font-bold leading-tight">
               Master <span className="bg-gradient-to-r from-primary to-purple-500 bg-clip-text text-transparent">Backend Development</span><br />
               With Real-World Projects
             </h1>
@@ -120,7 +132,7 @@ const Index = () => {
             <div className="flex flex-wrap items-center justify-center gap-4 mt-4">
               {isLoggedIn ? (
                 <Link to="/dashboard">
-                  <Button size="lg" className="gap-2 group animate-fade-in">
+                  <Button size="lg" className="gap-2 group animate-fade-in font-mono">
                     <BookOpen className="h-5 w-5" />
                     Go to Projects
                     <ArrowRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-1" />
@@ -128,7 +140,7 @@ const Index = () => {
                 </Link>
               ) : (
                 <Link to="/auth">
-                  <Button size="lg" className="gap-2 group animate-fade-in">
+                  <Button size="lg" className="gap-2 group animate-fade-in font-mono">
                     <Terminal className="h-5 w-5" />
                     Start Coding Now
                     <ArrowRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-1" />
@@ -137,7 +149,7 @@ const Index = () => {
               )}
               
               <Link to="/auth">
-                <Button variant="outline" size="lg" className="gap-2 hover:bg-primary/10 animate-fade-in" style={{ animationDelay: "100ms" }}>
+                <Button variant="outline" size="lg" className="gap-2 hover:bg-primary/10 animate-fade-in font-mono" style={{ animationDelay: "100ms" }}>
                   <HelpCircle className="h-5 w-5" />
                   How It Works
                 </Button>
@@ -146,14 +158,62 @@ const Index = () => {
           </div>
         </section>
         
-        {/* Features Section with Animation */}
+        <section className="py-16 bg-muted/30">
+          <div className="container">
+            <div className="text-center mb-10">
+              <h2 className="text-2xl font-bold font-mono mb-2">Learn From FAANG Engineering Leaders</h2>
+              <p className="text-muted-foreground max-w-[42rem] mx-auto">
+                Our platform was founded and is run by senior backend engineers from top tech companies who review your code and provide personalized feedback.
+              </p>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-3xl mx-auto">
+              <TeamMember 
+                name="Alex Chen" 
+                role="Co-Founder & CTO" 
+                company="Ex-Google Staff Engineer" 
+                avatar="/placeholder.svg" 
+              />
+              <TeamMember 
+                name="Sarah Patel" 
+                role="Co-Founder & Lead Mentor" 
+                company="Ex-Amazon Principal SDE" 
+                avatar="/placeholder.svg" 
+              />
+              <TeamMember 
+                name="Marcus Kim" 
+                role="Head of Curriculum" 
+                company="Ex-Netflix Tech Lead" 
+                avatar="/placeholder.svg" 
+              />
+            </div>
+            
+            <div className="mt-12 p-6 bg-card rounded-lg border max-w-3xl mx-auto shadow-sm">
+              <div className="flex items-start gap-4">
+                <div className="bg-primary/10 p-2 rounded-full mt-1">
+                  <CheckCircle className="h-5 w-5 text-primary" />
+                </div>
+                <div>
+                  <p className="italic text-muted-foreground">
+                    "Our mission is to bridge the gap between theoretical knowledge and practical backend engineering skills. 
+                    Every project is designed based on real challenges we've faced at scale, and every code review is done 
+                    by someone who has built and maintained systems serving millions of users."
+                  </p>
+                  <p className="mt-3 font-medium">— The BackendHub Founding Team</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        
         <section className="container py-16 md:py-24">
           <div className={`text-center mb-12 transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`} style={{ transitionDelay: "150ms" }}>
-            <h2 className="text-3xl font-bold mb-4">How BackendHub Works</h2>
+            <h2 className="text-3xl font-bold font-mono mb-4">How BackendHub Works</h2>
             <p className="text-muted-foreground max-w-[42rem] mx-auto">
               Our platform provides a structured approach to learning backend development through practical, real-world projects.
             </p>
           </div>
+          
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
             <div className={`transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`} style={{ transitionDelay: "200ms" }}>
               <Feature 
@@ -200,11 +260,10 @@ const Index = () => {
           </div>
         </section>
         
-        {/* Additional Feature Section */}
         <section className="py-20 bg-muted/30">
           <div className="container">
             <div className="text-center mb-16">
-              <h2 className="text-3xl font-bold mb-4">Why Choose BackendHub?</h2>
+              <h2 className="text-3xl font-bold font-mono mb-4">Why Choose BackendHub?</h2>
               <p className="text-muted-foreground max-w-[42rem] mx-auto">
                 Our platform is designed to provide a comprehensive learning experience for backend developers of all levels.
               </p>
@@ -293,10 +352,9 @@ app.listen(port, () => {
           </div>
         </section>
         
-        {/* Technologies Section */}
         <section className="bg-muted/50 py-16 md:py-20">
           <div className="container">
-            <h2 className="mb-10 text-center text-2xl font-bold">Technologies You'll Master</h2>
+            <h2 className="mb-10 text-center text-2xl font-bold font-mono">Technologies You'll Master</h2>
             <div className="flex flex-wrap justify-center gap-4">
               {[
                 { name: "Node.js", icon: <Terminal className="h-4 w-4 mr-2" /> },
@@ -321,11 +379,10 @@ app.listen(port, () => {
           </div>
         </section>
         
-        {/* Pricing Section */}
         <section className="py-24">
           <div className="container">
             <div className="text-center mb-16">
-              <h2 className="text-3xl font-bold mb-4">Simple, Transparent Pricing</h2>
+              <h2 className="text-3xl font-bold font-mono mb-4">Simple, Transparent Pricing</h2>
               <p className="text-muted-foreground max-w-[42rem] mx-auto">
                 Choose the plan that's right for you and start building backend skills today.
               </p>
@@ -378,16 +435,15 @@ app.listen(port, () => {
           </div>
         </section>
         
-        {/* CTA Section */}
         <section className="container py-24">
           <div className="mx-auto max-w-[58rem] space-y-6 text-center">
-            <h2 className="text-3xl font-bold">Ready to Level Up Your Backend Skills?</h2>
+            <h2 className="text-3xl font-bold font-mono">Ready to Level Up Your Backend Skills?</h2>
             <p className="text-muted-foreground max-w-[42rem] mx-auto">
-              Join our community of developers and start building powerful, scalable backend applications today.
+              Join our community of developers and start building powerful, scalable backend applications today with feedback from FAANG engineering leaders.
             </p>
             {!isLoggedIn && (
               <Link to="/auth">
-                <Button size="lg" className="animate-pulse hover:animate-none">
+                <Button size="lg" className="animate-pulse hover:animate-none font-mono">
                   Sign Up Now
                 </Button>
               </Link>
@@ -396,13 +452,12 @@ app.listen(port, () => {
         </section>
       </main>
       
-      {/* Footer */}
       <footer className="border-t py-6 md:py-0">
         <div className="container flex flex-col items-center justify-between gap-4 md:h-16 md:flex-row">
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-muted-foreground font-mono">
             &copy; 2025 BackendHub. All rights reserved.
           </p>
-          <div className="flex gap-4 text-sm text-muted-foreground">
+          <div className="flex gap-4 text-sm text-muted-foreground font-mono">
             <Link to="#" className="hover:underline">Terms</Link>
             <Link to="#" className="hover:underline">Privacy</Link>
             <Link to="#" className="hover:underline">Contact</Link>

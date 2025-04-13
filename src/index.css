@@ -74,6 +74,11 @@
   body {
     @apply bg-background text-foreground;
   }
+  
+  /* Code blocks and technical content */
+  pre, code, .code-font {
+    @apply font-mono;
+  }
 }
 
 /* Gradient text */
