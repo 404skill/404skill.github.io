@@ -9,7 +9,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { BookOpen, Filter, PlusCircle, Search, Rocket, Sparkles } from "lucide-react";
+import { BookOpen, Filter, PlusCircle, Search, Code, Terminal } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import ProjectCard from "@/components/ProjectCard";
 import { Project, User } from "@/lib/types";
@@ -102,22 +102,22 @@ const Dashboard = () => {
   if (!user) return null;
   
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-slate-50">
       <Navbar />
       
       <div 
         ref={headerRef} 
-        className={`sticky-header ${headerScrolled ? 'scrolled' : ''} py-6`}
+        className={`sticky-header ${headerScrolled ? 'scrolled' : ''} py-6 bg-white border-b`}
       >
         <div className="container">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div className="animate-fade-in">
-              <h1 className="text-3xl font-bold mb-1 gradient-text">Dashboard</h1>
-              <p className="text-muted-foreground">
-                Welcome back, <span className="font-medium text-violet-600">{user.name}</span>! Continue learning or start a new project.
+              <h1 className="text-2xl font-bold mb-1 font-mono">Dashboard</h1>
+              <p className="text-muted-foreground text-sm font-mono">
+                Welcome back, <span className="font-medium text-blue-700">{user.name}</span>! Continue learning or start a new project.
               </p>
             </div>
-            <Button variant="default" asChild className="animate-fade-in bg-gradient-to-r from-violet-500 to-indigo-500 hover:from-violet-600 hover:to-indigo-600 shadow-md hover:shadow-lg transition-all duration-300">
+            <Button variant="default" asChild className="animate-fade-in bg-blue-600 hover:bg-blue-700 font-mono">
               <a href="/help">
                 <PlusCircle className="mr-2 h-4 w-4" />
                 <span>Request Help</span>
@@ -130,22 +130,22 @@ const Dashboard = () => {
       <main className="flex-1 py-6">
         <div className="container">
           <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-8">
-            <TabsList className="bg-slate-50 p-1 shadow-inner">
+            <TabsList className="bg-slate-100 p-1">
               <TabsTrigger 
                 value="all-projects" 
-                className={`flex items-center gap-1 tab-glow ${activeTab === 'all-projects' ? 'tab-selected' : ''}`}
+                className={`flex items-center gap-1 tab-indicator ${activeTab === 'all-projects' ? 'tab-selected' : ''}`}
               >
-                <BookOpen className="h-4 w-4" />
-                <span>All Projects</span>
+                <Terminal className="h-4 w-4" />
+                <span className="font-mono text-sm">All Projects</span>
               </TabsTrigger>
               <TabsTrigger 
                 value="my-projects" 
-                className={`flex items-center gap-1 tab-glow ${activeTab === 'my-projects' ? 'tab-selected' : ''}`} 
+                className={`flex items-center gap-1 tab-indicator ${activeTab === 'my-projects' ? 'tab-selected' : ''}`} 
                 data-testid="my-projects-tab"
               >
-                <BookOpen className="h-4 w-4" />
-                <span>My Projects</span>
-                <span className="ml-1 rounded-full bg-indigo-100 text-indigo-700 px-2 py-0.5 text-xs font-medium">
+                <Code className="h-4 w-4" />
+                <span className="font-mono text-sm">My Projects</span>
+                <span className="ml-1 rounded-full bg-blue-100 text-blue-700 px-2 py-0.5 text-xs font-mono">
                   {userProjects.length}
                 </span>
               </TabsTrigger>
@@ -159,16 +159,16 @@ const Dashboard = () => {
                     placeholder="Search projects..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="pl-10 border-slate-200 focus:border-violet-300 focus:ring-violet-200 transition-all duration-300"
+                    className="pl-10 border-slate-200 focus:border-blue-300 focus:ring-blue-200 transition-all duration-300 font-mono"
                   />
                 </div>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="outline" className="flex items-center gap-2 border-slate-200 hover:border-slate-300 transition-colors">
+                    <Button variant="outline" className="flex items-center gap-2 border-slate-200 hover:border-slate-300 transition-colors font-mono">
                       <Filter className="h-4 w-4 text-slate-500" />
                       <span>Filter</span>
                       {difficulty.length > 0 && (
-                        <span className="ml-1 rounded-full bg-violet-100 text-violet-800 px-2 py-0.5 text-xs font-medium">
+                        <span className="ml-1 rounded-full bg-blue-100 text-blue-700 px-2 py-0.5 text-xs">
                           {difficulty.length}
                         </span>
                       )}
@@ -180,7 +180,7 @@ const Dashboard = () => {
                       onCheckedChange={() => handleDifficultyChange("easy")}
                       className="hover:bg-green-50"
                     >
-                      <span className="flex items-center">
+                      <span className="flex items-center font-mono">
                         <span className="w-2 h-2 rounded-full bg-green-500 mr-2"></span>
                         Easy
                       </span>
@@ -190,7 +190,7 @@ const Dashboard = () => {
                       onCheckedChange={() => handleDifficultyChange("medium")}
                       className="hover:bg-blue-50"
                     >
-                      <span className="flex items-center">
+                      <span className="flex items-center font-mono">
                         <span className="w-2 h-2 rounded-full bg-blue-500 mr-2"></span>
                         Medium
                       </span>
@@ -200,7 +200,7 @@ const Dashboard = () => {
                       onCheckedChange={() => handleDifficultyChange("hard")}
                       className="hover:bg-purple-50"
                     >
-                      <span className="flex items-center">
+                      <span className="flex items-center font-mono">
                         <span className="w-2 h-2 rounded-full bg-purple-500 mr-2"></span>
                         Hard
                       </span>
@@ -210,13 +210,13 @@ const Dashboard = () => {
               </div>
               
               {filteredProjects.length === 0 ? (
-                <Card className="dashboard-card animate-fade-in">
+                <Card className="project-card animate-fade-in">
                   <CardContent className="flex flex-col items-center justify-center py-16">
-                    <div className="p-4 rounded-full bg-slate-100 mb-4 animate-pulse-slow">
+                    <div className="p-4 rounded-full bg-slate-100 mb-4">
                       <BookOpen className="h-10 w-10 text-slate-400" />
                     </div>
-                    <h3 className="text-lg font-medium">No projects found</h3>
-                    <p className="text-muted-foreground mt-1">
+                    <h3 className="text-lg font-medium font-mono">No projects found</h3>
+                    <p className="text-muted-foreground mt-1 font-mono">
                       Try adjusting your search or filters
                     </p>
                   </CardContent>
@@ -247,41 +247,36 @@ const Dashboard = () => {
             
             <TabsContent value="my-projects" className="animate-fade-in">
               {loading ? (
-                <Card className="dashboard-card animate-pulse-slow">
+                <Card className="project-card">
                   <CardContent className="flex flex-col items-center justify-center py-16">
                     <div className="relative w-12 h-12 mb-4">
-                      <div className="absolute inset-0 rounded-full border-4 border-slate-200 border-t-indigo-500 animate-spin"></div>
+                      <div className="absolute inset-0 rounded-full border-4 border-slate-200 border-t-blue-500 animate-spin"></div>
                     </div>
-                    <h3 className="text-lg font-medium mt-2">Loading your projects...</h3>
-                    <p className="text-muted-foreground mt-1">
+                    <h3 className="text-lg font-medium mt-2 font-mono">Loading your projects...</h3>
+                    <p className="text-muted-foreground mt-1 font-mono">
                       Just a moment while we prepare your dashboard
                     </p>
                   </CardContent>
                 </Card>
               ) : userProjects.length === 0 ? (
-                <Card className="dashboard-card overflow-hidden">
+                <Card className="project-card overflow-hidden">
                   <CardContent className="flex flex-col items-center justify-center py-16 relative">
-                    <div className="absolute inset-0 opacity-5">
-                      <div className="absolute inset-0 bg-gradient-to-br from-indigo-600 to-violet-600"></div>
+                    <div className="p-4 bg-blue-100 rounded-full mb-6">
+                      <Terminal className="h-10 w-10 text-blue-600" />
                     </div>
-                    <div className="relative z-10">
-                      <div className="p-4 bg-indigo-100 rounded-full mb-6 animate-float">
-                        <Rocket className="h-10 w-10 text-indigo-500" />
-                      </div>
-                      <h3 className="text-xl font-medium">Start your learning journey</h3>
-                      <p className="text-muted-foreground mt-2 mb-6 text-center max-w-md">
-                        You haven't started any projects yet. Browse our catalog and choose a project to begin building your skills.
-                      </p>
-                      <Button 
-                        variant="default" 
-                        onClick={switchToAllProjects}
-                        size="lg"
-                        className="gap-2 bg-gradient-to-r from-indigo-500 to-violet-500 hover:from-indigo-600 hover:to-violet-600 shadow-md hover:shadow-lg transition-all duration-300"
-                      >
-                        <Sparkles className="h-4 w-4" />
-                        Browse Projects
-                      </Button>
-                    </div>
+                    <h3 className="text-xl font-medium font-mono">Start your learning journey</h3>
+                    <p className="text-muted-foreground mt-2 mb-6 text-center max-w-md font-mono">
+                      You haven't started any projects yet. Browse our catalog and choose a project to begin building your skills.
+                    </p>
+                    <Button 
+                      variant="default" 
+                      onClick={switchToAllProjects}
+                      size="lg"
+                      className="gap-2 bg-blue-600 hover:bg-blue-700 font-mono"
+                    >
+                      <Code className="h-4 w-4" />
+                      Browse Projects
+                    </Button>
                   </CardContent>
                 </Card>
               ) : (

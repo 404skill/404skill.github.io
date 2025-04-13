@@ -6,6 +6,7 @@ import { ArrowRight, Clock, Star } from "lucide-react";
 import { Project } from "@/lib/types";
 import { Link } from "react-router-dom";
 import { Progress } from "@/components/ui/progress";
+import { CheckIcon } from "@/components/icons/CheckIcon";
 
 interface ProjectCardProps {
   project: Project;
@@ -16,19 +17,16 @@ interface ProjectCardProps {
 
 const ProjectCard = ({ project, userId, inProgress = false, completion = 0 }: ProjectCardProps) => {
   return (
-    <Card className={`overflow-hidden transition-all duration-300 hover:shadow-lg flex flex-col h-full animate-fade-in project-card-premium rainbow-border glow-effect ${inProgress ? 'border-indigo-200' : ''}`}>
-      <CardHeader className="pb-2 relative overflow-hidden">
-        {/* Background gradient */}
-        <div className="absolute inset-0 bg-gradient-to-r from-indigo-50/50 to-violet-50/50"></div>
-        
+    <Card className={`overflow-hidden transition-all duration-300 hover:shadow-md flex flex-col h-full animate-fade-in project-card ${inProgress ? 'border-blue-200 border-l-4' : ''}`}>
+      <CardHeader className="pb-2 relative">
         <div className="flex justify-between items-start relative z-10">
           <div className="flex items-center">
-            <CardTitle className="text-lg gradient-text">
+            <CardTitle className="text-lg font-mono">
               {project.title}
             </CardTitle>
             {inProgress && (
-              <span className="ml-2 inline-flex items-center px-1.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800">
-                <Star className="w-3 h-3 mr-1 text-yellow-500 fill-yellow-400" />
+              <span className="ml-2 inline-flex items-center px-1.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                <Clock className="w-3 h-3 mr-1" />
                 Active
               </span>
             )}
@@ -36,9 +34,10 @@ const ProjectCard = ({ project, userId, inProgress = false, completion = 0 }: Pr
           <Badge 
             variant="outline" 
             className={`
-              ${project.difficulty === 'easy' ? 'pill-easy animate-pulse-slow' : ''}
-              ${project.difficulty === 'medium' ? 'pill-medium' : ''}
-              ${project.difficulty === 'hard' ? 'pill-hard' : ''}
+              ${project.difficulty === 'easy' ? 'border-green-200 bg-green-50 text-green-700 hover:bg-green-100' : ''}
+              ${project.difficulty === 'medium' ? 'border-blue-200 bg-blue-50 text-blue-700 hover:bg-blue-100' : ''}
+              ${project.difficulty === 'hard' ? 'border-purple-200 bg-purple-50 text-purple-700 hover:bg-purple-100' : ''}
+              text-xs font-mono uppercase
             `}
           >
             {project.difficulty}
@@ -46,13 +45,13 @@ const ProjectCard = ({ project, userId, inProgress = false, completion = 0 }: Pr
         </div>
       </CardHeader>
       <CardContent className="flex-1 flex flex-col pb-4 relative z-10">
-        <p className="text-muted-foreground text-sm mb-4">{project.description}</p>
+        <p className="text-muted-foreground text-sm mb-4 font-mono">{project.description}</p>
         <div className="flex flex-wrap gap-2 mb-4">
           {project.technologies.map((tech) => (
             <Badge 
               key={tech} 
               variant="secondary" 
-              className="text-xs hover:bg-secondary/80 transition-colors tech-badge"
+              className="text-xs font-mono bg-slate-100 hover:bg-slate-200 transition-colors"
             >
               {tech}
             </Badge>
@@ -61,29 +60,21 @@ const ProjectCard = ({ project, userId, inProgress = false, completion = 0 }: Pr
         
         {inProgress && (
           <div className="mt-auto pt-4">
-            <div className="flex justify-between text-xs mb-1.5">
-              <span className="flex items-center gap-1 text-violet-600 font-medium">
+            <div className="flex justify-between text-xs mb-1.5 font-mono">
+              <span className="flex items-center gap-1 text-blue-700 font-medium">
                 <Clock className="h-3 w-3" /> In progress
               </span>
-              <span className="text-violet-700 font-medium">{Math.round(completion)}% complete</span>
+              <span className="text-slate-700 font-medium">{Math.round(completion)}% complete</span>
             </div>
-            <div className="progress-bar-container">
-              <div 
-                className="progress-bar-fill" 
-                style={{ width: `${completion}%` }}
-              />
-            </div>
+            <Progress value={completion} className="h-1 bg-slate-200" />
           </div>
         )}
       </CardContent>
-      <CardFooter className="pt-4 mt-auto relative overflow-hidden">
-        {/* Background gradient */}
-        <div className="absolute inset-0 bg-gradient-to-r from-indigo-50/50 to-violet-50/50"></div>
-        
-        <Link to={`/projects/${project.id}`} className="w-full relative z-10">
+      <CardFooter className="pt-4 mt-auto">
+        <Link to={`/projects/${project.id}`} className="w-full">
           <Button 
             variant={inProgress ? "secondary" : "default"} 
-            className={`w-full transition-all duration-300 group ${inProgress ? 'bg-violet-100 text-violet-800 hover:bg-violet-200' : 'bg-gradient-to-r from-indigo-500 to-violet-500 hover:from-indigo-600 hover:to-violet-600'}`}
+            className={`w-full transition-all duration-300 group font-mono ${inProgress ? 'bg-blue-100 text-blue-800 hover:bg-blue-200' : 'bg-blue-600 hover:bg-blue-700'}`}
           >
             {inProgress ? (
               <>

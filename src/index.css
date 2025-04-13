@@ -33,7 +33,7 @@
     --input: 214.3 31.8% 91.4%;
     --ring: 222.2 84% 4.9%;
  
-    --radius: 0.5rem;
+    --radius: 0.3rem;
   }
  
   .dark {
@@ -81,55 +81,26 @@
   }
 }
 
-/* Gradient text */
-.gradient-text {
-  @apply bg-gradient-to-r from-primary to-purple-500 bg-clip-text text-transparent;
-}
-
-/* Dashboard glowup styles */
+/* Dashboard styles */
 .dashboard-header {
-  @apply relative overflow-hidden;
-  background: linear-gradient(135deg, #f6f8ff 0%, #f0f4ff 100%);
-}
-
-.dashboard-header::before {
-  content: '';
-  @apply absolute w-full h-full opacity-50 pointer-events-none;
-  background: radial-gradient(circle at 50% 50%, rgba(130, 87, 230, 0.05) 0%, rgba(75, 0, 130, 0.0) 70%);
-}
-
-.dashboard-card {
-  @apply transition-all duration-300 hover:shadow-lg hover:translate-y-[-4px] relative overflow-hidden;
-}
-
-.dashboard-card::before {
-  content: '';
-  @apply absolute inset-0 opacity-0 transition-opacity duration-300 rounded-lg pointer-events-none;
-  background: linear-gradient(to bottom right, rgba(130, 87, 230, 0.1), rgba(75, 0, 130, 0.05));
-}
-
-.dashboard-card:hover::before {
-  @apply opacity-100;
-}
-
-.glow-effect {
   @apply relative;
+  background: linear-gradient(180deg, #f8f9fa 0%, #ffffff 100%);
 }
 
-.glow-effect::after {
-  content: '';
-  @apply absolute inset-0 rounded-lg opacity-0 transition-opacity duration-300 shadow-[0_0_20px_5px_rgba(130,87,230,0.2)] pointer-events-none;
+.project-card {
+  @apply transition-all duration-300 hover:shadow-md relative overflow-hidden;
+  border-radius: var(--radius);
 }
 
-.glow-effect:hover::after {
-  @apply opacity-100;
+.project-card:hover {
+  transform: translateY(-2px);
 }
 
 /* Animations */
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(8px);
   }
   to {
     opacity: 1;
@@ -137,133 +108,46 @@
   }
 }
 
-@keyframes pulse {
-  0%, 100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.85;
-    transform: scale(1.01);
-  }
-}
-
-@keyframes shimmer {
-  0% {
-    background-position: -1000px 0;
-  }
-  100% {
-    background-position: 1000px 0;
-  }
-}
-
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
-}
-
 .animate-fade-in {
-  animation: fadeIn 0.5s ease-out forwards;
+  animation: fadeIn 0.4s ease-out forwards;
 }
 
-.animate-pulse-slow {
-  animation: pulse 3s ease-in-out infinite;
-}
-
-.animate-float {
-  animation: float 4s ease-in-out infinite;
-}
-
-.animate-shimmer {
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  background-size: 1000px 100%;
-  animation: shimmer 2s infinite linear;
-}
-
-/* Project cards enhanced */
-.project-card-premium {
-  @apply relative overflow-hidden border-0 shadow-md;
-  background: linear-gradient(135deg, #ffffff 0%, #f8f9ff 100%);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-}
-
-.project-card-premium::before {
-  content: '';
-  @apply absolute inset-0 opacity-0 transition-opacity duration-300 pointer-events-none;
-  background: linear-gradient(to bottom right, rgba(123, 97, 255, 0.05), rgba(78, 168, 222, 0.05));
-  border-radius: inherit;
-}
-
-.project-card-premium:hover::before {
-  @apply opacity-100;
-}
-
-.tech-badge {
-  @apply transition-all duration-200 hover:scale-105 hover:shadow-sm;
-}
-
-/* Status pills with enhanced colors */
+/* Status pills with professional colors */
 .pill-easy {
-  @apply bg-green-50 text-green-600 border-green-200 hover:bg-green-100 transition-colors;
-  box-shadow: 0 0 0 1px rgba(0, 128, 0, 0.05);
+  @apply bg-green-50 text-green-700 border-green-200 hover:bg-green-100 transition-colors;
 }
 
 .pill-medium {
-  @apply bg-blue-50 text-blue-600 border-blue-200 hover:bg-blue-100 transition-colors;
-  box-shadow: 0 0 0 1px rgba(0, 0, 255, 0.05);
+  @apply bg-blue-50 text-blue-700 border-blue-200 hover:bg-blue-100 transition-colors;
 }
 
 .pill-hard {
-  @apply bg-purple-50 text-purple-600 border-purple-200 hover:bg-purple-100 transition-colors;
-  box-shadow: 0 0 0 1px rgba(128, 0, 128, 0.05);
-}
-
-/* Hover effects */
-.story-link {
-  @apply relative inline-block after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 after:bottom-0 after:left-0 after:bg-primary after:origin-bottom-right after:transition-transform after:duration-300 hover:after:scale-x-100 hover:after:origin-bottom-left;
-}
-
-.hover-scale {
-  @apply transition-transform duration-200 hover:scale-105;
+  @apply bg-purple-50 text-purple-700 border-purple-200 hover:bg-purple-100 transition-colors;
 }
 
 /* Progress Bar Styles */
 .progress-bar-container {
-  @apply w-full bg-slate-100 rounded-full h-1.5 overflow-hidden;
+  @apply w-full bg-slate-200 rounded-full h-1 overflow-hidden;
 }
 
 .progress-bar-fill {
   @apply h-full transition-all duration-1000 ease-out rounded-full;
-  background: linear-gradient(90deg, #4f46e5, #7c3aed);
+  background: #3b82f6;
 }
 
-/* Tab indicator animation */
-.tab-glow {
-  @apply before:absolute before:bottom-0 before:h-[2px] before:left-0 before:w-full;
-  @apply before:bg-gradient-to-r before:from-violet-500 before:to-indigo-500 before:scale-x-0 before:transition-transform before:duration-300;
+/* Tab indicator */
+.tab-indicator {
+  @apply before:absolute before:bottom-0 before:h-0.5 before:left-0 before:w-full;
+  @apply before:bg-blue-600 before:scale-x-0 before:transition-transform before:duration-300;
 }
 
 .tab-selected {
   @apply before:scale-x-100;
 }
 
-/* Featured section background */
-.featured-bg {
-  background: linear-gradient(135deg, #f6f8ff 0%, #f0f4ff 100%);
-}
-
-/* Flow container (keeping the container style but removing arrow styles) */
-.flow-container {
-  @apply relative min-h-[600px] md:min-h-[700px];
-}
-
-/* Sticky header for the dashboard */
+/* Sticky header */
 .sticky-header {
-  @apply sticky top-0 z-10 backdrop-blur-md bg-white/90 shadow-sm;
+  @apply sticky top-0 z-10 backdrop-blur-sm bg-white/90 shadow-sm;
   transition: all 0.3s ease;
 }
 
@@ -272,18 +156,7 @@
   background: rgba(255, 255, 255, 0.95);
 }
 
-/* Rainbow border for premium projects */
-.rainbow-border {
-  @apply relative rounded-lg;
-}
-
-.rainbow-border::before {
-  content: '';
-  @apply absolute -inset-[1px] rounded-lg opacity-0 transition-opacity duration-300 pointer-events-none;
-  background: linear-gradient(45deg, #4f46e5, #ec4899, #3b82f6, #8b5cf6);
-  z-index: -1;
-}
-
-.rainbow-border:hover::before {
-  @apply opacity-70;
+/* Tech badge */
+.tech-badge {
+  @apply font-mono text-xs py-0.5 px-2 rounded bg-slate-100 text-slate-700;
 }
