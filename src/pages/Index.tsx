@@ -31,7 +31,6 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import FlowArrows from "@/components/FlowArrows";
 
 interface FeatureProps {
   icon: LucideIcon;
@@ -216,8 +215,6 @@ const Index = () => {
           </div>
           
           <div className="flow-container grid gap-8 md:grid-cols-2 lg:grid-cols-3 relative">
-            <FlowArrows />
-            
             <div className={`transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`} style={{ transitionDelay: "200ms" }}>
               <Feature 
                 icon={BookOpen}
