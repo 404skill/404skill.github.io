@@ -15,8 +15,8 @@ interface ProjectCardProps {
 
 const ProjectCard = ({ project, userId, inProgress = false, completion = 0 }: ProjectCardProps) => {
   return (
-    <Card className="overflow-hidden transition-all hover:shadow-md hover:border-primary/50 flex flex-col h-full">
-      <CardHeader className="pb-2">
+    <Card className="overflow-hidden transition-all duration-300 hover:shadow-md hover:border-primary/50 hover:translate-y-[-4px] flex flex-col h-full animate-fade-in">
+      <CardHeader className="pb-2 bg-gradient-to-r from-slate-50 to-white">
         <div className="flex justify-between items-start">
           <CardTitle className="text-lg">{project.title}</CardTitle>
           <Badge 
@@ -35,7 +35,7 @@ const ProjectCard = ({ project, userId, inProgress = false, completion = 0 }: Pr
         <p className="text-muted-foreground text-sm mb-4">{project.description}</p>
         <div className="flex flex-wrap gap-2 mb-4">
           {project.technologies.map((tech) => (
-            <Badge key={tech} variant="secondary" className="text-xs">
+            <Badge key={tech} variant="secondary" className="text-xs hover:bg-secondary/80 transition-colors">
               {tech}
             </Badge>
           ))}
@@ -51,28 +51,28 @@ const ProjectCard = ({ project, userId, inProgress = false, completion = 0 }: Pr
             </div>
             <div className="w-full bg-muted rounded-full h-1.5">
               <div 
-                className="bg-primary h-1.5 rounded-full"
+                className="bg-gradient-to-r from-blue-400 to-purple-500 h-1.5 rounded-full transition-all duration-500 ease-out"
                 style={{ width: `${completion}%` }}
               />
             </div>
           </div>
         )}
       </CardContent>
-      <CardFooter className="pt-4 mt-auto">
+      <CardFooter className="pt-4 mt-auto bg-gradient-to-r from-white to-slate-50">
         <Link to={`/projects/${project.id}`} className="w-full">
           <Button 
             variant={inProgress ? "secondary" : "default"} 
-            className="w-full"
+            className="w-full transition-all duration-300 hover:shadow"
           >
             {inProgress ? (
               <>
                 <span>Continue</span>
-                <ArrowRight className="ml-2 h-4 w-4" />
+                <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
               </>
             ) : (
               <>
                 <span>Start Project</span>
-                <ArrowRight className="ml-2 h-4 w-4" />
+                <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
               </>
             )}
           </Button>

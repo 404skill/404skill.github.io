@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -110,33 +111,30 @@
   @apply transition-transform duration-200 hover:scale-105;
 }
 
-/* Flow Arrows */
-.flow-arrow {
-  @apply absolute z-10 hidden md:flex items-center justify-center;
-  pointer-events: none;
+/* Project card styles */
+.pill-easy {
+  @apply bg-green-50 text-green-600 border-green-200 hover:bg-green-100 transition-colors;
 }
 
-.flow-arrow-right {
-  @apply h-6 w-6 text-primary;
-  animation: arrowPulse 2s ease-in-out infinite;
+.pill-medium {
+  @apply bg-blue-50 text-blue-600 border-blue-200 hover:bg-blue-100 transition-colors;
 }
 
-.flow-arrow-down {
-  @apply h-6 w-6 text-primary;
-  animation: arrowPulse 2s ease-in-out infinite;
+.pill-hard {
+  @apply bg-purple-50 text-purple-600 border-purple-200 hover:bg-purple-100 transition-colors;
 }
 
-@keyframes arrowPulse {
-  0%, 100% {
-    opacity: 0.8;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1.2);
-  }
+/* Dashboard cards hover effect */
+.dashboard-card {
+  @apply transition-all duration-300 hover:shadow-lg hover:translate-y-[-2px];
 }
 
+/* Featured section background */
+.featured-bg {
+  background: linear-gradient(135deg, #f6f8ff 0%, #f0f4ff 100%);
+}
+
+/* Flow container (keeping the container style but removing arrow styles) */
 .flow-container {
   @apply relative min-h-[600px] md:min-h-[700px];
 }
