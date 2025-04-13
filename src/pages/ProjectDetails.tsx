@@ -173,7 +173,7 @@ const ProjectDetails = () => {
   if (!project || !user) return null;
   
   return (
-    <div className="min-h-screen flex flex-col bg-[#0f1117] text-slate-200">
+    <div className="min-h-screen flex flex-col bg-white text-slate-800">
       <Navbar />
       
       <main className="flex-1 py-8">
@@ -181,7 +181,7 @@ const ProjectDetails = () => {
           <div className="mb-6">
             <Button
               variant="ghost"
-              className="mb-4 font-mono text-slate-300 hover:text-white"
+              className="mb-4 font-mono text-slate-600 hover:text-slate-800"
               onClick={() => navigate(-1)}
             >
               <ArrowLeft className="mr-2 h-4 w-4" />
@@ -191,35 +191,35 @@ const ProjectDetails = () => {
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
               <div>
                 <div className="flex items-center gap-2 mb-2">
-                  <h1 className="text-3xl font-bold font-mono text-slate-100">{project.title}</h1>
+                  <h1 className="text-3xl font-bold font-mono text-slate-800">{project.title}</h1>
                   <Badge 
                     variant="outline" 
                     className={`
                       font-mono text-xs
-                      ${project.difficulty === 'easy' ? 'border-green-500/30 bg-green-500/10 text-green-400' : ''}
-                      ${project.difficulty === 'medium' ? 'border-blue-500/30 bg-blue-500/10 text-blue-400' : ''}
-                      ${project.difficulty === 'hard' ? 'border-purple-500/30 bg-purple-500/10 text-purple-400' : ''}
+                      ${project.difficulty === 'easy' ? 'border-green-500/30 bg-green-100 text-green-700' : ''}
+                      ${project.difficulty === 'medium' ? 'border-blue-500/30 bg-blue-100 text-blue-700' : ''}
+                      ${project.difficulty === 'hard' ? 'border-purple-500/30 bg-purple-100 text-purple-700' : ''}
                     `}
                   >
                     {project.difficulty}
                   </Badge>
                 </div>
-                <p className="text-slate-400 font-mono">{project.description}</p>
+                <p className="text-slate-600 font-mono">{project.description}</p>
               </div>
               
               <div className="flex gap-2">
-                <Button variant="outline" onClick={handleDownloadTemplate} className="border-slate-700 bg-slate-800/50 text-slate-300 hover:bg-slate-700 font-mono">
+                <Button variant="outline" onClick={handleDownloadTemplate} className="border-slate-200 bg-slate-50 text-slate-700 hover:bg-slate-100 font-mono">
                   <Download className="mr-2 h-4 w-4" />
                   Download Template
                 </Button>
                 <Dialog open={isHelpDialogOpen} onOpenChange={setIsHelpDialogOpen}>
                   <DialogTrigger asChild>
-                    <Button className="bg-slate-700 hover:bg-slate-600 text-white font-mono">
+                    <Button className="bg-blue-600 hover:bg-blue-700 text-white font-mono">
                       <HelpCircle className="mr-2 h-4 w-4" />
                       Get Help
                     </Button>
                   </DialogTrigger>
-                  <DialogContent className="max-w-lg bg-[#161922] border-slate-700">
+                  <DialogContent className="max-w-lg bg-white border-slate-200">
                     <HelpRequestForm 
                       projectId={project.id} 
                       taskId={selectedTaskId}
@@ -232,7 +232,7 @@ const ProjectDetails = () => {
             
             <div className="flex items-center gap-2 mt-4">
               {project.technologies.map((tech) => (
-                <Badge key={tech} variant="secondary" className="text-xs font-mono bg-slate-800 text-slate-300 border-slate-700">
+                <Badge key={tech} variant="secondary" className="text-xs font-mono bg-slate-100 text-slate-700 border-slate-200">
                   {tech}
                 </Badge>
               ))}
@@ -240,10 +240,10 @@ const ProjectDetails = () => {
             
             <div className="mt-6">
               <div className="flex justify-between text-xs mb-1 font-mono">
-                <span className="text-slate-400">Progress</span>
-                <span className="text-slate-300">{Math.round(completion)}% complete</span>
+                <span className="text-slate-500">Progress</span>
+                <span className="text-slate-700">{Math.round(completion)}% complete</span>
               </div>
-              <div className="w-full bg-slate-800 rounded-full h-1.5">
+              <div className="w-full bg-slate-100 rounded-full h-1.5">
                 <div 
                   className="bg-blue-500 h-1.5 rounded-full"
                   style={{ width: `${completion}%` }}
@@ -252,19 +252,19 @@ const ProjectDetails = () => {
             </div>
           </div>
           
-          <Separator className="my-6 bg-slate-800" />
+          <Separator className="my-6 bg-slate-200" />
           
           <Tabs defaultValue="tasks" className="mt-6">
-            <TabsList className="bg-slate-800/50 border border-slate-700 p-1">
-              <TabsTrigger value="tasks" className="font-mono data-[state=active]:bg-slate-700 data-[state=active]:text-white">
+            <TabsList className="bg-slate-100 border border-slate-200 p-1">
+              <TabsTrigger value="tasks" className="font-mono data-[state=active]:bg-white data-[state=active]:text-slate-800">
                 <BookOpen className="h-4 w-4 mr-2" />
                 Tasks
               </TabsTrigger>
-              <TabsTrigger value="details" className="font-mono data-[state=active]:bg-slate-700 data-[state=active]:text-white">
+              <TabsTrigger value="details" className="font-mono data-[state=active]:bg-white data-[state=active]:text-slate-800">
                 <FileText className="h-4 w-4 mr-2" />
                 Details
               </TabsTrigger>
-              <TabsTrigger value="api-reference" className="font-mono data-[state=active]:bg-slate-700 data-[state=active]:text-white">
+              <TabsTrigger value="api-reference" className="font-mono data-[state=active]:bg-white data-[state=active]:text-slate-800">
                 <FileCode className="h-4 w-4 mr-2" />
                 API Reference
               </TabsTrigger>
@@ -281,16 +281,16 @@ const ProjectDetails = () => {
             
             <TabsContent value="details" className="mt-6 space-y-6">
               <div>
-                <h3 className="text-lg font-medium font-mono text-slate-200 mb-2">Project Overview</h3>
-                <p className="text-slate-400 font-mono">
+                <h3 className="text-lg font-medium font-mono text-slate-800 mb-2">Project Overview</h3>
+                <p className="text-slate-600 font-mono">
                   {project.description} This project will help you learn how to build 
                   and structure a backend application using {project.technologies.join(', ')}.
                 </p>
               </div>
               
               <div>
-                <h3 className="text-lg font-medium font-mono text-slate-200 mb-2">Learning Objectives</h3>
-                <ul className="list-disc pl-5 text-slate-400 space-y-1 font-mono">
+                <h3 className="text-lg font-medium font-mono text-slate-800 mb-2">Learning Objectives</h3>
+                <ul className="list-disc pl-5 text-slate-600 space-y-1 font-mono">
                   <li>Understanding the fundamentals of {project.technologies[0]} architecture</li>
                   <li>Building robust API endpoints with proper error handling</li>
                   <li>Working with databases and data models</li>
@@ -300,8 +300,8 @@ const ProjectDetails = () => {
               </div>
               
               <div>
-                <h3 className="text-lg font-medium font-mono text-slate-200 mb-2">Prerequisites</h3>
-                <ul className="list-disc pl-5 text-slate-400 space-y-1 font-mono">
+                <h3 className="text-lg font-medium font-mono text-slate-800 mb-2">Prerequisites</h3>
+                <ul className="list-disc pl-5 text-slate-600 space-y-1 font-mono">
                   <li>Basic understanding of JavaScript/TypeScript</li>
                   <li>Familiarity with HTTP and RESTful APIs</li>
                   <li>Node.js installed on your machine</li>
@@ -310,20 +310,20 @@ const ProjectDetails = () => {
               </div>
               
               <div>
-                <h3 className="text-lg font-medium font-mono text-slate-200 mb-2">Getting Started</h3>
-                <Card className="bg-slate-800 border-slate-700">
+                <h3 className="text-lg font-medium font-mono text-slate-800 mb-2">Getting Started</h3>
+                <Card className="bg-white border-slate-200">
                   <CardHeader>
-                    <CardTitle className="font-mono text-slate-100">Step 1: Download the template</CardTitle>
-                    <CardDescription className="text-slate-400 font-mono">
+                    <CardTitle className="font-mono text-slate-800">Step 1: Download the template</CardTitle>
+                    <CardDescription className="text-slate-500 font-mono">
                       Get started with our pre-configured project template
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-sm text-slate-400 mb-4 font-mono">
+                    <p className="text-sm text-slate-600 mb-4 font-mono">
                       The template includes all the necessary files and configurations to get you started.
                       It also includes the test suite that will be used to evaluate your implementation.
                     </p>
-                    <Button onClick={handleDownloadTemplate} className="font-mono bg-blue-600 hover:bg-blue-700">
+                    <Button onClick={handleDownloadTemplate} className="font-mono bg-blue-600 hover:bg-blue-700 text-white">
                       <Download className="mr-2 h-4 w-4" />
                       Download Template
                     </Button>
@@ -335,32 +335,32 @@ const ProjectDetails = () => {
             <TabsContent value="api-reference" className="mt-6">
               <div className="space-y-6">
                 <div>
-                  <h3 className="text-lg font-medium font-mono text-slate-200 mb-2">API Reference</h3>
-                  <p className="text-slate-400 mb-4 font-mono">
+                  <h3 className="text-lg font-medium font-mono text-slate-800 mb-2">API Reference</h3>
+                  <p className="text-slate-600 mb-4 font-mono">
                     This section provides documentation for the API endpoints that you'll need to implement.
                   </p>
                 </div>
                 
-                <Card className="bg-slate-800 border-slate-700">
+                <Card className="bg-white border-slate-200">
                   <CardHeader>
-                    <CardTitle className="text-base font-mono text-slate-100">
+                    <CardTitle className="text-base font-mono text-slate-800">
                       POST /api/auth/register
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-sm text-slate-400 mb-2 font-mono">
+                    <p className="text-sm text-slate-600 mb-2 font-mono">
                       Register a new user.
                     </p>
-                    <p className="text-sm font-semibold mb-1 text-slate-300 font-mono">Request Body:</p>
-                    <pre className="bg-slate-900 p-3 rounded-md text-slate-300 font-mono text-xs">
+                    <p className="text-sm font-semibold mb-1 text-slate-700 font-mono">Request Body:</p>
+                    <pre className="bg-slate-50 p-3 rounded-md text-slate-700 font-mono text-xs border border-slate-200">
 {`{
   "username": "string",
   "email": "string",
   "password": "string"
 }`}
                     </pre>
-                    <p className="text-sm font-semibold mt-3 mb-1 text-slate-300 font-mono">Response (200):</p>
-                    <pre className="bg-slate-900 p-3 rounded-md text-slate-300 font-mono text-xs">
+                    <p className="text-sm font-semibold mt-3 mb-1 text-slate-700 font-mono">Response (200):</p>
+                    <pre className="bg-slate-50 p-3 rounded-md text-slate-700 font-mono text-xs border border-slate-200">
 {`{
   "id": "string",
   "username": "string",
@@ -371,25 +371,25 @@ const ProjectDetails = () => {
                   </CardContent>
                 </Card>
                 
-                <Card className="bg-slate-800 border-slate-700">
+                <Card className="bg-white border-slate-200">
                   <CardHeader>
-                    <CardTitle className="text-base font-mono text-slate-100">
+                    <CardTitle className="text-base font-mono text-slate-800">
                       POST /api/auth/login
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-sm text-slate-400 mb-2 font-mono">
+                    <p className="text-sm text-slate-600 mb-2 font-mono">
                       Authenticate a user.
                     </p>
-                    <p className="text-sm font-semibold mb-1 text-slate-300 font-mono">Request Body:</p>
-                    <pre className="bg-slate-900 p-3 rounded-md text-slate-300 font-mono text-xs">
+                    <p className="text-sm font-semibold mb-1 text-slate-700 font-mono">Request Body:</p>
+                    <pre className="bg-slate-50 p-3 rounded-md text-slate-700 font-mono text-xs border border-slate-200">
 {`{
   "email": "string",
   "password": "string"
 }`}
                     </pre>
-                    <p className="text-sm font-semibold mt-3 mb-1 text-slate-300 font-mono">Response (200):</p>
-                    <pre className="bg-slate-900 p-3 rounded-md text-slate-300 font-mono text-xs">
+                    <p className="text-sm font-semibold mt-3 mb-1 text-slate-700 font-mono">Response (200):</p>
+                    <pre className="bg-slate-50 p-3 rounded-md text-slate-700 font-mono text-xs border border-slate-200">
 {`{
   "token": "string",
   "user": {
@@ -402,24 +402,24 @@ const ProjectDetails = () => {
                   </CardContent>
                 </Card>
                 
-                <Card className="bg-slate-800 border-slate-700">
+                <Card className="bg-white border-slate-200">
                   <CardHeader>
-                    <CardTitle className="text-base font-mono text-slate-100">
+                    <CardTitle className="text-base font-mono text-slate-800">
                       GET /api/posts
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-sm text-slate-400 mb-2 font-mono">
+                    <p className="text-sm text-slate-600 mb-2 font-mono">
                       Get all posts.
                     </p>
-                    <p className="text-sm font-semibold mb-1 text-slate-300 font-mono">Headers:</p>
-                    <pre className="bg-slate-900 p-3 rounded-md text-slate-300 font-mono text-xs">
+                    <p className="text-sm font-semibold mb-1 text-slate-700 font-mono">Headers:</p>
+                    <pre className="bg-slate-50 p-3 rounded-md text-slate-700 font-mono text-xs border border-slate-200">
 {`{
   "Authorization": "Bearer {token}"
 }`}
                     </pre>
-                    <p className="text-sm font-semibold mt-3 mb-1 text-slate-300 font-mono">Response (200):</p>
-                    <pre className="bg-slate-900 p-3 rounded-md text-slate-300 font-mono text-xs">
+                    <p className="text-sm font-semibold mt-3 mb-1 text-slate-700 font-mono">Response (200):</p>
+                    <pre className="bg-slate-50 p-3 rounded-md text-slate-700 font-mono text-xs border border-slate-200">
 {`[
   {
     "id": "string",
