@@ -25,6 +25,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Project, Task } from "@/lib/types";
+import { useEffect } from "react";
 
 interface HelpRequestFormProps {
   projectId: string;
@@ -42,6 +43,7 @@ const formSchema = z.object({
     message: "Description must be at least 20 characters",
   }),
   codeSnippet: z.string().optional(),
+  repositoryUrl: z.string().url({ message: "Please enter a valid URL" }).optional().or(z.literal('')),
 });
 
 const HelpRequestForm = ({ projectId, taskId, projects }: HelpRequestFormProps) => {
@@ -55,12 +57,15 @@ const HelpRequestForm = ({ projectId, taskId, projects }: HelpRequestFormProps) 
       type: "help",
       description: "",
       codeSnippet: "",
+      repositoryUrl: "",
     },
   });
 
   const selectedProject = projects.find(
     (project) => project.id === form.watch("projectId")
   );
+  
+  const helpType = form.watch("type");
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     // Handle form submission - in a real app, this would send the request to the backend
@@ -71,6 +76,15 @@ const HelpRequestForm = ({ projectId, taskId, projects }: HelpRequestFormProps) 
     });
     form.reset();
   }
+  
+  // Reset codeSnippet or repositoryUrl field based on type selection
+  useEffect(() => {
+    if (helpType === "help") {
+      form.setValue("repositoryUrl", "");
+    } else if (helpType === "code-review") {
+      form.setValue("codeSnippet", "");
+    }
+  }, [helpType, form]);
 
   return (
     <Card>
@@ -192,26 +206,50 @@ const HelpRequestForm = ({ projectId, taskId, projects }: HelpRequestFormProps) 
               )}
             />
 
-            <FormField
-              control={form.control}
-              name="codeSnippet"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Code Snippet (Optional)</FormLabel>
-                  <FormControl>
-                    <Textarea
-                      placeholder="Paste your code here..."
-                      className="font-mono resize-y h-32"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormDescription>
-                    If relevant, include the code you're having trouble with.
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            {helpType === "help" && (
+              <FormField
+                control={form.control}
+                name="codeSnippet"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Code Snippet (Optional)</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        placeholder="Paste your code here..."
+                        className="font-mono resize-y h-32"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormDescription>
+                      If relevant, include the code you're having trouble with.
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
+
+            {helpType === "code-review" && (
+              <FormField
+                control={form.control}
+                name="repositoryUrl"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Repository URL</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="https://github.com/username/repository"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormDescription>
+                      Please provide a link to your GitHub or other source control repository.
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
 
             <Button type="submit" className="w-full">
               Submit Request

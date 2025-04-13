@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -29,6 +28,7 @@ const Dashboard = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [difficulty, setDifficulty] = useState<string[]>([]);
   const [filteredProjects, setFilteredProjects] = useState<Project[]>(projects);
+  const [activeTab, setActiveTab] = useState("all-projects");
   
   // Use the new hook to get user projects from Supabase
   const { userProjects, loading } = useUserProgress(user?.id || null);
@@ -68,18 +68,11 @@ const Dashboard = () => {
   }, [searchTerm, difficulty]);
   
   const handleDifficultyChange = (value: string) => {
-    setDifficulty((prev) =>
-      prev.includes(value)
-        ? prev.filter((item) => item !== value)
-        : [...prev, value]
-    );
+    setDifficulty([value]);
   };
   
   const switchToAllProjects = () => {
-    const element = document.querySelector('[data-value="all-projects"]');
-    if (element instanceof HTMLElement) {
-      element.click();
-    }
+    setActiveTab("all-projects");
   };
   
   if (!user) return null;
@@ -105,7 +98,7 @@ const Dashboard = () => {
             </Button>
           </div>
           
-          <Tabs defaultValue="all-projects" className="space-y-8">
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-8">
             <TabsList>
               <TabsTrigger value="all-projects" className="flex items-center gap-1">
                 <BookOpen className="h-4 w-4" />
@@ -179,7 +172,6 @@ const Dashboard = () => {
               ) : (
                 <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                   {filteredProjects.map((project) => {
-                    // Check if this project is in user's projects
                     const inProgress = userProjects.some(p => p.id === project.id);
                     const userProject = userProjects.find(p => p.id === project.id);
                     const completion = userProject?.progress?.completed_tasks.length 
@@ -220,7 +212,7 @@ const Dashboard = () => {
                       variant="default" 
                       onClick={switchToAllProjects}
                       size="lg"
-                      className="gap-2"
+                      className="gap-2 animate-pulse hover:animate-none"
                     >
                       <BookOpen className="h-4 w-4" />
                       Browse Projects
