@@ -31,6 +31,7 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import FlowArrows from "@/components/FlowArrows";
 
 interface FeatureProps {
   icon: LucideIcon;
@@ -214,7 +215,9 @@ const Index = () => {
             </p>
           </div>
           
-          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+          <div className="flow-container grid gap-8 md:grid-cols-2 lg:grid-cols-3 relative">
+            <FlowArrows />
+            
             <div className={`transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`} style={{ transitionDelay: "200ms" }}>
               <Feature 
                 icon={BookOpen}
@@ -382,7 +385,7 @@ app.listen(port, () => {
         <section className="py-24">
           <div className="container">
             <div className="text-center mb-16">
-              <h2 className="text-3xl font-bold font-mono mb-4">Simple, Transparent Pricing</h2>
+              <h2 className="text-3xl font-bold font-mono">Simple, Transparent Pricing</h2>
               <p className="text-muted-foreground max-w-[42rem] mx-auto">
                 Choose the plan that's right for you and start building backend skills today.
               </p>

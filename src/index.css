@@ -110,3 +110,35 @@
 .hover-scale {
   @apply transition-transform duration-200 hover:scale-105;
 }
+
+/* Flow Arrows */
+.flow-arrow {
+  @apply absolute z-10 hidden md:block;
+  pointer-events: none;
+}
+
+.flow-arrow-right {
+  @apply h-8 w-10 text-primary opacity-80;
+  animation: arrowPulse 2s ease-in-out infinite;
+}
+
+.flow-arrow-down {
+  @apply h-10 w-8 text-primary opacity-80;
+  animation: arrowPulse 2s ease-in-out infinite;
+}
+
+@keyframes arrowPulse {
+  0%, 100% {
+    opacity: 0.8;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+}
+
+.flow-container {
+  @apply relative;
+}
+
