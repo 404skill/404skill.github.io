@@ -18,31 +18,6 @@ export const useUserProgress = (userId: string | null) => {
     try {
       setLoading(true);
       
-      // Validate userId format (check if it's a valid UUID)
-      const isValidUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(userId);
-      
-      if (!isValidUUID) {
-        console.log("Invalid user ID format, using mock data instead");
-        // Import mock data for testing purposes
-        import("@/lib/data").then(({ mockUserProgress, projects }) => {
-          const userProjectsData = projects.filter(project => 
-            mockUserProgress.some(p => p.project_id === project.id && p.user_id === userId)
-          );
-          
-          const enhancedProjects = userProjectsData.map(project => {
-            const progress = mockUserProgress.find(p => p.project_id === project.id && p.user_id === userId);
-            return {
-              ...project,
-              progress: progress as UserProgress
-            };
-          });
-          
-          setUserProjects(enhancedProjects);
-          setLoading(false);
-        });
-        return;
-      }
-      
       // Fetch user progress from Supabase
       const { data: progressData, error: progressError } = await supabase
         .from('user_progress')
@@ -53,36 +28,51 @@ export const useUserProgress = (userId: string | null) => {
         throw progressError;
       }
 
-      // If no progress found, return empty array
-      if (!progressData || progressData.length === 0) {
-        setUserProjects([]);
-        setLoading(false);
-        return;
-      }
-
-      // Map progress data to projects
-      const projectIds = progressData.map(progress => progress.project_id);
-      
-      // If no projects found, set empty array
-      if (projectIds.length === 0) {
-        setUserProjects([]);
-        setLoading(false);
-        return;
-      }
-
-      // In a real app, we'd fetch projects from Supabase
-      // For now, we'll use the mock data and filter
+      // Fetch all projects
       import("@/lib/data").then(({ projects }) => {
-        const userProjectsData = projects.filter(project => 
-          projectIds.includes(project.id)
-        );
-        
-        // Enhance projects with progress data
-        const enhancedProjects = userProjectsData.map(project => {
+        // If no progress data, show all projects with zero progress
+        if (!progressData || progressData.length === 0) {
+          const projectsWithZeroProgress = projects.map(project => ({
+            ...project,
+            progress: {
+              id: '',
+              user_id: userId,
+              project_id: project.id,
+              completed_tasks: [],
+              started_at: null,
+              last_updated_at: null,
+              is_completed: false
+            } as UserProgress
+          }));
+          
+          setUserProjects(projectsWithZeroProgress);
+          setLoading(false);
+          return;
+        }
+
+        // If we have progress data, enhance projects with it
+        const enhancedProjects = projects.map(project => {
           const progress = progressData.find(p => p.project_id === project.id);
+          
+          if (progress) {
+            return {
+              ...project,
+              progress: progress as UserProgress
+            };
+          }
+          
+          // For projects without progress data, add zero progress
           return {
             ...project,
-            progress: progress as UserProgress
+            progress: {
+              id: '',
+              user_id: userId,
+              project_id: project.id,
+              completed_tasks: [],
+              started_at: null,
+              last_updated_at: null,
+              is_completed: false
+            } as UserProgress
           };
         });
 
@@ -93,30 +83,7 @@ export const useUserProgress = (userId: string | null) => {
       console.error("Error fetching user progress:", err);
       setError("Failed to load your projects");
       setLoading(false);
-      
-      // Use mock data as fallback when there's an error
-      import("@/lib/data").then(({ mockUserProgress, projects }) => {
-        // Only load mock data if this is likely a development environment
-        if (userId === "user123" || window.location.hostname === "localhost") {
-          const userProjectsData = projects.filter(project => 
-            mockUserProgress.some(p => p.project_id === project.id && p.user_id === userId)
-          );
-          
-          const enhancedProjects = userProjectsData.map(project => {
-            const progress = mockUserProgress.find(p => p.project_id === project.id && p.user_id === userId);
-            return {
-              ...project,
-              progress: progress as UserProgress
-            };
-          });
-          
-          setUserProjects(enhancedProjects);
-          console.log("Using mock data as fallback");
-        } else {
-          // Only show toast in production with real users
-          toast.error("Failed to load your projects");
-        }
-      });
+      toast.error("Failed to load your projects");
     }
   };
 

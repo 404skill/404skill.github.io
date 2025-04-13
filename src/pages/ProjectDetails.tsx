@@ -70,12 +70,13 @@ const ProjectDetails = () => {
   
   const fetchTaskResults = async (userId: string, projectId: string) => {
     try {
-      import("@/lib/data").then(async ({ mockTestResults }) => {
-        const results = mockTestResults.filter(
-          result => result.userId === userId && result.projectId === projectId
-        );
+      import("@/lib/data").then(async ({ projects }) => {
+        const currentProject = projects.find(p => p.id === projectId);
         
-        setTestResults(results);
+        if (!currentProject) {
+          toast.error("Project not found");
+          return;
+        }
         
         const { data: progressData } = await supabase
           .from('user_progress')
@@ -91,48 +92,30 @@ const ProjectDetails = () => {
             setCompletion(completionPercentage);
           }
           
-          const updatedResults = results.map(result => {
-            if (progressData.completed_tasks.includes(result.taskId)) {
-              return { ...result, status: 'passed' as const };
-            }
-            return result;
+          const updatedResults = currentProject.tasks.map(task => {
+            return {
+              taskId: task.id,
+              projectId: projectId,
+              userId: userId,
+              status: progressData.completed_tasks.includes(task.id) ? 'passed' as const : 'not-started' as const,
+              timestamp: progressData.last_updated_at || new Date().toISOString()
+            };
           });
           
           setTestResults(updatedResults);
-        } else if (results.length > 0) {
-          const completedTasks = results
-            .filter(result => result.status === 'passed')
-            .map(result => result.taskId);
-          
-          if (project && completedTasks.length > 0) {
-            await supabase
-              .from('user_progress')
-              .insert({
-                user_id: userId,
-                project_id: projectId,
-                completed_tasks: completedTasks,
-                started_at: new Date().toISOString(),
-                last_updated_at: new Date().toISOString(),
-                is_completed: completedTasks.length === project.tasks.length
-              });
-            
-            setCompletion((completedTasks.length / project.tasks.length) * 100);
-          }
         } else {
-          if (project) {
-            await supabase
-              .from('user_progress')
-              .insert({
-                user_id: userId,
-                project_id: projectId,
-                completed_tasks: [],
-                started_at: new Date().toISOString(),
-                last_updated_at: new Date().toISOString(),
-                is_completed: false
-              });
+          if (currentProject) {
+            const emptyResults = currentProject.tasks.map(task => ({
+              taskId: task.id,
+              projectId: projectId,
+              userId: userId,
+              status: 'not-started' as const,
+              timestamp: new Date().toISOString()
+            }));
+            
+            setTestResults(emptyResults);
+            setCompletion(0);
           }
-          
-          setCompletion(0);
         }
       });
     } catch (error) {
