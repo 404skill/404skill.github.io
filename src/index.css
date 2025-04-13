@@ -84,7 +84,7 @@
 /* Dashboard styles */
 .dashboard-header {
   @apply relative;
-  background: linear-gradient(180deg, #f8f9fa 0%, #ffffff 100%);
+  background: linear-gradient(180deg, #0f1117 0%, #161922 100%);
 }
 
 .project-card {
@@ -112,22 +112,22 @@
   animation: fadeIn 0.4s ease-out forwards;
 }
 
-/* Status pills with professional colors */
+/* Status pills with developer-focused colors */
 .pill-easy {
-  @apply bg-green-50 text-green-700 border-green-200 hover:bg-green-100 transition-colors;
+  @apply bg-green-500/10 text-green-400 border-green-500/30 hover:bg-green-500/20 transition-colors;
 }
 
 .pill-medium {
-  @apply bg-blue-50 text-blue-700 border-blue-200 hover:bg-blue-100 transition-colors;
+  @apply bg-blue-500/10 text-blue-400 border-blue-500/30 hover:bg-blue-500/20 transition-colors;
 }
 
 .pill-hard {
-  @apply bg-purple-50 text-purple-700 border-purple-200 hover:bg-purple-100 transition-colors;
+  @apply bg-purple-500/10 text-purple-400 border-purple-500/30 hover:bg-purple-500/20 transition-colors;
 }
 
 /* Progress Bar Styles */
 .progress-bar-container {
-  @apply w-full bg-slate-200 rounded-full h-1 overflow-hidden;
+  @apply w-full bg-slate-700 rounded-full h-1 overflow-hidden;
 }
 
 .progress-bar-fill {
@@ -138,7 +138,7 @@
 /* Tab indicator */
 .tab-indicator {
   @apply before:absolute before:bottom-0 before:h-0.5 before:left-0 before:w-full;
-  @apply before:bg-blue-600 before:scale-x-0 before:transition-transform before:duration-300;
+  @apply before:bg-blue-500 before:scale-x-0 before:transition-transform before:duration-300;
 }
 
 .tab-selected {
@@ -147,16 +147,48 @@
 
 /* Sticky header */
 .sticky-header {
-  @apply sticky top-0 z-10 backdrop-blur-sm bg-white/90 shadow-sm;
+  @apply sticky top-0 z-10 backdrop-blur-sm bg-slate-900/90 shadow-sm;
   transition: all 0.3s ease;
 }
 
 .sticky-header.scrolled {
   @apply shadow-md;
-  background: rgba(255, 255, 255, 0.95);
+  background: rgba(15, 17, 23, 0.95);
 }
 
 /* Tech badge */
 .tech-badge {
-  @apply font-mono text-xs py-0.5 px-2 rounded bg-slate-100 text-slate-700;
+  @apply font-mono text-xs py-0.5 px-2 rounded bg-slate-700 text-slate-300;
+}
+
+/* Code blocks and syntax highlighting */
+.code-block {
+  @apply bg-slate-900 p-3 rounded-md text-slate-300 font-mono text-xs overflow-auto;
+  border: 1px solid rgba(59, 130, 246, 0.2);
+}
+
+/* Terminal window styling */
+.terminal {
+  @apply bg-slate-900 border border-slate-700 rounded-md overflow-hidden font-mono;
+}
+
+.terminal-header {
+  @apply bg-slate-800 px-4 py-2 flex items-center gap-2;
+}
+
+.terminal-dot {
+  @apply w-2.5 h-2.5 rounded-full;
+}
+
+.terminal-body {
+  @apply p-4 text-slate-300 text-sm;
+}
+
+/* Form styles for developer tools */
+.dev-input {
+  @apply bg-slate-800 border-slate-700 text-slate-200 font-mono;
+}
+
+.dev-button {
+  @apply bg-blue-600 hover:bg-blue-700 text-white font-mono transition-colors;
 }

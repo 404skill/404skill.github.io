@@ -17,15 +17,17 @@ interface ProjectCardProps {
 
 const ProjectCard = ({ project, userId, inProgress = false, completion = 0 }: ProjectCardProps) => {
   return (
-    <Card className={`overflow-hidden transition-all duration-300 hover:shadow-md flex flex-col h-full animate-fade-in project-card ${inProgress ? 'border-blue-200 border-l-4' : ''}`}>
+    <Card className={`overflow-hidden transition-all duration-300 hover:shadow-md flex flex-col h-full animate-fade-in project-card 
+      bg-slate-800 border-slate-700 hover:border-slate-600 
+      ${inProgress ? 'border-blue-500/50 border-l-4' : ''}`}>
       <CardHeader className="pb-2 relative">
         <div className="flex justify-between items-start relative z-10">
           <div className="flex items-center">
-            <CardTitle className="text-lg font-mono">
+            <CardTitle className="text-lg font-mono text-slate-100">
               {project.title}
             </CardTitle>
             {inProgress && (
-              <span className="ml-2 inline-flex items-center px-1.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+              <span className="ml-2 inline-flex items-center px-1.5 py-0.5 rounded-full text-xs font-medium bg-blue-500/10 text-blue-400 border border-blue-500/20 font-mono">
                 <Clock className="w-3 h-3 mr-1" />
                 Active
               </span>
@@ -34,10 +36,10 @@ const ProjectCard = ({ project, userId, inProgress = false, completion = 0 }: Pr
           <Badge 
             variant="outline" 
             className={`
-              ${project.difficulty === 'easy' ? 'border-green-200 bg-green-50 text-green-700 hover:bg-green-100' : ''}
-              ${project.difficulty === 'medium' ? 'border-blue-200 bg-blue-50 text-blue-700 hover:bg-blue-100' : ''}
-              ${project.difficulty === 'hard' ? 'border-purple-200 bg-purple-50 text-purple-700 hover:bg-purple-100' : ''}
-              text-xs font-mono uppercase
+              font-mono text-xs uppercase
+              ${project.difficulty === 'easy' ? 'border-green-500/30 bg-green-500/10 text-green-400' : ''}
+              ${project.difficulty === 'medium' ? 'border-blue-500/30 bg-blue-500/10 text-blue-400' : ''}
+              ${project.difficulty === 'hard' ? 'border-purple-500/30 bg-purple-500/10 text-purple-400' : ''}
             `}
           >
             {project.difficulty}
@@ -45,13 +47,13 @@ const ProjectCard = ({ project, userId, inProgress = false, completion = 0 }: Pr
         </div>
       </CardHeader>
       <CardContent className="flex-1 flex flex-col pb-4 relative z-10">
-        <p className="text-muted-foreground text-sm mb-4 font-mono">{project.description}</p>
+        <p className="text-slate-400 text-sm mb-4 font-mono">{project.description}</p>
         <div className="flex flex-wrap gap-2 mb-4">
           {project.technologies.map((tech) => (
             <Badge 
               key={tech} 
               variant="secondary" 
-              className="text-xs font-mono bg-slate-100 hover:bg-slate-200 transition-colors"
+              className="text-xs font-mono bg-slate-700 text-slate-300 hover:bg-slate-600 transition-colors"
             >
               {tech}
             </Badge>
@@ -61,12 +63,12 @@ const ProjectCard = ({ project, userId, inProgress = false, completion = 0 }: Pr
         {inProgress && (
           <div className="mt-auto pt-4">
             <div className="flex justify-between text-xs mb-1.5 font-mono">
-              <span className="flex items-center gap-1 text-blue-700 font-medium">
+              <span className="flex items-center gap-1 text-blue-400 font-medium">
                 <Clock className="h-3 w-3" /> In progress
               </span>
-              <span className="text-slate-700 font-medium">{Math.round(completion)}% complete</span>
+              <span className="text-slate-300 font-medium">{Math.round(completion)}% complete</span>
             </div>
-            <Progress value={completion} className="h-1 bg-slate-200" />
+            <Progress value={completion} className="h-1 bg-slate-700" />
           </div>
         )}
       </CardContent>
@@ -74,7 +76,8 @@ const ProjectCard = ({ project, userId, inProgress = false, completion = 0 }: Pr
         <Link to={`/projects/${project.id}`} className="w-full">
           <Button 
             variant={inProgress ? "secondary" : "default"} 
-            className={`w-full transition-all duration-300 group font-mono ${inProgress ? 'bg-blue-100 text-blue-800 hover:bg-blue-200' : 'bg-blue-600 hover:bg-blue-700'}`}
+            className={`w-full transition-all duration-300 group font-mono 
+              ${inProgress ? 'bg-blue-500/10 text-blue-400 hover:bg-blue-500/20 border border-blue-500/30' : 'bg-blue-600 hover:bg-blue-700 text-white'}`}
           >
             {inProgress ? (
               <>
