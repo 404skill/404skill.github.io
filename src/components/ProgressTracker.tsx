@@ -28,7 +28,7 @@ interface ProgressTrackerProps {
   onStatusChange?: (taskId: string, status: TestResult['status']) => void;
 }
 
-const TaskStatusIcon = ({ status }: { status: TestResult['status'] | 'not-started' }) => {
+const TaskStatusIcon = ({ status }: { status: TestResult['status'] | undefined }) => {
   let Icon: LucideIcon;
   let color: string;
   let label: string;
@@ -74,9 +74,9 @@ const TaskStatusIcon = ({ status }: { status: TestResult['status'] | 'not-starte
 const ProgressTracker = ({ project, results, onRequestHelp, onStatusChange }: ProgressTrackerProps) => {
   const [openTasks, setOpenTasks] = useState<{ [key: string]: boolean }>({});
 
-  const getTaskStatus = (taskId: string): TestResult['status'] | 'not-started' => {
+  const getTaskStatus = (taskId: string): TestResult['status'] | undefined => {
     const result = results.find(r => r.taskId === taskId);
-    return result ? result.status : 'not-started';
+    return result ? result.status : undefined;
   };
 
   const getTaskTimestamp = (taskId: string): string | null => {

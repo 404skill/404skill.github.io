@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
@@ -92,12 +93,12 @@ const ProjectDetails = () => {
             setCompletion(completionPercentage);
           }
           
-          const updatedResults = currentProject.tasks.map(task => {
+          const updatedResults: TestResult[] = currentProject.tasks.map(task => {
             return {
               taskId: task.id,
               projectId: projectId,
               userId: userId,
-              status: progressData.completed_tasks.includes(task.id) ? 'passed' as const : 'not-started' as const,
+              status: progressData.completed_tasks.includes(task.id) ? 'passed' as const : 'not-attempted' as const,
               timestamp: progressData.last_updated_at || new Date().toISOString()
             };
           });
@@ -105,11 +106,11 @@ const ProjectDetails = () => {
           setTestResults(updatedResults);
         } else {
           if (currentProject) {
-            const emptyResults = currentProject.tasks.map(task => ({
+            const emptyResults: TestResult[] = currentProject.tasks.map(task => ({
               taskId: task.id,
               projectId: projectId,
               userId: userId,
-              status: 'not-started' as const,
+              status: 'not-attempted' as const,
               timestamp: new Date().toISOString()
             }));
             
