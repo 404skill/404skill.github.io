@@ -2,6 +2,24 @@
 import { supabase } from "@/integrations/supabase/client";
 import { v4 as uuidv4 } from 'uuid';
 
+// Custom event types
+export enum AnalyticsEvent {
+  // Page views
+  PAGE_VIEW = 'page_view',
+  
+  // User journey events
+  ENTERED_PROJECTS_DASHBOARD = 'EnteredProjectsDashboard',
+  CLICKED_ON_PROJECT = 'ClickedOnAProject',
+  OPENED_PROJECT_TASKS = 'OpenedProjectTasks',
+  READ_PROJECT_DETAILS = 'ReadProjectDetails',
+  CLICKED_REQUEST_HELP = 'ClickedRequestHelp',
+  
+  // Pricing events
+  CLICKED_PRICING_FREE = 'ClickedOnPricingFree',
+  CLICKED_PRICING_PRO = 'ClickedOnPricingPro',
+  CLICKED_PRICING_TEAMS = 'ClickedOnPricingTeams'
+}
+
 // Initialize session ID if not exists
 const getSessionId = (): string => {
   let sessionId = sessionStorage.getItem('session_id');
@@ -50,7 +68,7 @@ export const trackEvent = async ({
 // Track page view
 export const trackPageView = async (): Promise<void> => {
   await trackEvent({ 
-    eventType: 'page_view',
+    eventType: AnalyticsEvent.PAGE_VIEW,
     eventData: { 
       title: document.title,
       referrer: document.referrer,

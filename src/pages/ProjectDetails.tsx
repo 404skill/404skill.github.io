@@ -33,6 +33,7 @@ import { projects } from "@/lib/data";
 import { useUserProgress } from "@/hooks/useUserProgress";
 import { supabase } from "@/integrations/supabase/client";
 import ProjectMarkdownContent from "@/components/ProjectMarkdownContent";
+import { trackEvent, AnalyticsEvent } from "@/lib/analytics";
 
 const ProjectDetails = () => {
   const { id } = useParams<{ id: string }>();
@@ -61,6 +62,12 @@ const ProjectDetails = () => {
       const projectData = getProject(id);
       if (projectData) {
         setProject(projectData);
+        
+        trackEvent({
+          eventType: AnalyticsEvent.READ_PROJECT_DETAILS,
+          component: "ProjectDetails",
+          eventData: { projectId: id }
+        });
         
         fetchTaskResults(userData.id, id);
       } else {
@@ -137,6 +144,25 @@ const ProjectDetails = () => {
   const handleRequestHelp = (taskId: string) => {
     setSelectedTaskId(taskId);
     setIsHelpDialogOpen(true);
+    
+    trackEvent({
+      eventType: AnalyticsEvent.CLICKED_REQUEST_HELP,
+      component: "HelpRequestButton",
+      eventData: { 
+        projectId: project?.id,
+        taskId 
+      }
+    });
+  };
+  
+  const handleTaskTabClick = () => {
+    if (project) {
+      trackEvent({
+        eventType: AnalyticsEvent.OPENED_PROJECT_TASKS,
+        component: "ProjectTasks",
+        eventData: { projectId: project.id }
+      });
+    }
   };
   
   const handleTaskStatusChange = async (taskId: string, status: 'passed' | 'failed' | 'not-attempted') => {
@@ -260,7 +286,11 @@ const ProjectDetails = () => {
           
           <Tabs defaultValue="tasks" className="mt-6">
             <TabsList className="bg-slate-100 border border-slate-200 p-1">
-              <TabsTrigger value="tasks" className="font-mono data-[state=active]:bg-white data-[state=active]:text-slate-800">
+              <TabsTrigger 
+                value="tasks" 
+                className="font-mono data-[state=active]:bg-white data-[state=active]:text-slate-800"
+                onClick={handleTaskTabClick}
+              >
                 <BookOpen className="h-4 w-4 mr-2" />
                 Tasks
               </TabsTrigger>

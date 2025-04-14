@@ -1,4 +1,3 @@
-
 import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -22,6 +21,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useUserProgress } from "@/hooks/useUserProgress";
+import { trackEvent, AnalyticsEvent } from "@/lib/analytics";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -33,7 +33,6 @@ const Dashboard = () => {
   const [headerScrolled, setHeaderScrolled] = useState(false);
   const headerRef = useRef<HTMLDivElement>(null);
   
-  // Use the hook to get user projects from Supabase
   const { userProjects, loading } = useUserProgress(user?.id || null);
   
   useEffect(() => {
@@ -45,6 +44,11 @@ const Dashboard = () => {
     
     const userData = JSON.parse(userStr) as User;
     setUser(userData);
+    
+    trackEvent({ 
+      eventType: AnalyticsEvent.ENTERED_PROJECTS_DASHBOARD,
+      component: "Dashboard"
+    });
   }, [navigate]);
   
   useEffect(() => {
@@ -70,7 +74,6 @@ const Dashboard = () => {
     setFilteredProjects(filtered);
   }, [searchTerm, difficulty]);
 
-  // Handle scroll for sticky header effect
   useEffect(() => {
     const handleScroll = () => {
       if (headerRef.current) {
@@ -97,6 +100,16 @@ const Dashboard = () => {
   
   const switchToAllProjects = () => {
     setActiveTab("all-projects");
+  };
+  
+  const handleProjectClick = (projectId: string) => {
+    trackEvent({
+      eventType: AnalyticsEvent.CLICKED_ON_PROJECT,
+      component: "ProjectCard",
+      eventData: { projectId }
+    });
+    
+    navigate(`/projects/${projectId}`);
   };
   
   if (!user) return null;
@@ -231,7 +244,12 @@ const Dashboard = () => {
                       : 0;
                     
                     return (
-                      <div key={project.id} className="animate-fade-in" style={{ animationDelay: `${index * 75}ms` }}>
+                      <div 
+                        key={project.id} 
+                        className="animate-fade-in" 
+                        style={{ animationDelay: `${index * 75}ms` }}
+                        onClick={() => handleProjectClick(project.id)}
+                      >
                         <ProjectCard
                           project={project} 
                           userId={user.id}
