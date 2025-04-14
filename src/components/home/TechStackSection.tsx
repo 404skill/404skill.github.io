@@ -25,8 +25,6 @@ const TechStackSection = () => {
         <div className="mt-8 text-center text-sm text-muted-foreground max-w-2xl mx-auto mb-12">
           <p>Focus on solving problems your way while our standardized testing interface verifies your solution works correctly.</p>
         </div>
-        
-        <EmailSubscription />
       </div>
     </section>
   );

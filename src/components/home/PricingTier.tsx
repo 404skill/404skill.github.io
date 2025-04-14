@@ -37,6 +37,7 @@ const PricingTier = ({ title, price, description, features, highlighted = false,
       component: "PricingTier",
       eventData: { plan: title, price }
     });
+
   };
 
   return (
