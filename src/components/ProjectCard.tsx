@@ -49,15 +49,24 @@ const ProjectCard = ({ project, userId, inProgress = false, completion = 0 }: Pr
       <CardContent className="flex-1 flex flex-col pb-4 relative z-10">
         <p className="text-slate-600 text-sm mb-4 font-mono">{project.description}</p>
         <div className="flex flex-wrap gap-2 mb-4">
-          {project.technologies.map((tech) => (
-            <Badge 
-              key={tech} 
-              variant="secondary" 
-              className="text-xs font-mono bg-slate-100 text-slate-700 hover:bg-slate-200 transition-colors"
-            >
-              {tech}
-            </Badge>
-          ))}
+          <Badge 
+            variant="secondary" 
+            className="text-xs font-mono bg-blue-100 text-blue-700 hover:bg-blue-200 transition-colors"
+          >
+            Containerized
+          </Badge>
+          <Badge 
+            variant="secondary" 
+            className="text-xs font-mono bg-purple-100 text-purple-700 hover:bg-purple-200 transition-colors"
+          >
+            Language Agnostic
+          </Badge>
+          <Badge 
+            variant="secondary" 
+            className="text-xs font-mono bg-slate-100 text-slate-700 hover:bg-slate-200 transition-colors"
+          >
+            CLI API
+          </Badge>
         </div>
         
         {inProgress && (
