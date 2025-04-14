@@ -1,4 +1,3 @@
-
 import { Project, TestResult } from "@/lib/types";
 import { 
   CheckCircle, 
@@ -20,6 +19,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useState } from "react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import TaskMarkdownContent from "./TaskMarkdownContent";
 
 interface ProgressTrackerProps {
   project: Project;
@@ -105,6 +105,7 @@ const ProgressTracker = ({ project, results, onRequestHelp, onStatusChange }: Pr
           const status = getTaskStatus(task.id);
           const timestamp = getTaskTimestamp(task.id);
           const isOpen = openTasks[task.id] || false;
+          const taskNumber = index + 1;
           
           return (
             <Collapsible 
@@ -128,7 +129,7 @@ const ProgressTracker = ({ project, results, onRequestHelp, onStatusChange }: Pr
                     <div className="flex justify-between items-center">
                       <CollapsibleTrigger asChild>
                         <button className="flex items-center gap-2 text-left font-medium font-mono text-slate-800 focus:outline-none">
-                          <span>{index + 1}. {task.name}</span>
+                          <span>{taskNumber}. {task.name}</span>
                           {isOpen ? (
                             <ChevronUp className="h-4 w-4 text-slate-400" />
                           ) : (
@@ -145,26 +146,37 @@ const ProgressTracker = ({ project, results, onRequestHelp, onStatusChange }: Pr
                     
                     <CollapsibleContent>
                       <div className="mt-3 text-sm text-slate-600">
-                        <p className="mb-4 font-mono">{task.description}</p>
-                        
-                        <div className="bg-white p-4 rounded-md mb-3 space-y-3 border border-slate-200">
-                          <h4 className="font-medium text-sm text-slate-700 font-mono">Requirements</h4>
-                          <p className="font-mono text-slate-600">Complete this task using your preferred programming language and tools.</p>
-                          
-                          <div className="p-3 bg-slate-50 text-slate-700 rounded-md font-mono text-xs border border-slate-200">
-                            <pre>{`# Your solution will be tested through the container API
+                        {project.id === 'library_management' ? (
+                          <div className="bg-white p-4 rounded-md mb-3 border border-slate-200">
+                            <TaskMarkdownContent 
+                              projectId={project.id} 
+                              taskNumber={taskNumber} 
+                              className="prose-sm" 
+                            />
+                          </div>
+                        ) : (
+                          <div>
+                            <p className="mb-4 font-mono">{task.description}</p>
+                            <div className="bg-white p-4 rounded-md mb-3 space-y-3 border border-slate-200">
+                              <h4 className="font-medium text-sm text-slate-700 font-mono">Requirements</h4>
+                              <p className="font-mono text-slate-600">Complete this task using your preferred programming language and tools.</p>
+                              
+                              <div className="p-3 bg-slate-50 text-slate-700 rounded-md font-mono text-xs border border-slate-200">
+                                <pre>{`# Your solution will be tested through the container API
 # Example test command:
 $ container run-tests ${task.name.toLowerCase().replace(/\s+/g, '-')}`}</pre>
+                              </div>
+                              
+                              <h4 className="font-medium text-sm mt-4 text-slate-700 font-mono">Testing Your Implementation</h4>
+                              <p className="font-mono text-slate-600">The test container will validate your implementation against the requirements:</p>
+                              <ul className="list-disc pl-5 space-y-1 text-xs text-slate-600 font-mono">
+                                <li>Your container must implement the standard CLI API</li>
+                                <li>All requirements must be satisfied</li>
+                                <li>Edge cases should be properly handled</li>
+                              </ul>
+                            </div>
                           </div>
-                          
-                          <h4 className="font-medium text-sm mt-4 text-slate-700 font-mono">Testing Your Implementation</h4>
-                          <p className="font-mono text-slate-600">The test container will validate your implementation against the requirements:</p>
-                          <ul className="list-disc pl-5 space-y-1 text-xs text-slate-600 font-mono">
-                            <li>Your container must implement the standard CLI API</li>
-                            <li>All requirements must be satisfied</li>
-                            <li>Edge cases should be properly handled</li>
-                          </ul>
-                        </div>
+                        )}
                       </div>
                       
                       {status === 'failed' && (

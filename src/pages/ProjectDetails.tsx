@@ -32,6 +32,7 @@ import { Link } from "react-router-dom";
 import { projects } from "@/lib/data";
 import { useUserProgress } from "@/hooks/useUserProgress";
 import { supabase } from "@/integrations/supabase/client";
+import ProjectMarkdownContent from "@/components/ProjectMarkdownContent";
 
 const ProjectDetails = () => {
   const { id } = useParams<{ id: string }>();
@@ -230,11 +231,15 @@ const ProjectDetails = () => {
             </div>
             
             <div className="flex items-center gap-2 mt-4">
-              {project.technologies.map((tech) => (
-                <Badge key={tech} variant="secondary" className="text-xs font-mono bg-slate-100 text-slate-700 border-slate-200">
-                  {tech}
-                </Badge>
-              ))}
+              <Badge variant="secondary" className="text-xs font-mono bg-blue-100 text-blue-700 hover:bg-blue-200 transition-colors">
+                Containerized
+              </Badge>
+              <Badge variant="secondary" className="text-xs font-mono bg-purple-100 text-purple-700 hover:bg-purple-200 transition-colors">
+                Language Agnostic
+              </Badge>
+              <Badge variant="secondary" className="text-xs font-mono bg-slate-100 text-slate-700 hover:bg-slate-200 transition-colors">
+                CLI API
+              </Badge>
             </div>
             
             <div className="mt-6">
@@ -263,7 +268,7 @@ const ProjectDetails = () => {
                 <FileText className="h-4 w-4 mr-2" />
                 Details
               </TabsTrigger>
-              <TabsTrigger value="api-reference" className="font-mono data-[state=active]:bg-white data-[state=active]:text-slate-800">
+              <TabsTrigger value="container-api" className="font-mono data-[state=active]:bg-white data-[state=active]:text-slate-800">
                 <FileCode className="h-4 w-4 mr-2" />
                 Container API
               </TabsTrigger>
@@ -279,15 +284,19 @@ const ProjectDetails = () => {
             </TabsContent>
             
             <TabsContent value="details" className="mt-6 space-y-6">
-              <div>
-                <h3 className="text-lg font-medium font-mono text-slate-800 mb-2">Project Overview</h3>
-                <p className="text-slate-600 font-mono">
-                  {project.description} This project uses containerization to allow you to implement a solution 
-                  in any programming language of your choice.
-                </p>
-              </div>
-              
-              <div>
+              {project.id === 'library_management' ? (
+                <div className="bg-white p-6 rounded-lg border border-slate-200">
+                  <ProjectMarkdownContent filePath="library_management/0_overview.md" />
+                </div>
+              ) : (
+                
+                <div>
+                  <h3 className="text-lg font-medium font-mono text-slate-800 mb-2">Project Overview</h3>
+                  <p className="text-slate-600 font-mono">
+                    {project.description} This project uses containerization to allow you to implement a solution 
+                    in any programming language of your choice.
+                  </p>
+                  <div>
                 <h3 className="text-lg font-medium font-mono text-slate-800 mb-2">Learning Objectives</h3>
                 <ul className="list-disc pl-5 text-slate-600 space-y-1 font-mono">
                   <li>Building containerized applications with proper isolation</li>
@@ -329,9 +338,11 @@ const ProjectDetails = () => {
                   </CardContent>
                 </Card>
               </div>
+                </div>
+              )}
             </TabsContent>
             
-            <TabsContent value="api-reference" className="mt-6">
+            <TabsContent value="container-api" className="mt-6">
               <div className="space-y-6">
                 <div>
                   <h3 className="text-lg font-medium font-mono text-slate-800 mb-2">Container API Reference</h3>
