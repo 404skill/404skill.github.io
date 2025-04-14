@@ -9,6 +9,7 @@ import TechStackSection from "@/components/home/TechStackSection";
 import PricingSection from "@/components/home/PricingSection";
 import CtaSection from "@/components/home/CtaSection";
 import Footer from "@/components/home/Footer";
+import { trackPageView } from "@/lib/analytics";
 
 const Index = () => {
   const isLoggedIn = localStorage.getItem('user') !== null;
@@ -16,6 +17,9 @@ const Index = () => {
 
   useEffect(() => {
     setIsVisible(true);
+    
+    // Track page view
+    trackPageView();
   }, []);
 
   return (
