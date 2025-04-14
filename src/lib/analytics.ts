@@ -39,9 +39,7 @@ export const trackEvent = async ({ eventType, component, eventData = {} }) => {
                 session_id: sessionId
             }
         ]);
-        console.log(`Event tracked: ${eventType}`);
     } catch (error) {
-        console.error("Error tracking event:", error);
     // Silent fail - don't interrupt user experience for analytics
     }
 };

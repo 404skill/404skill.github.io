@@ -12,7 +12,7 @@ import Footer from "@/components/home/Footer";
 import { trackPageView } from "@/lib/analytics";
 
 const Index = () => {
-  const isLoggedIn = localStorage.getItem('user') !== null;
+  const isLoggedIn = localStorage.getItem('sb-smzmwxqzmiswsnvsvjms-auth-token') !== null;
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
