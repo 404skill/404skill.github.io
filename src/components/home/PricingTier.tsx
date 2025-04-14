@@ -1,9 +1,9 @@
-
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { CheckCircle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "@/components/ui/use-toast";
+import { trackEvent, AnalyticsEvent } from "@/lib/analytics";
 import {
   Card,
   CardContent,
@@ -13,7 +13,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { trackEvent, AnalyticsEvent } from "@/lib/analytics";
 
 interface PricingTierProps {
   title: string;
@@ -36,22 +35,20 @@ const PricingTier = ({ title, price, description, features, highlighted = false,
       eventType = AnalyticsEvent.CLICKED_ON_PRICING_TEAMS;
     }
     
-    // Track the event
     trackEvent({
       eventType,
       component: "PricingTier",
       eventData: { plan: title, price }
     });
 
-    // Show demo mode toast
     toast({
       title: "Demo Mode",
       description: "Our product is currently in development. Sign up for free, and we'll contact you once everything is ready!",
       duration: 5000,
-      variant: "default"
+      variant: "demo",
+      className: "bg-[#8B5CF6] text-white border-0 shadow-2xl",
     });
 
-    // Navigate to signup
     navigate("/auth");
   };
 
@@ -95,4 +92,3 @@ const PricingTier = ({ title, price, description, features, highlighted = false,
 };
 
 export default PricingTier;
-
