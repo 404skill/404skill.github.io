@@ -26,6 +26,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/components/ui/use-toast";
 import Navbar from "@/components/Navbar";
 import { AtSign, KeyRound, UserPlus, UserRound } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { trackEvent, AnalyticsEvent } from "@/lib/analytics";
 
 const loginSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email address" }),
@@ -44,6 +46,7 @@ const signupSchema = z.object({
 
 const Auth = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [authError, setAuthError] = useState<string | null>(null);
   const navigate = useNavigate();
   const { toast } = useToast();
   
@@ -65,16 +68,25 @@ const Auth = () => {
     },
   });
   
-  function onLoginSubmit(values: z.infer<typeof loginSchema>) {
+  async function onLoginSubmit(values: z.infer<typeof loginSchema>) {
     setIsLoading(true);
+    setAuthError(null);
     
-    // For demo purposes, we're just simulating a login
-    setTimeout(() => {
-      localStorage.setItem("user", JSON.stringify({
-        id: "user123",
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
         email: values.email,
-        name: "Demo User",
-      }));
+        password: values.password,
+      });
+      
+      if (error) {
+        throw error;
+      }
+      
+      trackEvent({
+        eventType: 'user_login',
+        component: 'LoginForm',
+        eventData: { success: true }
+      });
       
       toast({
         title: "Logged in successfully",
@@ -82,32 +94,88 @@ const Auth = () => {
       });
       
       navigate("/dashboard");
+    } catch (error: any) {
+      console.error("Login error:", error);
+      setAuthError(error.message || "Failed to login. Please try again.");
+      
+      trackEvent({
+        eventType: 'user_login_error',
+        component: 'LoginForm',
+        eventData: { error: error.message }
+      });
+      
+      toast({
+        variant: "destructive",
+        title: "Login failed",
+        description: error.message || "Please check your credentials and try again.",
+      });
+    } finally {
       setIsLoading(false);
-    }, 1000);
+    }
   }
   
-  function onSignupSubmit(values: z.infer<typeof signupSchema>) {
+  async function onSignupSubmit(values: z.infer<typeof signupSchema>) {
     setIsLoading(true);
+    setAuthError(null);
     
-    // For demo purposes, we're just simulating a signup
-    setTimeout(() => {
-      localStorage.setItem("user", JSON.stringify({
-        id: "user123",
+    try {
+      const { data, error } = await supabase.auth.signUp({
         email: values.email,
-        name: values.name,
-      }));
+        password: values.password,
+        options: {
+          data: {
+            name: values.name,
+          },
+        },
+      });
+      
+      if (error) {
+        throw error;
+      }
+      
+      trackEvent({
+        eventType: 'user_signup',
+        component: 'SignupForm',
+        eventData: { success: true }
+      });
       
       toast({
         title: "Account created",
         description: "Welcome to 404Skill!",
       });
       
-      navigate("/dashboard");
+      // Switch to login tab if email confirmation is required
+      if (data.user && !data.session) {
+        switchToLogin();
+        toast({
+          title: "Email verification required",
+          description: "Please check your email to verify your account before logging in.",
+        });
+      } else {
+        navigate("/dashboard");
+      }
+    } catch (error: any) {
+      console.error("Signup error:", error);
+      setAuthError(error.message || "Failed to create account. Please try again.");
+      
+      trackEvent({
+        eventType: 'user_signup_error',
+        component: 'SignupForm',
+        eventData: { error: error.message }
+      });
+      
+      toast({
+        variant: "destructive",
+        title: "Signup failed",
+        description: error.message || "Please try again with different information.",
+      });
+    } finally {
       setIsLoading(false);
-    }, 1000);
+    }
   }
   
   const switchToSignup = () => {
+    setAuthError(null);
     const element = document.querySelector('[data-value="signup"]');
     if (element instanceof HTMLElement) {
       element.click();
@@ -115,6 +183,7 @@ const Auth = () => {
   };
   
   const switchToLogin = () => {
+    setAuthError(null);
     const element = document.querySelector('[data-value="login"]');
     if (element instanceof HTMLElement) {
       element.click();
@@ -145,6 +214,11 @@ const Auth = () => {
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
+                  {authError && (
+                    <div className="p-3 bg-red-50 border border-red-200 text-red-600 text-sm rounded-md">
+                      {authError}
+                    </div>
+                  )}
                   <Form {...loginForm}>
                     <form onSubmit={loginForm.handleSubmit(onLoginSubmit)} className="space-y-4">
                       <FormField
@@ -217,6 +291,11 @@ const Auth = () => {
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
+                  {authError && (
+                    <div className="p-3 bg-red-50 border border-red-200 text-red-600 text-sm rounded-md">
+                      {authError}
+                    </div>
+                  )}
                   <Form {...signupForm}>
                     <form onSubmit={signupForm.handleSubmit(onSignupSubmit)} className="space-y-4">
                       <FormField

@@ -120,8 +120,8 @@ export const useUserProgress = (userId: string | null) => {
           .update({
             completed_tasks,
             last_updated_at: new Date().toISOString(),
-            // Set is_completed if all tasks are completed
-            is_completed: false // Would need project tasks length to determine
+            // Calculate if project is completed
+            is_completed: false // We would need project tasks length to properly determine this
           })
           .eq('id', existingProgress.id);
 
@@ -144,6 +144,23 @@ export const useUserProgress = (userId: string | null) => {
 
       // Refresh user progress
       fetchUserProgress();
+      
+      // Track analytics for task completion
+      if (status === 'passed') {
+        try {
+          await supabase.from('user_events').insert([
+            {
+              event_type: 'task_completed',
+              user_id: userId,
+              component: 'ProgressTracker',
+              page_path: window.location.pathname,
+              event_data: { projectId, taskId }
+            }
+          ]);
+        } catch (analyticsError) {
+          console.error("Error tracking task completion:", analyticsError);
+        }
+      }
     } catch (err) {
       console.error("Error updating project progress:", err);
       toast.error("Failed to update project progress");

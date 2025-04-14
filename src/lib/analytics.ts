@@ -28,11 +28,11 @@ const getSessionId = () => {
 export const trackEvent = async ({ eventType, component, eventData = {} }) => {
     try {
         const sessionId = getSessionId();
-        const userId = (await supabase.auth.getUser()).data.user?.id;
+        const { data: { user } } = await supabase.auth.getUser();
         await supabase.from('user_events').insert([
             {
                 event_type: eventType,
-                user_id: userId,
+                user_id: user?.id,
                 page_path: window.location.pathname,
                 component,
                 event_data: eventData,

@@ -3,21 +3,89 @@ import { Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { BookOpen, Code, HelpCircle, Home, LogOut, User } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { supabase } from "@/integrations/supabase/client";
+import { trackEvent } from '@/lib/analytics';
 
 const Navbar = () => {
   const location = useLocation();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userName, setUserName] = useState('');
   
-  // Mock check for authentication
+  // Check for authentication state
   useEffect(() => {
-    const user = localStorage.getItem('user');
-    setIsLoggedIn(!!user);
+    // Set up auth state listener
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        setIsLoggedIn(!!session);
+        if (session?.user) {
+          // Get user name from metadata if available
+          const userMeta = session.user.user_metadata;
+          setUserName(userMeta?.name || session.user.email?.split('@')[0] || '');
+          
+          // If we get a new session, fetch the user profile
+          if (event === 'SIGNED_IN') {
+            fetchUserProfile(session.user.id);
+          }
+        }
+      }
+    );
+
+    // Check for existing session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setIsLoggedIn(!!session);
+      if (session?.user) {
+        const userMeta = session.user.user_metadata;
+        setUserName(userMeta?.name || session.user.email?.split('@')[0] || '');
+        fetchUserProfile(session.user.id);
+      }
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
   }, []);
 
-  const handleLogout = () => {
-    localStorage.removeItem('user');
-    setIsLoggedIn(false);
-    window.location.href = '/';
+  const fetchUserProfile = async (userId) => {
+    try {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('name')
+        .eq('id', userId)
+        .single();
+      
+      if (error) {
+        console.error('Error fetching user profile:', error);
+        return;
+      }
+      
+      if (data && data.name) {
+        setUserName(data.name);
+      }
+    } catch (err) {
+      console.error('Failed to fetch profile:', err);
+    }
+  };
+
+  const handleLogout = async () => {
+    try {
+      trackEvent({
+        eventType: 'user_logout',
+        component: 'Navbar'
+      });
+      
+      const { error } = await supabase.auth.signOut();
+      
+      if (error) {
+        console.error('Error signing out:', error);
+        return;
+      }
+      
+      setIsLoggedIn(false);
+      setUserName('');
+      window.location.href = '/';
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
   };
 
   return (
@@ -70,6 +138,12 @@ const Navbar = () => {
                 <LogOut className="h-4 w-4" />
                 <span className="hidden sm:inline">Logout</span>
               </Button>
+              
+              {userName && (
+                <span className="hidden md:flex items-center text-sm font-medium bg-primary/10 text-primary px-3 py-1 rounded-full">
+                  {userName}
+                </span>
+              )}
             </>
           )}
           
