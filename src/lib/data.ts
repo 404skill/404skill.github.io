@@ -1,4 +1,5 @@
 import { Project, TestResult, UserProgress } from './types';
+import { scooterRentalProject } from './projects/scooter_rental/project';
 
 export const projects: Project[] = [
   {
@@ -36,6 +37,7 @@ export const projects: Project[] = [
     technologies: [],
     templateUrl: '/templates/library-management.zip',
   },
+  scooterRentalProject
 ];
 
 export const mockTestResults: TestResult[] = [
@@ -93,12 +95,10 @@ export const getProject = (id: string): Project | undefined => {
 };
 
 export const getUserProjects = (userId: string): Project[] => {
-  // Get project IDs from user progress
   const projectIds = mockUserProgress
     .filter(progress => progress.user_id === userId)
     .map(progress => progress.project_id);
   
-  // Return only projects that the user has started
   return projects.filter(project => projectIds.includes(project.id));
 };
 
