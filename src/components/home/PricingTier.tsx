@@ -24,12 +24,12 @@ interface PricingTierProps {
 
 const PricingTier = ({ title, price, description, features, highlighted = false, buttonText }: PricingTierProps) => {
   const handlePricingClick = () => {
-    let eventType = AnalyticsEvent.CLICKED_PRICING_FREE;
+    let eventType = AnalyticsEvent.CLICKED_ON_PRICING_FREE;
     
     if (title === 'Pro') {
-      eventType = AnalyticsEvent.CLICKED_PRICING_PRO;
+      eventType = AnalyticsEvent.CLICKED_ON_PRICING_PRO;
     } else if (title === 'Teams') {
-      eventType = AnalyticsEvent.CLICKED_PRICING_TEAMS;
+      eventType = AnalyticsEvent.CLICKED_ON_PRICING_TEAMS;
     }
     
     trackEvent({

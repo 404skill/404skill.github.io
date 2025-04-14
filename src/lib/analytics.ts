@@ -50,6 +50,7 @@ export const trackEvent = async ({ eventType, component, eventData = {} }) => {
 export const trackPageView = async () => {
     await trackEvent({
         eventType: 'page_view',
+        component: 'Page',
         eventData: {
             title: document.title,
             referrer: document.referrer,
