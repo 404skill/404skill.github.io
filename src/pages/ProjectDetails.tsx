@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import {
@@ -197,8 +196,8 @@ const ProjectDetails = () => {
                     className={`
                       font-mono text-xs
                       ${project.difficulty === 'easy' ? 'border-green-500/30 bg-green-100 text-green-700' : ''}
-                      ${project.difficulty === 'medium' ? 'border-blue-500/30 bg-blue-100 text-blue-700' : ''}
-                      ${project.difficulty === 'hard' ? 'border-purple-500/30 bg-purple-100 text-purple-700' : ''}
+                      ${project.difficulty === 'medium' ? 'border-yellow-500/30 bg-yellow-100 text-yellow-700' : ''}
+                      ${project.difficulty === 'hard' ? 'border-red-500/30 bg-red-100 text-red-700' : ''}
                     `}
                   >
                     {project.difficulty}
@@ -266,7 +265,7 @@ const ProjectDetails = () => {
               </TabsTrigger>
               <TabsTrigger value="api-reference" className="font-mono data-[state=active]:bg-white data-[state=active]:text-slate-800">
                 <FileCode className="h-4 w-4 mr-2" />
-                API Reference
+                Container API
               </TabsTrigger>
             </TabsList>
             
@@ -283,28 +282,28 @@ const ProjectDetails = () => {
               <div>
                 <h3 className="text-lg font-medium font-mono text-slate-800 mb-2">Project Overview</h3>
                 <p className="text-slate-600 font-mono">
-                  {project.description} This project will help you learn how to build 
-                  and structure a backend application using {project.technologies.join(', ')}.
+                  {project.description} This project uses containerization to allow you to implement a solution 
+                  in any programming language of your choice.
                 </p>
               </div>
               
               <div>
                 <h3 className="text-lg font-medium font-mono text-slate-800 mb-2">Learning Objectives</h3>
                 <ul className="list-disc pl-5 text-slate-600 space-y-1 font-mono">
-                  <li>Understanding the fundamentals of {project.technologies[0]} architecture</li>
-                  <li>Building robust API endpoints with proper error handling</li>
-                  <li>Working with databases and data models</li>
-                  <li>Implementing authentication and authorization</li>
-                  <li>Writing tests for your backend application</li>
+                  <li>Building containerized applications with proper isolation</li>
+                  <li>Creating solutions that can be tested through a standardized CLI API</li>
+                  <li>Working with cross-container communication patterns</li>
+                  <li>Implementing efficient and clean solutions to real-world problems</li>
+                  <li>Writing portable code that works consistently across environments</li>
                 </ul>
               </div>
               
               <div>
                 <h3 className="text-lg font-medium font-mono text-slate-800 mb-2">Prerequisites</h3>
                 <ul className="list-disc pl-5 text-slate-600 space-y-1 font-mono">
-                  <li>Basic understanding of JavaScript/TypeScript</li>
-                  <li>Familiarity with HTTP and RESTful APIs</li>
-                  <li>Node.js installed on your machine</li>
+                  <li>Basic understanding of containerization (Docker or similar)</li>
+                  <li>Familiarity with your chosen programming language</li>
+                  <li>Understanding of CLI interfaces and APIs</li>
                   <li>Git for version control</li>
                 </ul>
               </div>
@@ -315,13 +314,13 @@ const ProjectDetails = () => {
                   <CardHeader>
                     <CardTitle className="font-mono text-slate-800">Step 1: Download the template</CardTitle>
                     <CardDescription className="text-slate-500 font-mono">
-                      Get started with our pre-configured project template
+                      Get started with our container template and test suite
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
                     <p className="text-sm text-slate-600 mb-4 font-mono">
-                      The template includes all the necessary files and configurations to get you started.
-                      It also includes the test suite that will be used to evaluate your implementation.
+                      The template includes a starter container configuration and documentation
+                      on how to interact with the test container through the standard API.
                     </p>
                     <Button onClick={handleDownloadTemplate} className="font-mono bg-blue-600 hover:bg-blue-700 text-white">
                       <Download className="mr-2 h-4 w-4" />
@@ -335,37 +334,32 @@ const ProjectDetails = () => {
             <TabsContent value="api-reference" className="mt-6">
               <div className="space-y-6">
                 <div>
-                  <h3 className="text-lg font-medium font-mono text-slate-800 mb-2">API Reference</h3>
+                  <h3 className="text-lg font-medium font-mono text-slate-800 mb-2">Container API Reference</h3>
                   <p className="text-slate-600 mb-4 font-mono">
-                    This section provides documentation for the API endpoints that you'll need to implement.
+                    Your container must implement these standard CLI commands that the test container will use
+                    to interact with your solution.
                   </p>
                 </div>
                 
                 <Card className="bg-white border-slate-200">
                   <CardHeader>
                     <CardTitle className="text-base font-mono text-slate-800">
-                      POST /api/auth/register
+                      health-check
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
                     <p className="text-sm text-slate-600 mb-2 font-mono">
-                      Register a new user.
+                      Verifies that your container is running and ready to receive commands.
                     </p>
-                    <p className="text-sm font-semibold mb-1 text-slate-700 font-mono">Request Body:</p>
+                    <p className="text-sm font-semibold mb-1 text-slate-700 font-mono">Command:</p>
                     <pre className="bg-slate-50 p-3 rounded-md text-slate-700 font-mono text-xs border border-slate-200">
-{`{
-  "username": "string",
-  "email": "string",
-  "password": "string"
-}`}
+{`$ container health-check`}
                     </pre>
-                    <p className="text-sm font-semibold mt-3 mb-1 text-slate-700 font-mono">Response (200):</p>
+                    <p className="text-sm font-semibold mt-3 mb-1 text-slate-700 font-mono">Expected Output (success):</p>
                     <pre className="bg-slate-50 p-3 rounded-md text-slate-700 font-mono text-xs border border-slate-200">
 {`{
-  "id": "string",
-  "username": "string",
-  "email": "string",
-  "createdAt": "string"
+  "status": "healthy",
+  "version": "1.0.0"
 }`}
                     </pre>
                   </CardContent>
@@ -374,29 +368,28 @@ const ProjectDetails = () => {
                 <Card className="bg-white border-slate-200">
                   <CardHeader>
                     <CardTitle className="text-base font-mono text-slate-800">
-                      POST /api/auth/login
+                      run-tests
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
                     <p className="text-sm text-slate-600 mb-2 font-mono">
-                      Authenticate a user.
+                      Execute tests against your implementation for a specific task.
                     </p>
-                    <p className="text-sm font-semibold mb-1 text-slate-700 font-mono">Request Body:</p>
+                    <p className="text-sm font-semibold mb-1 text-slate-700 font-mono">Command:</p>
                     <pre className="bg-slate-50 p-3 rounded-md text-slate-700 font-mono text-xs border border-slate-200">
-{`{
-  "email": "string",
-  "password": "string"
-}`}
+{`$ container run-tests <task-id>`}
                     </pre>
-                    <p className="text-sm font-semibold mt-3 mb-1 text-slate-700 font-mono">Response (200):</p>
+                    <p className="text-sm font-semibold mt-3 mb-1 text-slate-700 font-mono">Expected Output (success):</p>
                     <pre className="bg-slate-50 p-3 rounded-md text-slate-700 font-mono text-xs border border-slate-200">
 {`{
-  "token": "string",
-  "user": {
-    "id": "string",
-    "username": "string",
-    "email": "string"
-  }
+  "task": "<task-id>",
+  "passed": true,
+  "tests": {
+    "total": 5,
+    "passed": 5,
+    "failed": 0
+  },
+  "details": []
 }`}
                     </pre>
                   </CardContent>
@@ -405,34 +398,39 @@ const ProjectDetails = () => {
                 <Card className="bg-white border-slate-200">
                   <CardHeader>
                     <CardTitle className="text-base font-mono text-slate-800">
-                      GET /api/posts
+                      get-results
                     </CardTitle>
                   </CardHeader>
                   <CardContent>
                     <p className="text-sm text-slate-600 mb-2 font-mono">
-                      Get all posts.
+                      Retrieve detailed results from the most recent test run.
                     </p>
-                    <p className="text-sm font-semibold mb-1 text-slate-700 font-mono">Headers:</p>
+                    <p className="text-sm font-semibold mb-1 text-slate-700 font-mono">Command:</p>
+                    <pre className="bg-slate-50 p-3 rounded-md text-slate-700 font-mono text-xs border border-slate-200">
+{`$ container get-results`}
+                    </pre>
+                    <p className="text-sm font-semibold mt-3 mb-1 text-slate-700 font-mono">Expected Output:</p>
                     <pre className="bg-slate-50 p-3 rounded-md text-slate-700 font-mono text-xs border border-slate-200">
 {`{
-  "Authorization": "Bearer {token}"
-}`}
-                    </pre>
-                    <p className="text-sm font-semibold mt-3 mb-1 text-slate-700 font-mono">Response (200):</p>
-                    <pre className="bg-slate-50 p-3 rounded-md text-slate-700 font-mono text-xs border border-slate-200">
-{`[
-  {
-    "id": "string",
-    "title": "string",
-    "content": "string",
-    "author": {
-      "id": "string",
-      "username": "string"
+  "task": "<task-id>",
+  "timestamp": "2025-04-14T10:30:00Z",
+  "tests": [
+    {
+      "name": "Functionality Test",
+      "passed": true,
+      "duration_ms": 45
     },
-    "createdAt": "string",
-    "updatedAt": "string"
-  }
-]`}
+    {
+      "name": "Performance Test",
+      "passed": true,
+      "duration_ms": 120
+    }
+  ],
+  "logs": [
+    "Test started at 2025-04-14T10:30:00Z",
+    "All tests passed successfully"
+  ]
+}`}
                     </pre>
                   </CardContent>
                 </Card>

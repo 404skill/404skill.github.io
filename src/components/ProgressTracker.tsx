@@ -147,24 +147,22 @@ const ProgressTracker = ({ project, results, onRequestHelp, onStatusChange }: Pr
                       <div className="mt-3 text-sm text-slate-600">
                         <p className="mb-4 font-mono">{task.description}</p>
                         
-                        <div className="bg-slate-50 p-4 rounded-md mb-3 space-y-3 border border-slate-200">
-                          <h4 className="font-medium text-sm text-slate-700 font-mono">Detailed Instructions</h4>
-                          <p className="font-mono text-slate-600">Implement the {task.name} following best practices for {project.technologies.join(', ')}.</p>
+                        <div className="bg-white p-4 rounded-md mb-3 space-y-3 border border-slate-200">
+                          <h4 className="font-medium text-sm text-slate-700 font-mono">Requirements</h4>
+                          <p className="font-mono text-slate-600">Complete this task using your preferred programming language and tools.</p>
                           
-                          <div className="p-3 bg-slate-100 text-slate-700 rounded-md font-mono text-xs border border-slate-200">
-                            <pre>{`// Example code for ${task.name}
-function implementation() {
-  // Your code goes here
-  console.log("Implement ${task.name}");
-}`}</pre>
+                          <div className="p-3 bg-slate-50 text-slate-700 rounded-md font-mono text-xs border border-slate-200">
+                            <pre>{`# Your solution will be tested through the container API
+# Example test command:
+$ container run-tests ${task.name.toLowerCase().replace(/\s+/g, '-')}`}</pre>
                           </div>
                           
                           <h4 className="font-medium text-sm mt-4 text-slate-700 font-mono">Testing Your Implementation</h4>
-                          <p className="font-mono text-slate-600">Run the provided test suite to verify your implementation meets the requirements:</p>
+                          <p className="font-mono text-slate-600">The test container will validate your implementation against the requirements:</p>
                           <ul className="list-disc pl-5 space-y-1 text-xs text-slate-600 font-mono">
-                            <li>All function signatures match the expected types</li>
-                            <li>Edge cases are properly handled</li>
-                            <li>Response formats match the API specification</li>
+                            <li>Your container must implement the standard CLI API</li>
+                            <li>All requirements must be satisfied</li>
+                            <li>Edge cases should be properly handled</li>
                           </ul>
                         </div>
                       </div>

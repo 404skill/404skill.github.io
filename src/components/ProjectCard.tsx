@@ -38,8 +38,8 @@ const ProjectCard = ({ project, userId, inProgress = false, completion = 0 }: Pr
             className={`
               font-mono text-xs uppercase
               ${project.difficulty === 'easy' ? 'border-green-500/30 bg-green-100 text-green-700' : ''}
-              ${project.difficulty === 'medium' ? 'border-blue-500/30 bg-blue-100 text-blue-700' : ''}
-              ${project.difficulty === 'hard' ? 'border-purple-500/30 bg-purple-100 text-purple-700' : ''}
+              ${project.difficulty === 'medium' ? 'border-yellow-500/30 bg-yellow-100 text-yellow-700' : ''}
+              ${project.difficulty === 'hard' ? 'border-red-500/30 bg-red-100 text-red-700' : ''}
             `}
           >
             {project.difficulty}

@@ -25,7 +25,7 @@ const Navbar = () => {
       <div className="container flex h-16 items-center">
         <Link to="/" className="flex items-center space-x-2">
           <Code className="h-6 w-6 text-primary" />
-          <span className="font-bold text-xl">BackendHub</span>
+          <span className="font-bold text-xl">404Skill</span>
         </Link>
         
         <nav className="ml-auto flex gap-4 sm:gap-6">
