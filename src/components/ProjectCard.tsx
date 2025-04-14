@@ -26,12 +26,6 @@ const ProjectCard = ({ project, userId, inProgress = false, completion = 0 }: Pr
             <CardTitle className="text-lg font-mono text-slate-800">
               {project.title}
             </CardTitle>
-            {inProgress && (
-              <span className="ml-2 inline-flex items-center px-1.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-700 border border-blue-200 font-mono">
-                <Clock className="w-3 h-3 mr-1" />
-                Active
-              </span>
-            )}
           </div>
           <Badge 
             variant="outline" 
@@ -48,26 +42,6 @@ const ProjectCard = ({ project, userId, inProgress = false, completion = 0 }: Pr
       </CardHeader>
       <CardContent className="flex-1 flex flex-col pb-4 relative z-10">
         <p className="text-slate-600 text-sm mb-4 font-mono">{project.description}</p>
-        {/* <div className="flex flex-wrap gap-2 mb-4">
-          <Badge 
-            variant="secondary" 
-            className="text-xs font-mono bg-blue-100 text-blue-700 hover:bg-blue-200 transition-colors"
-          >
-            Containerized
-          </Badge>
-          <Badge 
-            variant="secondary" 
-            className="text-xs font-mono bg-purple-100 text-purple-700 hover:bg-purple-200 transition-colors"
-          >
-            Language Agnostic
-          </Badge>
-          <Badge 
-            variant="secondary" 
-            className="text-xs font-mono bg-slate-100 text-slate-700 hover:bg-slate-200 transition-colors"
-          >
-            CLI API
-          </Badge>
-        </div> */}
         
         {inProgress && (
           <div className="mt-auto pt-4">

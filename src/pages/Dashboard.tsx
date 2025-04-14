@@ -36,13 +36,20 @@ const Dashboard = () => {
   const { userProjects, loading } = useUserProgress(user?.id || null);
   
   useEffect(() => {
-    const userStr = localStorage.getItem("user");
+    const userStr = localStorage.getItem("sb-smzmwxqzmiswsnvsvjms-auth-token");
     if (!userStr) {
       navigate("/auth");
       return;
     }
     
-    const userData = JSON.parse(userStr) as User;
+    const _parsedUserData = JSON.parse(userStr).user.user_metadata;
+    console.log('metadata', _parsedUserData);
+    const userData = {
+      id: _parsedUserData.sub,
+      name: _parsedUserData.name,
+      email: _parsedUserData.email
+    } as User;
+
     setUser(userData);
     
     trackEvent({ 
