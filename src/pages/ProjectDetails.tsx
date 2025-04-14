@@ -208,7 +208,7 @@ const ProjectDetails = () => {
             <Button
               variant="ghost"
               className="mb-4 font-mono text-slate-600 hover:text-slate-800"
-              onClick={() => navigate(-1)}
+              onClick={() => navigate("/dashboard")}
             >
               <ArrowLeft className="mr-2 h-4 w-4" />
               Back to Projects
