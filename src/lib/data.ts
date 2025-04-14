@@ -1,5 +1,6 @@
 import { Project, TestResult, UserProgress } from './types';
 import { scooterRentalProject } from './projects/scooter_rental/project';
+import { projectsList } from './projects';
 
 export const projects: Project[] = [
   {
@@ -76,6 +77,41 @@ export const mockTestResults: TestResult[] = [
     status: 'not-attempted',
     timestamp: new Date().toISOString(),
   },
+  {
+    taskId: 't1',
+    projectId: 'scooter_rental',
+    userId: 'user123',
+    status: 'not-attempted',
+    timestamp: new Date().toISOString(),
+  },
+  {
+    taskId: 't2',
+    projectId: 'scooter_rental',
+    userId: 'user123',
+    status: 'not-attempted',
+    timestamp: new Date().toISOString(),
+  },
+  {
+    taskId: 't3',
+    projectId: 'scooter_rental',
+    userId: 'user123',
+    status: 'not-attempted',
+    timestamp: new Date().toISOString(),
+  },
+  {
+    taskId: 't4',
+    projectId: 'scooter_rental',
+    userId: 'user123',
+    status: 'not-attempted',
+    timestamp: new Date().toISOString(),
+  },
+  {
+    taskId: 't5',
+    projectId: 'scooter_rental',
+    userId: 'user123',
+    status: 'not-attempted',
+    timestamp: new Date().toISOString(),
+  },
 ];
 
 export const mockUserProgress: UserProgress[] = [
@@ -88,6 +124,15 @@ export const mockUserProgress: UserProgress[] = [
     last_updated_at: new Date().toISOString(),
     is_completed: false,
   },
+  {
+    id: 'progress2',
+    user_id: 'user123',
+    project_id: 'scooter_rental',
+    completed_tasks: [],
+    started_at: new Date().toISOString(),
+    last_updated_at: new Date().toISOString(),
+    is_completed: false,
+  }
 ];
 
 export const getProject = (id: string): Project | undefined => {
