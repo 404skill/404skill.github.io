@@ -15,14 +15,18 @@ const Help = () => {
   const [user, setUser] = useState<User | null>(null);
   
   useEffect(() => {
-    // Check if user is logged in
-    const userStr = localStorage.getItem("user");
+    const userStr = localStorage.getItem("sb-smzmwxqzmiswsnvsvjms-auth-token");
     if (!userStr) {
       navigate("/auth");
       return;
     }
     
-    const userData = JSON.parse(userStr) as User;
+    const _parsedUserData = JSON.parse(userStr).user.user_metadata;
+    const userData = {
+      id: _parsedUserData.sub,
+      name: _parsedUserData.name,
+      email: _parsedUserData.email
+    } as User;
     setUser(userData);
   }, [navigate]);
   

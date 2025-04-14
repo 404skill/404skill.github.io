@@ -43,7 +43,6 @@ const Dashboard = () => {
     }
     
     const _parsedUserData = JSON.parse(userStr).user.user_metadata;
-    console.log('metadata', _parsedUserData);
     const userData = {
       id: _parsedUserData.sub,
       name: _parsedUserData.name,
