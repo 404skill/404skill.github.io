@@ -1,3 +1,4 @@
+
 import { Project, TestResult } from "@/lib/types";
 import { 
   CheckCircle, 
@@ -147,7 +148,7 @@ const ProgressTracker = ({ project, results, onRequestHelp, onStatusChange }: Pr
                     <CollapsibleContent>
                       <div className="mt-3 text-sm text-slate-600">
                         {project.id === 'library_management' ? (
-                          <div className="bg-white p-4 rounded-md mb-3 border border-slate-200">
+                          <div className="bg-white p-4 rounded-md mb-3 border border-slate-200 overflow-hidden">
                             <TaskMarkdownContent 
                               projectId={project.id} 
                               taskNumber={taskNumber} 

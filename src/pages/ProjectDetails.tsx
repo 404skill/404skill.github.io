@@ -285,11 +285,17 @@ const ProjectDetails = () => {
             
             <TabsContent value="details" className="mt-6 space-y-6">
               {project.id === 'library_management' ? (
-                <div className="bg-white p-6 rounded-lg border border-slate-200">
-                  <ProjectMarkdownContent filePath="library_management/0_overview.md" />
+                <div className="bg-white p-6 rounded-lg border border-slate-200 overflow-hidden">
+                  <div className="prose prose-slate max-w-none
+                     prose-headings:font-mono prose-headings:text-slate-800 
+                     prose-p:text-slate-600 prose-p:leading-relaxed
+                     prose-code:bg-slate-100 prose-code:p-0.5 prose-code:rounded
+                     prose-li:marker:text-slate-400
+                     prose-a:text-blue-600 prose-a:no-underline hover:prose-a:underline">
+                    <ProjectMarkdownContent filePath="library_management/0_overview.md" />
+                  </div>
                 </div>
               ) : (
-                
                 <div>
                   <h3 className="text-lg font-medium font-mono text-slate-800 mb-2">Project Overview</h3>
                   <p className="text-slate-600 font-mono">
