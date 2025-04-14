@@ -7,7 +7,7 @@ const WhyChooseSection = () => {
     <section className="py-20 bg-muted/30">
       <div className="container">
         <div className="text-center mb-16">
-          <h2 className="text-3xl font-bold font-mono mb-4">Why Choose BackendHub?</h2>
+          <h2 className="text-3xl font-bold font-mono mb-4">Why Choose 404Skill?</h2>
           <p className="text-muted-foreground max-w-[42rem] mx-auto">
             Our platform is designed to provide a comprehensive learning experience for backend developers of all levels.
           </p>

@@ -78,7 +78,7 @@ const Auth = () => {
       
       toast({
         title: "Logged in successfully",
-        description: "Welcome back to BackendHub!",
+        description: "Welcome back to 404Skill!",
       });
       
       navigate("/dashboard");
@@ -99,7 +99,7 @@ const Auth = () => {
       
       toast({
         title: "Account created",
-        description: "Welcome to BackendHub!",
+        description: "Welcome to 404Skill!",
       });
       
       navigate("/dashboard");

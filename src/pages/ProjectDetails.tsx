@@ -256,18 +256,6 @@ const ProjectDetails = () => {
               </div>
             </div>
             
-            <div className="flex items-center gap-2 mt-4">
-              <Badge variant="secondary" className="text-xs font-mono bg-blue-100 text-blue-700 hover:bg-blue-200 transition-colors">
-                Containerized
-              </Badge>
-              <Badge variant="secondary" className="text-xs font-mono bg-purple-100 text-purple-700 hover:bg-purple-200 transition-colors">
-                Language Agnostic
-              </Badge>
-              <Badge variant="secondary" className="text-xs font-mono bg-slate-100 text-slate-700 hover:bg-slate-200 transition-colors">
-                CLI API
-              </Badge>
-            </div>
-            
             <div className="mt-6">
               <div className="flex justify-between text-xs mb-1 font-mono">
                 <span className="text-slate-500">Progress</span>

@@ -46,7 +46,7 @@ const TeamSection = () => {
                 Every project is designed based on real challenges we've faced at scale, and every code review is done 
                 by someone who has built and maintained systems serving millions of users."
               </p>
-              <p className="mt-3 font-medium">— The BackendHub Founding Team</p>
+              <p className="mt-3 font-medium">— The 404Skill Founding Team</p>
             </div>
           </div>
         </div>

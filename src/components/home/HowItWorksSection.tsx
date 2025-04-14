@@ -11,7 +11,7 @@ const HowItWorksSection = ({ isVisible }: HowItWorksSectionProps) => {
   return (
     <section className="container py-16 md:py-24">
       <div className={`text-center mb-12 transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`} style={{ transitionDelay: "150ms" }}>
-        <h2 className="text-3xl font-bold font-mono mb-4">How BackendHub Works</h2>
+        <h2 className="text-3xl font-bold font-mono mb-4">How 404Skill Works</h2>
         <p className="text-muted-foreground max-w-[42rem] mx-auto">
           Our platform provides a structured approach to learning backend development through practical, real-world projects.
         </p>

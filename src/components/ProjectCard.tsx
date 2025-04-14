@@ -48,7 +48,7 @@ const ProjectCard = ({ project, userId, inProgress = false, completion = 0 }: Pr
       </CardHeader>
       <CardContent className="flex-1 flex flex-col pb-4 relative z-10">
         <p className="text-slate-600 text-sm mb-4 font-mono">{project.description}</p>
-        <div className="flex flex-wrap gap-2 mb-4">
+        {/* <div className="flex flex-wrap gap-2 mb-4">
           <Badge 
             variant="secondary" 
             className="text-xs font-mono bg-blue-100 text-blue-700 hover:bg-blue-200 transition-colors"
@@ -67,7 +67,7 @@ const ProjectCard = ({ project, userId, inProgress = false, completion = 0 }: Pr
           >
             CLI API
           </Badge>
-        </div>
+        </div> */}
         
         {inProgress && (
           <div className="mt-auto pt-4">
