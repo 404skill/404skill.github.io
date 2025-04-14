@@ -24,11 +24,10 @@ import { useToast } from "@/hooks/use-toast";
 import { toast } from "sonner";
 import Navbar from "@/components/Navbar";
 import ProgressTracker from "@/components/ProgressTracker";
-import { Project, TestResult, User } from "@/lib/types";
+import { Project, TestResult } from "@/lib/types";
 import { getProject } from "@/lib/data";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import HelpRequestForm from "@/components/HelpRequestForm";
-import { Link } from "react-router-dom";
 import { projects } from "@/lib/data";
 import { useUserProgress } from "@/hooks/useUserProgress";
 import { supabase } from "@/integrations/supabase/client";
@@ -40,7 +39,7 @@ const ProjectDetails = () => {
   const navigate = useNavigate();
   const { toast: uiToast } = useToast();
   const [project, setProject] = useState<Project | null>(null);
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<{ id: string, email: string } | null>(null);
   const [testResults, setTestResults] = useState<TestResult[]>([]);
   const [completion, setCompletion] = useState(0);
   const [selectedTaskId, setSelectedTaskId] = useState<string | undefined>(undefined);
@@ -49,31 +48,34 @@ const ProjectDetails = () => {
   const { updateProjectProgress, calculateCompletion } = useUserProgress(user?.id || null);
   
   useEffect(() => {
-    const userStr = localStorage.getItem("user");
-    if (!userStr) {
-      navigate("/auth");
-      return;
-    }
-    
-    const userData = JSON.parse(userStr) as User;
-    setUser(userData);
-    
-    if (id) {
-      const projectData = getProject(id);
-      if (projectData) {
-        setProject(projectData);
-        
-        trackEvent({
-          eventType: AnalyticsEvent.READ_PROJECT_DETAILS,
-          component: "ProjectDetails",
-          eventData: { projectId: id }
-        });
-        
-        fetchTaskResults(userData.id, id);
-      } else {
-        navigate("/dashboard");
+    supabase.auth.getUser().then(({ data, error }) => {
+      if (error || !data.user) {
+        navigate("/auth");
+        return;
       }
-    }
+      
+      setUser({
+        id: data.user.id,
+        email: data.user.email || ''
+      });
+      
+      if (id) {
+        const projectData = getProject(id);
+        if (projectData) {
+          setProject(projectData);
+          
+          trackEvent({
+            eventType: AnalyticsEvent.READ_PROJECT_DETAILS,
+            component: "ProjectDetails",
+            eventData: { projectId: id }
+          });
+          
+          fetchTaskResults(data.user.id, id);
+        } else {
+          navigate("/dashboard");
+        }
+      }
+    });
   }, [id, navigate]);
   
   const fetchTaskResults = async (userId: string, projectId: string) => {
@@ -96,7 +98,7 @@ const ProjectDetails = () => {
         if (progressData) {
           if (project) {
             const completionPercentage = 
-              (progressData.completed_tasks.length / project.tasks.length) * 100;
+              (progressData.completed_tasks.length / currentProject.tasks.length) * 100;
             setCompletion(completionPercentage);
           }
           
