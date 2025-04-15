@@ -14,11 +14,11 @@ const TeamSection = () => {
           </p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-3xl mx-auto">
+        {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-3xl mx-auto">
           <TeamMember 
-            name="Alex Chen" 
+            name="Eliran Turgeman" 
             role="Co-Founder & CTO" 
-            company="Ex-Google Staff Engineer" 
+            company="Software Engineer @ Microsoft" 
             avatar="/placeholder.svg" 
           />
           <TeamMember 
@@ -33,7 +33,7 @@ const TeamSection = () => {
             company="Ex-Netflix Tech Lead" 
             avatar="/placeholder.svg" 
           />
-        </div>
+        </div> */}
         
         <div className="mt-12 p-6 bg-card rounded-lg border max-w-3xl mx-auto shadow-sm">
           <div className="flex items-start gap-4">

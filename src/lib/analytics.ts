@@ -11,7 +11,7 @@ export enum AnalyticsEvent {
   CLICKED_REQUEST_HELP = "ClickedRequestHelp",
   CLICKED_ON_PRICING_FREE = "ClickedOnPricingFree",
   CLICKED_ON_PRICING_PRO = "ClickedOnPricingPro",
-  CLICKED_ON_PRICING_TEAMS = "ClickedOnPricingTeams",
+  CLICKED_ON_PRICING_PRO_PLUS = "ClickedOnPricingProPlus",
   VIEWED_SCOOTER_RENTAL = "ViewedScooterRental"
 }
 

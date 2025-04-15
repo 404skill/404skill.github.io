@@ -17,44 +17,36 @@ const PricingSection = () => {
           <PricingTier 
             title="Free"
             price="Free"
-            description="Perfect for beginners"
+            description="Try the platform with starter projects"
             features={[
-              "Access to 3 beginner projects",
-              "Community support",
-              "Basic progress tracking",
-              "Run tests in the browser"
+              "Limited projects access",
+              "Community support"
             ]}
             buttonText="Sign Up Free"
           />
           
           <PricingTier 
             title="Pro"
-            price="$19"
-            description="For serious learners"
+            price="$29"
+            description="Practice real-world backend skills"
             features={[
-              "Access to all 20+ projects",
-              "Priority community support",
-              "Advanced progress tracking",
-              "Code reviews (2 per month)",
-              "Project certificates"
+              "Everything in Free",
+              "Unlimited access to all projects",
             ]}
             highlighted={true}
             buttonText="Get Started"
           />
           
           <PricingTier 
-            title="Teams"
-            price="$49"
-            description="For teams & organizations"
+            title="Pro+"
+            price="$59"
+            description="Accelerate your growth with expert feedback"
             features={[
               "Everything in Pro",
-              "Team dashboard",
-              "Unlimited code reviews",
-              "Custom projects",
-              "Team leaderboards",
-              "Admin controls"
+              "1 code review per project",
+              "1 x 45-minute mentorship session per month"
             ]}
-            buttonText="Contact Sales"
+            buttonText="Get Started"
           />
         </div>
       </div>

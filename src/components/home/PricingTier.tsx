@@ -31,8 +31,8 @@ const PricingTier = ({ title, price, description, features, highlighted = false,
     
     if (title === 'Pro') {
       eventType = AnalyticsEvent.CLICKED_ON_PRICING_PRO;
-    } else if (title === 'Teams') {
-      eventType = AnalyticsEvent.CLICKED_ON_PRICING_TEAMS;
+    } else if (title === 'Pro+') {
+      eventType = AnalyticsEvent.CLICKED_ON_PRICING_PRO_PLUS;
     }
     
     trackEvent({
