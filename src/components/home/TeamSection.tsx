@@ -1,4 +1,3 @@
-
 import React from "react";
 import { CheckCircle } from "lucide-react";
 import TeamMember from "./TeamMember";
@@ -10,7 +9,9 @@ const TeamSection = () => {
         <div className="text-center mb-10">
           <h2 className="text-2xl font-bold font-mono mb-2">Learn From FAANG Engineering Leaders</h2>
           <p className="text-muted-foreground max-w-[42rem] mx-auto">
-            Our platform was founded and is run by senior backend engineers from top tech companies who review your code and provide personalized feedback.
+            Get personalized mentorship and code reviews from senior engineers at top tech companies. 
+            We don't just provide projects - we offer a complete learning ecosystem with expert feedback, 
+            career guidance, and portfolio building support to help you land your dream job.
           </p>
         </div>
         
@@ -43,10 +44,10 @@ const TeamSection = () => {
             <div>
               <p className="italic text-muted-foreground">
                 "Our mission is to bridge the gap between theoretical knowledge and practical backend engineering skills. 
-                Every project is designed based on real challenges we've faced at scale, and every code review is done 
-                by someone who has built and maintained systems serving millions of users."
+                Every project is designed based on real challenges we've faced at scale, and our team of industry experts 
+                provides personalized feedback, code reviews, and career guidance to help you succeed."
               </p>
-              <p className="mt-3 font-medium">— The 404Skill Founding Team</p>
+              <p className="mt-3 font-medium">— 404Skill Founding Team</p>
             </div>
           </div>
         </div>

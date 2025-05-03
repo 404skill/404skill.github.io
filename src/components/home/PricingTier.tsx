@@ -1,6 +1,6 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { CheckCircle } from "lucide-react";
+import { CheckCircle, ChevronDown, ChevronUp } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "@/components/ui/use-toast";
 import { trackEvent, AnalyticsEvent } from "@/lib/analytics";
@@ -13,6 +13,12 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { useState } from "react";
+
+interface FeatureDetail {
+  title: string;
+  description: string;
+}
 
 interface PricingTierProps {
   title: string;
@@ -21,10 +27,22 @@ interface PricingTierProps {
   features: string[];
   highlighted?: boolean;
   buttonText: string;
+  details?: FeatureDetail[];
+  annualPrice?: string;
 }
 
-const PricingTier = ({ title, price, description, features, highlighted = false, buttonText }: PricingTierProps) => {
+const PricingTier = ({ 
+  title, 
+  price, 
+  description, 
+  features, 
+  highlighted = false, 
+  buttonText,
+  details,
+  annualPrice
+}: PricingTierProps) => {
   const navigate = useNavigate();
+  const [showDetails, setShowDetails] = useState(false);
 
   const handlePricingClick = () => {
     let eventType = AnalyticsEvent.CLICKED_ON_PRICING_FREE;
@@ -65,8 +83,15 @@ const PricingTier = ({ title, price, description, features, highlighted = false,
         <CardTitle className="text-xl">{title}</CardTitle>
         <CardDescription>{description}</CardDescription>
         <div className="mt-4">
-          <span className="text-3xl font-bold">{price}</span>
-          {price !== 'Free' && <span className="text-muted-foreground ml-1">/month</span>}
+          <div className="flex items-baseline">
+            <span className="text-3xl font-bold">{price}</span>
+            {price !== 'Free' && <span className="text-muted-foreground ml-1">/month</span>}
+          </div>
+          {annualPrice && (
+            <div className="mt-1 text-sm text-muted-foreground">
+              or {annualPrice}/year (save 2 months)
+            </div>
+          )}
         </div>
       </CardHeader>
       <CardContent className="flex-grow">
@@ -78,6 +103,30 @@ const PricingTier = ({ title, price, description, features, highlighted = false,
             </li>
           ))}
         </ul>
+        
+        {details && (
+          <div className="mt-6">
+            <Button
+              variant="ghost"
+              className="w-full flex items-center justify-between text-sm text-muted-foreground hover:text-foreground"
+              onClick={() => setShowDetails(!showDetails)}
+            >
+              <span>Learn more about these features</span>
+              {showDetails ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+            </Button>
+            
+            {showDetails && (
+              <div className="mt-4 space-y-4">
+                {details.map((detail, index) => (
+                  <div key={index} className="bg-muted/50 p-4 rounded-lg">
+                    <h4 className="font-medium mb-2">{detail.title}</h4>
+                    <p className="text-sm text-muted-foreground">{detail.description}</p>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
       </CardContent>
       <CardFooter>
         <Button 
