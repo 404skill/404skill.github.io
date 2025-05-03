@@ -1,4 +1,3 @@
-
 import { supabase } from "@/integrations/supabase/client";
 import { v4 as uuidv4 } from 'uuid';
 
@@ -12,7 +11,11 @@ export enum AnalyticsEvent {
   CLICKED_ON_PRICING_FREE = "ClickedOnPricingFree",
   CLICKED_ON_PRICING_PRO = "ClickedOnPricingPro",
   CLICKED_ON_PRICING_PRO_PLUS = "ClickedOnPricingProPlus",
-  VIEWED_SCOOTER_RENTAL = "ViewedScooterRental"
+  VIEWED_SCOOTER_RENTAL = "ViewedScooterRental",
+  // Demo popup events
+  CLICKED_SCHEDULE_BUTTON = "ClickedScheduleButton",
+  CLICKED_MAYBE_LATER = "ClickedMaybeLater",
+  CLICKED_SCHEDULE_NOW = "ClickedScheduleNow"
 }
 
 // Initialize session ID if not exists

@@ -11,6 +11,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { BookOpen, Filter, PlusCircle, Search, Code, Terminal } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import ProjectCard from "@/components/ProjectCard";
+import DemoInvitePopup from "@/components/DemoInvitePopup";
 import { Project, User } from "@/lib/types";
 import { projects } from "@/lib/data";
 import { Input } from "@/components/ui/input";
@@ -123,6 +124,7 @@ const Dashboard = () => {
   return (
     <div className="min-h-screen flex flex-col bg-slate-50">
       <Navbar />
+      <DemoInvitePopup />
       
       <div 
         ref={headerRef} 
