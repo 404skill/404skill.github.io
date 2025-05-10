@@ -51,9 +51,9 @@ const PricingTier = ({
   const handlePricingClick = () => {
     let eventType = AnalyticsEvent.CLICKED_ON_PRICING_FREE;
     
-    if (title === 'Pro') {
+    if (title === 'Guided') {
       eventType = AnalyticsEvent.CLICKED_ON_PRICING_PRO;
-    } else if (title === 'Pro+') {
+    } else if (title === 'Premium Mentorship') {
       eventType = AnalyticsEvent.CLICKED_ON_PRICING_PRO_PLUS;
     }
     

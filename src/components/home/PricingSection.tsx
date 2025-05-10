@@ -7,6 +7,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Check, ChevronRight } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { useNavigate } from "react-router-dom";
 
 // Basic Modal Implementation
 const BasicModal = ({ isOpen, onClose, children }) => {
@@ -26,6 +28,7 @@ const BasicModal = ({ isOpen, onClose, children }) => {
 };
 
 const PricingSection = () => {
+  const navigate = useNavigate();
   const [isAnnual, setIsAnnual] = useState(false);
   const [premiumSeatsAvailable, setPremiumSeatsAvailable] = useState(3);
   const [applicationStep, setApplicationStep] = useState(1);
@@ -47,10 +50,25 @@ const PricingSection = () => {
     });
   };
 
-  const handleSubmitApplication = (e) => {
+  const handleSubmitApplication = async (e) => {
     e.preventDefault();
     console.log("Application submitted:", applicantInfo);
-    setApplicationSubmitted(true);
+    try {
+      const { error } = await supabase.from('applications').insert([
+        {
+          name: applicantInfo.name,
+          email: applicantInfo.email,
+          experience: applicantInfo.experience,
+          goals: applicantInfo.goals,
+          submitted_at: new Date().toISOString()
+        }
+      ]);
+      if (error) throw error;
+      setApplicationSubmitted(true);
+    } catch (error) {
+      console.error("Error submitting application:", error);
+      // Handle error (e.g., show a toast notification)
+    }
   };
 
   const resetApplication = () => {
@@ -167,6 +185,7 @@ const PricingSection = () => {
           <Button onClick={() => {
             resetApplication();
             setIsModalOpen(false);
+            navigate("/auth");
           }}>
             Close
           </Button>
@@ -344,10 +363,6 @@ const PricingSection = () => {
           <p className="text-sm text-muted-foreground">
             All plans include a 14‑day money‑back guarantee. No questions asked.
           </p>
-          <div className="flex justify-center gap-8 text-sm text-muted-foreground">
-            <p>MentorCruise equivalent: $150–$300/mo</p>
-            <p>Bootcamp coaching cost: $400–$600/mo</p>
-          </div>
         </div>
       </div>
 

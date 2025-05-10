@@ -153,6 +153,33 @@ export type Database = {
         }
         Relationships: []
       }
+      applications: {
+        Row: {
+          id: string
+          name: string
+          email: string
+          experience: string | null
+          goals: string | null
+          submitted_at: string | null
+        }
+        Insert: {
+          id?: string
+          name: string
+          email: string
+          experience?: string | null
+          goals?: string | null
+          submitted_at?: string | null
+        }
+        Update: {
+          id?: string
+          name?: string
+          email?: string
+          experience?: string | null
+          goals?: string | null
+          submitted_at?: string | null
+        }
+        Relationships: []
+      },
     }
     Views: {
       [_ in never]: never

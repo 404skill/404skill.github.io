@@ -51,7 +51,7 @@ const HowItWorksSection = ({ isVisible }: HowItWorksSectionProps) => {
                 <Feature 
                   icon={Code}
                   title="2. Get Expert Reviews"
-                  description="Every line of code gets reviewed by senior engineers who've built systems at scale. Learn exactly what employers want."
+                  description="Every line of code gets reviewed by engineers who've built systems at scale. Learn exactly what employers want."
                 />
               </div>
               <div className={`transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`} style={{ transitionDelay: "300ms" }}>
@@ -73,7 +73,7 @@ const HowItWorksSection = ({ isVisible }: HowItWorksSectionProps) => {
         {/* Key Benefits Section */}
         <div className="mb-24">
           <h3 className="text-2xl font-bold text-slate-900 text-center mb-4">Key Benefits</h3>
-          <p className="text-md text-muted-foreground text-center mb-10">Why 404Skill is the best way to learn backend engineering and get hired faster.</p>
+          <p className="text-md text-muted-foreground text-center mb-10">Why 404Skill is the best way to accelerate your growth as a backend engineer and get hired faster.</p>
           <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
             <div className={`transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`} style={{ transitionDelay: "350ms" }}>
               <Feature 
@@ -86,14 +86,14 @@ const HowItWorksSection = ({ isVisible }: HowItWorksSectionProps) => {
               <Feature 
                 icon={Users}
                 title="Learn From the Best"
-                description="Get personalized feedback from engineers who've built systems at Microsoft, Amazon, and Google."
+                description="Get personalized feedback from engineers who've built systems at top companies."
               />
             </div>
             <div className={`transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`} style={{ transitionDelay: "450ms" }}>
               <Feature 
                 icon={Trophy}
                 title="Get Hired Faster"
-                description="Our students land jobs 3x faster than self-taught developers. Join the 1,000+ who've already succeeded."
+                description="Get guidance on your resume, LinkedIn, and interview prep."
               />
             </div>
           </div>
