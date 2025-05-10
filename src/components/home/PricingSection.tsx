@@ -1,11 +1,232 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import PricingTier from "./PricingTier";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Check, ChevronRight } from "lucide-react";
+
+// Basic Modal Implementation
+const BasicModal = ({ isOpen, onClose, children }) => {
+  if (!isOpen) return null;
+
+  return (
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+      <div 
+        className="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-6 max-w-md w-full"
+        onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside modal
+      >
+        <button onClick={onClose} className="absolute top-2 right-2">Close</button>
+        {children}
+      </div>
+    </div>
+  );
+};
 
 const PricingSection = () => {
   const [isAnnual, setIsAnnual] = useState(false);
+  const [premiumSeatsAvailable, setPremiumSeatsAvailable] = useState(3);
+  const [applicationStep, setApplicationStep] = useState(1);
+  const [applicationSubmitted, setApplicationSubmitted] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isWaitlistModalOpen, setIsWaitlistModalOpen] = useState(false);
+  const [applicantInfo, setApplicantInfo] = useState({
+    name: "",
+    email: "",
+    experience: "",
+    goals: ""
+  });
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setApplicantInfo({
+      ...applicantInfo,
+      [name]: value
+    });
+  };
+
+  const handleSubmitApplication = (e) => {
+    e.preventDefault();
+    console.log("Application submitted:", applicantInfo);
+    setApplicationSubmitted(true);
+  };
+
+  const resetApplication = () => {
+    setApplicationStep(1);
+    setApplicationSubmitted(false);
+    setApplicantInfo({
+      name: "",
+      email: "",
+      experience: "",
+      goals: ""
+    });
+  };
+
+  const ApplicationForm = useMemo(() => (
+    <>
+      {!applicationSubmitted ? (
+        <>
+          <div className="mb-4 text-center">
+            <h2 className="text-xl font-bold mb-2">Premium Mentorship Application</h2>
+            <div className="flex justify-center mb-4">
+              <div className={`h-2 w-2 mx-1 rounded-full ${applicationStep >= 1 ? 'bg-primary' : 'bg-gray-200'}`}></div>
+              <div className={`h-2 w-2 mx-1 rounded-full ${applicationStep >= 2 ? 'bg-primary' : 'bg-gray-200'}`}></div>
+            </div>
+          </div>
+          
+          {applicationStep === 1 ? (
+            <form className="space-y-4" onSubmit={(e) => {
+              e.preventDefault();
+              if (applicantInfo.name && applicantInfo.email) {
+                setApplicationStep(2);
+              }
+            }}>
+              <p className="text-sm text-muted-foreground">
+                We review applications to ensure our mentorship program is a good fit for your goals and experience level.
+              </p>
+              <div className="space-y-2">
+                <Label htmlFor="name">Name</Label>
+                <Input
+                  id="name"
+                  name="name"
+                  value={applicantInfo.name}
+                  onChange={handleInputChange}
+                  placeholder="Your name"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="email">Email</Label>
+                <Input
+                  id="email"
+                  name="email"
+                  type="email"
+                  value={applicantInfo.email}
+                  onChange={handleInputChange}
+                  placeholder="your@email.com"
+                />
+              </div>
+              <div className="pt-2 flex justify-end">
+                <Button
+                  type="submit"
+                  disabled={!applicantInfo.name || !applicantInfo.email}
+                >
+                  Next <ChevronRight className="ml-2 h-4 w-4" />
+                </Button>
+              </div>
+            </form>
+          ) : (
+            <form className="space-y-4" onSubmit={handleSubmitApplication}>
+              <div className="space-y-2">
+                <Label htmlFor="experience">Years of experience in backend development</Label>
+                <Input
+                  id="experience"
+                  name="experience"
+                  value={applicantInfo.experience}
+                  onChange={handleInputChange}
+                  placeholder="e.g. 1-2 years"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="goals">What are your career goals for the next 6 months?</Label>
+                <Textarea
+                  id="goals"
+                  name="goals"
+                  value={applicantInfo.goals}
+                  onChange={handleInputChange}
+                  placeholder="Share your goals and what you hope to achieve with premium mentorship"
+                  rows={3}
+                />
+              </div>
+              <div className="pt-2 flex justify-between">
+                <Button
+                  variant="outline"
+                  onClick={() => setApplicationStep(1)}
+                  type="button"
+                >
+                  Back
+                </Button>
+                <Button
+                  type="submit"
+                  disabled={!applicantInfo.experience || !applicantInfo.goals}
+                >
+                  Submit Application
+                </Button>
+              </div>
+            </form>
+          )}
+        </>
+      ) : (
+        <div className="py-6 text-center space-y-4">
+          <div className="mx-auto w-12 h-12 rounded-full bg-green-100 flex items-center justify-center">
+            <Check className="h-6 w-6 text-green-600" />
+          </div>
+          <h2 className="text-xl font-bold">Application Received!</h2>
+          <p className="text-muted-foreground">Thanks for applying! We'll review your application and get back to you within 48 hours.</p>
+          <Button onClick={() => {
+            resetApplication();
+            setIsModalOpen(false);
+          }}>
+            Close
+          </Button>
+        </div>
+      )}
+    </>
+  ), [applicationSubmitted, applicationStep, applicantInfo, handleInputChange]);
+
+  const WaitlistForm = useMemo(() => (
+    <>
+      <div className="mb-4 text-center">
+        <h2 className="text-xl font-bold mb-2">Join the Premium Waitlist</h2>
+      </div>
+      <p className="text-muted-foreground mb-4">All premium seats are currently filled. Join our waitlist to be notified when a spot opens up.</p>
+      <form onSubmit={(e) => {
+        e.preventDefault();
+        setIsWaitlistModalOpen(false);
+      }}>
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="waitlist-email">Email</Label>
+            <Input
+              id="waitlist-email"
+              placeholder="your@email.com"
+              type="email"
+            />
+          </div>
+          <div className="pt-4">
+            <Button type="submit" className="w-full">
+              Join Waitlist
+            </Button>
+          </div>
+        </div>
+      </form>
+    </>
+  ), []);
+
+  const PremiumApplicationButton = () => {
+    if (premiumSeatsAvailable <= 0) {
+      return (
+        <Button
+          variant="outline"
+          className="w-full"
+          onClick={() => setIsWaitlistModalOpen(true)}
+        >
+          Join Waitlist
+        </Button>
+      );
+    }
+
+    return (
+      <Button
+        variant="default"
+        className="w-full bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70"
+        onClick={() => setIsModalOpen(true)}
+      >
+        Apply for Premium
+      </Button>
+    );
+  };
 
   return (
     <section className="py-24">
@@ -95,6 +316,7 @@ const PricingSection = () => {
               "Mock interview & resume makeover",
               "12-hour response SLA"
             ]}
+            customButton={<PremiumApplicationButton />}
             buttonText="Apply for Premium"
             details={[
               {
@@ -111,8 +333,8 @@ const PricingSection = () => {
               }
             ]}
             badge={
-              <Badge variant="secondary" className="mb-2">
-                10 seats • Application only
+              <Badge variant="secondary">
+                {premiumSeatsAvailable}/10 seats available
               </Badge>
             }
           />
@@ -128,6 +350,16 @@ const PricingSection = () => {
           </div>
         </div>
       </div>
+
+      {/* Application Modal */}
+      <BasicModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+        {ApplicationForm}
+      </BasicModal>
+
+      {/* Waitlist Modal */}
+      <BasicModal isOpen={isWaitlistModalOpen} onClose={() => setIsWaitlistModalOpen(false)}>
+        {WaitlistForm}
+      </BasicModal>
     </section>
   );
 };

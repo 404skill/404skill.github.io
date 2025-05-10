@@ -10,55 +10,45 @@ interface HeroSectionProps {
 
 const HeroSection = ({ isLoggedIn, isVisible }: HeroSectionProps) => {
   return (
-    <section className="container py-24">
-      <div className={`mx-auto flex max-w-[58rem] flex-col items-center justify-center gap-8 text-center transition-all duration-700 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-        <div className="space-y-4">
-          <h1 className="font-mono text-4xl sm:text-5xl md:text-6xl font-bold leading-tight">
-            Ship production‑grade<br />
-            backend systems
-          </h1>
-          <p className="text-xl text-muted-foreground max-w-[42rem] mx-auto">
-            Get senior engineer reviews on every line of code. Build a portfolio that gets you hired.
-          </p>
-        </div>
-
-        <div className="flex flex-col items-center gap-6">
-          <div className="flex flex-wrap items-center justify-center gap-4">
-            {isLoggedIn ? (
-              <Link to="/dashboard">
-                <Button size="lg" className="gap-2 group animate-fade-in font-mono">
-                  Go to Projects
-                  <ArrowRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                </Button>
-              </Link>
-            ) : (
-              <Link to="/auth">
-                <Button size="lg" className="gap-2 group animate-fade-in font-mono">
-                  <Terminal className="h-5 w-5" />
-                  Start 14‑day risk‑free trial
-                  <ArrowRight className="ml-1 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                </Button>
-              </Link>
-            )}
-          </div>
-          <p className="text-sm text-muted-foreground">No credit card required • Cancel anytime</p>
-        </div>
-
-        {/* Key Benefits */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-3xl mt-8">
-          <div className="flex flex-col items-center text-center p-4">
-            <div className="text-2xl font-bold text-primary">24h</div>
-            <div className="text-sm text-muted-foreground">Code review turnaround</div>
-          </div>
-          <div className="flex flex-col items-center text-center p-4">
-            <div className="text-2xl font-bold text-primary">1:1</div>
-            <div className="text-sm text-muted-foreground">Weekly mentorship</div>
-          </div>
-          <div className="flex flex-col items-center text-center p-4">
-            <div className="text-2xl font-bold text-primary">100%</div>
-            <div className="text-sm text-muted-foreground">Money-back guarantee</div>
-          </div>
-        </div>
+    <section className="relative min-h-[90vh] flex flex-col items-center justify-center bg-gradient-to-b from-[#f8fafc] to-[#e0e7ef] px-4">
+      {/* Badge */}
+      <div className="mb-8 mt-12 sm:mt-0">
+        <span className="inline-flex items-center px-4 py-1.5 rounded-full font-mono text-base bg-primary/10 text-primary border border-primary/20 shadow-sm">
+          <span className="mr-2 text-lg">✨</span> Level Up Your Backend Skills
+        </span>
+      </div>
+      {/* Headline with blue highlight */}
+      <h1
+        className="text-4xl sm:text-6xl md:text-7xl font-extrabold text-center leading-[1.18] mb-1 pb-2 select-text"
+        style={{ minHeight: '1.5em' }}
+      >
+        <span className="text-slate-900">Become a Better</span>
+        <br />
+        <span className="text-primary">Backend Engineer</span>
+      </h1>
+      {/* Subheadline */}
+      <p className="text-lg sm:text-xl text-slate-600 max-w-2xl mx-auto text-center mb-10">
+        Build real-world backend systems, get expert feedback, and accelerate your growth as an engineer.
+      </p>
+      {/* CTA Button */}
+      <div className="flex flex-col items-center gap-3 w-full">
+        {isLoggedIn ? (
+          <Link to="/dashboard">
+            <Button size="lg" className="gap-2 font-mono bg-primary text-primary-foreground shadow-lg rounded-full px-8 py-3 hover:bg-primary/90 transition-all duration-200">
+              Go to Projects
+              <ArrowRight className="ml-1 h-5 w-5" />
+            </Button>
+          </Link>
+        ) : (
+          <Link to="/auth">
+            <Button size="lg" className="gap-2 font-mono bg-primary text-primary-foreground shadow-lg rounded-full px-8 py-3 hover:bg-primary/90 transition-all duration-200">
+              <Terminal className="h-5 w-5" />
+              Start Your Growth Journey
+              <ArrowRight className="ml-1 h-5 w-5" />
+            </Button>
+          </Link>
+        )}
+        <span className="text-sm text-slate-500 mt-2">14-day risk-free trial • No credit card required</span>
       </div>
     </section>
   );

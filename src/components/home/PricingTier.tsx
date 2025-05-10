@@ -27,6 +27,7 @@ interface PricingTierProps {
   features: string[];
   highlighted?: boolean;
   buttonText: string;
+  customButton?: React.ReactNode;
   details?: FeatureDetail[];
   annualPrice?: string;
   badge?: ReactNode;
@@ -39,6 +40,7 @@ const PricingTier = ({
   features, 
   highlighted = false, 
   buttonText,
+  customButton,
   details,
   annualPrice,
   badge
@@ -132,12 +134,16 @@ const PricingTier = ({
         )}
       </CardContent>
       <CardFooter>
-        <Button 
-          className={`w-full ${highlighted ? 'bg-primary hover:bg-primary/90' : ''}`}
-          onClick={handlePricingClick}
-        >
-          {buttonText}
-        </Button>
+        {customButton ? (
+          customButton
+        ) : (
+          <Button 
+            className={`w-full ${highlighted ? 'bg-primary hover:bg-primary/90' : ''}`}
+            onClick={handlePricingClick}
+          >
+            {buttonText}
+          </Button>
+        )}
       </CardFooter>
     </Card>
   );

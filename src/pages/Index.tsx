@@ -28,9 +28,7 @@ const Index = () => {
       
       <main className="flex-1">
         <HeroSection isLoggedIn={isLoggedIn} isVisible={isVisible} />
-        <TeamSection />
         <HowItWorksSection isVisible={isVisible} />
-        <WhyChooseSection />
         <TechStackSection />
         <PricingSection />
         <CtaSection isLoggedIn={isLoggedIn} />

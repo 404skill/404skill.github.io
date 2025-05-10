@@ -1,11 +1,10 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
  
 @layer base {
   :root {
-    --background: 0 0% 100%;
+    --background: 210 40% 98%;
     --foreground: 222.2 84% 4.9%;
 
     --card: 0 0% 100%;
@@ -14,7 +13,7 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
  
-    --primary: 222.2 47.4% 11.2%;
+    --primary: 221.2 83.2% 53.3%;
     --primary-foreground: 210 40% 98%;
  
     --secondary: 210 40% 96.1%;
@@ -23,17 +22,23 @@
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
  
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 221.2 83.2% 53.3%;
+    --accent-foreground: 210 40% 98%;
  
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
+    --success: 142.1 76.2% 36.3%;
+    --success-foreground: 355.7 100% 97.3%;
+
+    --warning: 38 92% 50%;
+    --warning-foreground: 48 96% 89%;
+
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --ring: 221.2 83.2% 53.3%;
  
-    --radius: 0.3rem;
+    --radius: 0.5rem;
   }
  
   .dark {
@@ -46,7 +51,7 @@
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
  
-    --primary: 210 40% 98%;
+    --primary: 217.2 91.2% 59.8%;
     --primary-foreground: 222.2 47.4% 11.2%;
  
     --secondary: 217.2 32.6% 17.5%;
@@ -60,10 +65,16 @@
  
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
+
+    --success: 142.1 70.6% 45.3%;
+    --success-foreground: 144.9 80.4% 10%;
+
+    --warning: 48 96% 89%;
+    --warning-foreground: 38 92% 50%;
  
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
+    --ring: 224.3 76.3% 48%;
   }
 }
  
@@ -73,12 +84,73 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
   }
   
   /* Code blocks and technical content */
   pre, code, .code-font {
     @apply font-mono;
   }
+}
+
+/* Gradient backgrounds */
+.gradient-primary {
+  background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--accent)) 100%);
+}
+
+.gradient-secondary {
+  background: linear-gradient(135deg, hsl(var(--secondary)) 0%, hsl(var(--muted)) 100%);
+}
+
+/* Glass effect */
+.glass {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.dark .glass {
+  background: rgba(0, 0, 0, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Card hover effects */
+.hover-card {
+  @apply transition-all duration-300;
+}
+
+.hover-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.15);
+}
+
+/* Button hover effects */
+.hover-button {
+  @apply transition-all duration-300;
+}
+
+.hover-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.1);
+}
+
+/* Text gradient */
+.text-gradient {
+  background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--accent)) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Section transitions */
+.section-enter {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.section-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 500ms, transform 500ms;
 }
 
 /* Markdown styling */
@@ -135,11 +207,11 @@
 }
 
 .markdown-content a {
-  @apply text-blue-600 underline hover:text-blue-800;
+  @apply text-primary hover:text-accent transition-colors;
 }
 
 .markdown-content blockquote {
-  @apply border-l-4 border-slate-300 pl-4 italic my-4 text-slate-600;
+  @apply border-l-4 border-primary/20 pl-4 italic my-4 text-slate-600;
 }
 
 .markdown-content table {
@@ -165,7 +237,7 @@
 /* Dashboard styles */
 .dashboard-header {
   @apply relative;
-  background: linear-gradient(180deg, #ffffff 0%, #f3f5f9 100%);
+  background: linear-gradient(180deg, hsl(var(--background)) 0%, hsl(var(--secondary)) 100%);
 }
 
 .project-card {
@@ -177,33 +249,17 @@
   transform: translateY(-2px);
 }
 
-/* Animations */
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(8px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.animate-fade-in {
-  animation: fadeIn 0.4s ease-out forwards;
-}
-
 /* Status pills with developer-focused colors */
 .pill-easy {
-  @apply bg-green-100 text-green-700 border-green-300 hover:bg-green-200 transition-colors;
+  @apply bg-success/10 text-success border-success/20 hover:bg-success/20 transition-colors;
 }
 
 .pill-medium {
-  @apply bg-yellow-100 text-yellow-700 border-yellow-300 hover:bg-yellow-200 transition-colors;
+  @apply bg-warning/10 text-warning border-warning/20 hover:bg-warning/20 transition-colors;
 }
 
 .pill-hard {
-  @apply bg-red-100 text-red-700 border-red-300 hover:bg-red-200 transition-colors;
+  @apply bg-destructive/10 text-destructive border-destructive/20 hover:bg-destructive/20 transition-colors;
 }
 
 /* Progress Bar Styles */
@@ -213,13 +269,13 @@
 
 .progress-bar-fill {
   @apply h-full transition-all duration-1000 ease-out rounded-full;
-  background: #3b82f6;
+  background: hsl(var(--primary));
 }
 
 /* Tab indicator */
 .tab-indicator {
   @apply before:absolute before:bottom-0 before:h-0.5 before:left-0 before:w-full;
-  @apply before:bg-blue-500 before:scale-x-0 before:transition-transform before:duration-300;
+  @apply before:bg-primary before:scale-x-0 before:transition-transform before:duration-300;
 }
 
 .tab-selected {
@@ -228,24 +284,24 @@
 
 /* Sticky header */
 .sticky-header {
-  @apply sticky top-0 z-10 backdrop-blur-sm bg-white/90 shadow-sm;
+  @apply sticky top-0 z-10 backdrop-blur-sm bg-background/90 shadow-sm;
   transition: all 0.3s ease;
 }
 
 .sticky-header.scrolled {
   @apply shadow-md;
-  background: rgba(255, 255, 255, 0.95);
+  background: hsl(var(--background) / 0.95);
 }
 
 /* Tech badge */
 .tech-badge {
-  @apply font-mono text-xs py-0.5 px-2 rounded bg-slate-100 text-slate-700;
+  @apply font-mono text-xs py-0.5 px-2 rounded bg-primary/10 text-primary;
 }
 
 /* Code blocks and syntax highlighting */
 .code-block {
   @apply bg-slate-50 p-3 rounded-md text-slate-700 font-mono text-xs overflow-auto;
-  border: 1px solid rgba(59, 130, 246, 0.2);
+  border: 1px solid hsl(var(--primary) / 0.2);
 }
 
 /* Terminal window styling */
