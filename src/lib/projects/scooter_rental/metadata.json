@@ -1,0 +1,12 @@
+{
+    "id": "560a6055-b553-4b5d-be0d-93c5dec2b0ed",
+    "title": "Scooter Rental",
+    "description": "A scooter rental system that allows you to rent scooters to customers.",
+    "difficulty": "Medium",
+    "tasks": [
+        {
+            "id": "aa36786e-89d5-4e53-a85d-21e8d17f20e3",
+            "file_name": "0_overview.md"
+        }
+    ]
+}

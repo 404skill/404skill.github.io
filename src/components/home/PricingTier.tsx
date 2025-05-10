@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import { Button } from "@/components/ui/button";
 import { CheckCircle, ChevronDown, ChevronUp } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -29,6 +29,7 @@ interface PricingTierProps {
   buttonText: string;
   details?: FeatureDetail[];
   annualPrice?: string;
+  badge?: ReactNode;
 }
 
 const PricingTier = ({ 
@@ -39,7 +40,8 @@ const PricingTier = ({
   highlighted = false, 
   buttonText,
   details,
-  annualPrice
+  annualPrice,
+  badge
 }: PricingTierProps) => {
   const navigate = useNavigate();
   const [showDetails, setShowDetails] = useState(false);
@@ -80,6 +82,7 @@ const PricingTier = ({
         </div>
       )}
       <CardHeader>
+        {badge}
         <CardTitle className="text-xl">{title}</CardTitle>
         <CardDescription>{description}</CardDescription>
         <div className="mt-4">
