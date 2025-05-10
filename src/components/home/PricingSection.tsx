@@ -30,7 +30,7 @@ const BasicModal = ({ isOpen, onClose, children }) => {
 const PricingSection = () => {
   const navigate = useNavigate();
   const [isAnnual, setIsAnnual] = useState(false);
-  const [premiumSeatsAvailable, setPremiumSeatsAvailable] = useState(3);
+  const [premiumSeatsAvailable, setPremiumSeatsAvailable] = useState(10);
   const [applicationStep, setApplicationStep] = useState(1);
   const [applicationSubmitted, setApplicationSubmitted] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -353,7 +353,7 @@ const PricingSection = () => {
             ]}
             badge={
               <Badge variant="secondary">
-                {premiumSeatsAvailable}/10 seats available
+                {premiumSeatsAvailable} seats available
               </Badge>
             }
           />
