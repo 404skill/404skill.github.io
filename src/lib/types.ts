@@ -16,43 +16,7 @@ export interface Project {
   progress?: UserProgress;
 }
 
-export interface UserProject {
-  id: string;
-  title: string;
-  description: string;
-  difficulty: 'easy' | 'medium' | 'hard';
-  language: string;
-  type: string;
-  estimatedDurationMinutes: number;
-  accessTier: string;
-  repoUrl: string;
-  assignedAt: string;
-  completedAt?: string | null;
-  status: 'in_progress' | 'completed';
-  tasks: Task[];
-  technologies: string[];
-  templateUrl: string;
-  progress?: UserProgress;
-}
-
-export interface ProfileTest {
-  id: string;
-  createdAt: string;
-  profileId: string;
-  testId: string;
-  passed: boolean;
-  lastRun: string | null;
-  lastPass: string | null;
-  testName: string;
-}
-
 export interface Task {
-  id: string;
-  name: string;
-  description: string;
-}
-
-export interface Test {
   id: string;
   name: string;
   description: string;
@@ -61,6 +25,7 @@ export interface Test {
 export interface TestResult {
   taskId: string;
   projectId: string;
+  userId: string;
   status: 'passed' | 'failed' | 'not-attempted';
   timestamp: string;
   errorMessage?: string;
@@ -86,9 +51,4 @@ export interface UserProgress {
   started_at: string;
   last_updated_at: string;
   is_completed: boolean;
-}
-
-export interface ProjectCompletion {
-  passed: number;
-  total: number;
 }

@@ -4,13 +4,16 @@ import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
+  CardHeader,
+  CardTitle,
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { BookOpen, Filter, PlusCircle, Search, Code, Terminal } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import ProjectCard from "@/components/ProjectCard";
 import DemoInvitePopup from "@/components/DemoInvitePopup";
-import {Project, User, UserProject} from "@/lib/types";
+import { Project, User } from "@/lib/types";
+import { projects } from "@/lib/data";
 import { Input } from "@/components/ui/input";
 import {
   DropdownMenu,
@@ -20,22 +23,18 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useUserProgress } from "@/hooks/useUserProgress";
 import { trackEvent, AnalyticsEvent } from "@/lib/analytics";
-import {fetchAllProjects, fetchUserProjects} from "@/lib/api";
-import { convertProjects } from "@/lib/converter";
 
 const Dashboard = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState<User | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [difficulty, setDifficulty] = useState<string[]>([]);
-  const [filteredProjects, setFilteredProjects] = useState<Project[]>();
+  const [filteredProjects, setFilteredProjects] = useState<Project[]>(projects);
   const [activeTab, setActiveTab] = useState("all-projects");
   const [headerScrolled, setHeaderScrolled] = useState(false);
   const headerRef = useRef<HTMLDivElement>(null);
-  const [projects, setProjects] = useState<Project[]>([]);
-  const [userProjects, setUserProjects] = useState<UserProject[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
-  // const { userProjects, loading } = useUserProgress(user?.id || null);
+  
+  const { userProjects, loading } = useUserProgress(user?.id || null);
   
   useEffect(() => {
     const userStr = localStorage.getItem("sb-smzmwxqzmiswsnvsvjms-auth-token");
@@ -58,76 +57,29 @@ const Dashboard = () => {
       component: "Dashboard"
     });
   }, [navigate]);
-
-  useEffect(() => {
-    const loadProjects = async () => {
-      try {
-        const data = await fetchAllProjects();
-        const convertedProjects = convertProjects(data);
-        setProjects(convertedProjects);
-        setFilteredProjects(convertedProjects);
-      } catch (error) {
-        console.error("Failed to fetch projects:", error);
-      }
-    };
-
-    loadProjects();
-  }, []);
-
-  useEffect(() => {
-    const loadUserProjects = async () => {
-      setLoading(true);
-
-      try {
-        const data = await fetchUserProjects("");
-        const converted = data.map((project: any) => ({
-          id: project.projectId,
-          title: project.name,
-          description: project.description,
-          difficulty: project.difficulty,
-          language: project.language,
-          type: project.type,
-          estimatedDurationMinutes: project.estimatedDurationMinutes,
-          accessTier: project.accessTier,
-          repoUrl: project.repoUrl,
-          assignedAt: project.assignedAt,
-          completedAt: project.completedAt,
-          status: project.status,
-          tasks: [],
-          technologies: [],
-          templateUrl: `/templates/${project.projectId}.zip`,
-        }));
-
-        setUserProjects(converted);
-      } catch (error) {
-        console.error("Failed to fetch user projects:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadUserProjects();
-  }, []);
-
+  
   useEffect(() => {
     let filtered = projects;
-
+    
     if (searchTerm) {
       filtered = filtered.filter(
-          (project) =>
-              project.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-              project.description.toLowerCase().includes(searchTerm.toLowerCase())
+        (project) =>
+          project.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          project.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          project.technologies.some((tech) =>
+            tech.toLowerCase().includes(searchTerm.toLowerCase())
+          )
       );
     }
-
+    
     if (difficulty.length > 0) {
       filtered = filtered.filter((project) =>
-          difficulty.includes(project.difficulty)
+        difficulty.includes(project.difficulty)
       );
     }
-
+    
     setFilteredProjects(filtered);
-  }, [searchTerm, difficulty, projects]);
+  }, [searchTerm, difficulty]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -181,7 +133,7 @@ const Dashboard = () => {
         <div className="container">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div className="animate-fade-in">
-              <h1 className="text-2xl font-bold mb-1 font-mono">Dashboarddd</h1>
+              <h1 className="text-2xl font-bold mb-1 font-mono">Dashboard</h1>
               <p className="text-muted-foreground text-sm font-mono">
                 Welcome back, <span className="font-medium text-blue-700">{user.name}</span>! Continue learning or start a new project.
               </p>
@@ -236,9 +188,9 @@ const Dashboard = () => {
                     <Button variant="outline" className="flex items-center gap-2 border-slate-200 hover:border-slate-300 transition-colors font-mono">
                       <Filter className="h-4 w-4 text-slate-500" />
                       <span>Filter</span>
-                      {difficulty?.length > 0 && (
+                      {difficulty.length > 0 && (
                         <span className="ml-1 rounded-full bg-blue-100 text-blue-700 px-2 py-0.5 text-xs">
-                          {difficulty?.length}
+                          {difficulty.length}
                         </span>
                       )}
                     </Button>
@@ -278,7 +230,7 @@ const Dashboard = () => {
                 </DropdownMenu>
               </div>
               
-              {filteredProjects?.length === 0 ? (
+              {filteredProjects.length === 0 ? (
                 <Card className="project-card animate-fade-in">
                   <CardContent className="flex flex-col items-center justify-center py-16">
                     <div className="p-4 rounded-full bg-slate-100 mb-4">
@@ -292,7 +244,7 @@ const Dashboard = () => {
                 </Card>
               ) : (
                 <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                  {filteredProjects?.map((project, index) => {
+                  {filteredProjects.map((project, index) => {
                     const inProgress = userProjects.some(p => p.id === project.id);
                     const userProject = userProjects.find(p => p.id === project.id);
                     const completion = userProject?.progress?.completed_tasks.length 

@@ -26,7 +26,7 @@ interface ProgressTrackerProps {
   project: Project;
   results: TestResult[];
   onRequestHelp: (taskId: string) => void;
-  // onStatusChange?: (taskId: string, status: TestResult['status']) => void;
+  onStatusChange?: (taskId: string, status: TestResult['status']) => void;
 }
 
 const TaskStatusIcon = ({ status }: { status: TestResult['status'] | undefined }) => {
@@ -72,43 +72,24 @@ const TaskStatusIcon = ({ status }: { status: TestResult['status'] | undefined }
   );
 };
 
-const ProgressTracker = ({ project, results, onRequestHelp }: ProgressTrackerProps) => {
+const ProgressTracker = ({ project, results, onRequestHelp, onStatusChange }: ProgressTrackerProps) => {
   const [openTasks, setOpenTasks] = useState<{ [key: string]: boolean }>({});
 
-  const latestByTask: Record<string, TestResult> = results.reduce((acc, r) => {
-    const existing = acc[r.taskId];
-    if (
-        !existing ||
-        new Date(r.timestamp).getTime() > new Date(existing.timestamp).getTime()
-    ) {
-      acc[r.taskId] = r;
-    }
-    return acc;
-  }, {} as Record<string, TestResult>);
-
-
-  const getTaskStatus = (taskId: string): TestResult['status'] => {
-    const taskResults = results.filter(r => r.taskId === taskId);
-    if (taskResults.some(r => r.status === 'failed')) {
-      return 'failed';
-    }
-    if (taskResults.length > 0 && taskResults.every(r => r.status === 'passed')) {
-      return 'passed';
-    }
-    return 'not-attempted';
+  const getTaskStatus = (taskId: string): TestResult['status'] | undefined => {
+    const result = results.find(r => r.taskId === taskId);
+    return result ? result.status : undefined;
   };
 
-  const getTaskTimestamp = (taskId: string) =>
-      latestByTask[taskId]?.timestamp ?? null;
+  const getTaskTimestamp = (taskId: string): string | null => {
+    const result = results.find(r => r.taskId === taskId);
+    return result ? result.timestamp : null;
+  };
 
-  const getTaskError = (taskId: string) =>
-      latestByTask[taskId]?.errorMessage ?? 'Test failed';
-
-  const getTaskPassedCount = (taskId: string): number =>
-      results.filter(r => r.taskId === taskId && r.status === 'passed').length;
-
-  const getTaskTotalCount = (taskId: string): number =>
-      results.filter(r => r.taskId === taskId).length;
+  const handleStatusChange = (taskId: string, status: TestResult['status']) => {
+    if (onStatusChange) {
+      onStatusChange(taskId, status);
+    }
+  };
 
   const toggleTask = (taskId: string) => {
     setOpenTasks(prev => ({
@@ -121,15 +102,12 @@ const ProgressTracker = ({ project, results, onRequestHelp }: ProgressTrackerPro
     <div className="space-y-4">
       <h3 className="text-lg font-medium font-mono text-slate-800">Project Tasks</h3>
       <div className="space-y-3">
-        {project.tasks?.map((task, index) => {
+        {project.tasks.map((task, index) => {
           const status = getTaskStatus(task.id);
           const timestamp = getTaskTimestamp(task.id);
-          const error = getTaskError(task.id);
           const isOpen = openTasks[task.id] || false;
           const taskNumber = index + 1;
-          const passedCount = getTaskPassedCount(task.id);
-          const totalCount  = getTaskTotalCount(task.id);
-
+          
           return (
             <Collapsible 
               key={task.id} 
@@ -160,14 +138,11 @@ const ProgressTracker = ({ project, results, onRequestHelp }: ProgressTrackerPro
                           )}
                         </button>
                       </CollapsibleTrigger>
-                      <div className="flex justify-between items-center gap-12">
-                        {timestamp && (
-                            <span className="text-xs text-slate-500 font-mono">
+                      {timestamp && (
+                        <span className="text-xs text-slate-500 font-mono">
                           {formatDistanceToNow(new Date(timestamp), { addSuffix: true })}
                         </span>
-                        )}
-                        <span className="text-xs text-slate-500 font-mono">{Math.round((passedCount / totalCount) * 100)}% complete ({passedCount}/{totalCount})</span>
-                      </div>
+                      )}
                     </div>
                     
                     <CollapsibleContent>
@@ -207,11 +182,35 @@ $ container run-tests ${task.name.toLowerCase().replace(/\s+/g, '-')}`}</pre>
                       
                       {status === 'failed' && (
                         <div className="mt-2 p-2 bg-red-50 border border-red-300 rounded text-xs font-mono text-red-600">
-                          {error}
+                          {results.find(r => r.taskId === task.id)?.errorMessage || 'Test failed'}
                         </div>
                       )}
                       
                       <div className="mt-3 flex gap-2">
+                        {onStatusChange && (
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button variant="outline" size="sm" className="border-slate-200 bg-white text-slate-700 hover:bg-slate-50 font-mono">
+                                Update Status
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent className="bg-white border-slate-200">
+                              <DropdownMenuItem onClick={() => handleStatusChange(task.id, 'passed')} className="text-slate-700 focus:bg-slate-50 font-mono">
+                                <CheckCircle className="mr-2 h-4 w-4 text-green-500" />
+                                <span>Mark as Passed</span>
+                              </DropdownMenuItem>
+                              <DropdownMenuItem onClick={() => handleStatusChange(task.id, 'failed')} className="text-slate-700 focus:bg-slate-50 font-mono">
+                                <CircleAlert className="mr-2 h-4 w-4 text-red-500" />
+                                <span>Mark as Failed</span>
+                              </DropdownMenuItem>
+                              <DropdownMenuItem onClick={() => handleStatusChange(task.id, 'not-attempted')} className="text-slate-700 focus:bg-slate-50 font-mono">
+                                <Clock className="mr-2 h-4 w-4 text-slate-400" />
+                                <span>Mark as Not Started</span>
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        )}
+                        
                         <Button 
                           variant="outline" 
                           size="sm"

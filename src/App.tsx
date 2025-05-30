@@ -6,7 +6,7 @@ import { HashRouter , Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import Dashboard from "./pages/Dashboard";
 import Auth from "./pages/Auth";
-import ProjectDetails from "./pages/ProjectDetails/ProjectDetails";
+import ProjectDetails from "./pages/ProjectDetails";
 import Help from "./pages/Help";
 import NotFound from "./pages/NotFound";
 import TermsOfService from "./pages/legal/TermsOfService";
