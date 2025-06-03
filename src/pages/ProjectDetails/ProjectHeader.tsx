@@ -56,19 +56,10 @@ export const ProjectHeader: React.FC<ProjectHeaderProps> = ({
                             {project.difficulty}
                         </Badge>
                     </div>
-                    <p className="text-slate-600 font-mono">{project.description}</p>
+                    {/*<p className="text-slate-600 font-mono">{project.description}</p>*/}
                 </div>
 
                 <div className="flex gap-2">
-                    <Button
-                        variant="outline"
-                        onClick={onDownload}
-                        className="border-slate-200 bg-slate-50 text-slate-700 hover:bg-slate-100 font-mono"
-                    >
-                        <Download className="mr-2 h-4 w-4" />
-                        Download Template
-                    </Button>
-
                     <Dialog open={isHelpDialogOpen} onOpenChange={setHelpDialogOpen}>
                         <DialogTrigger asChild>
                             <Button className="bg-blue-600 hover:bg-blue-700 text-white font-mono">
