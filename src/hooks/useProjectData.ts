@@ -60,6 +60,7 @@ export function useProjectData() {
                         projectId: id,
                         status: pt.passed ? "passed" : "failed",
                         timestamp: pt.lastRun ?? new Date().toISOString(),
+                        name: pt.testName,
                     };
                 });
                 setTestResults(results);

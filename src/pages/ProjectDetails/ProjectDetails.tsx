@@ -9,7 +9,8 @@ import { useProjectData } from "@/hooks/useProjectData";
 import { ProjectHeader } from "./ProjectHeader";
 import { ProjectProgress } from "./ProjectProgress";
 import { TasksTab } from "./TasksTab";
-// import { DetailsTab } from "./DetailsTab";
+import { DetailsTab } from "./DetailsTab";
+import TestsTab from "@/pages/ProjectDetails/TestsTab.tsx";
 // import { ContainerAPITab } from "./ContainerAPITab";
 
 const ProjectDetails: React.FC = () => {
@@ -62,7 +63,8 @@ const ProjectDetails: React.FC = () => {
                     <Tabs defaultValue="tasks" className="mt-6">
                         <TabsList className="bg-slate-100 border border-slate-200 p-1">
                             <TabsTrigger value="tasks">Tasks</TabsTrigger>
-                            {/*<TabsTrigger value="details">Details</TabsTrigger>*/}
+                            <TabsTrigger value="tests">Tests</TabsTrigger>
+                            <TabsTrigger value="details">Details</TabsTrigger>
                             {/*<TabsTrigger value="container-api">Container API</TabsTrigger>*/}
                         </TabsList>
 
@@ -75,9 +77,13 @@ const ProjectDetails: React.FC = () => {
                             />
                         </TabsContent>
 
-                        {/*<TabsContent value="details">*/}
-                        {/*    <DetailsTab project={project} />*/}
-                        {/*</TabsContent>*/}
+                        <TabsContent value="tests">
+                            <TestsTab project={project} results={testResults} />
+                        </TabsContent>
+
+                        <TabsContent value="details">
+                            <DetailsTab project={project} />
+                        </TabsContent>
 
                         {/*<TabsContent value="container-api">*/}
                         {/*    <ContainerAPITab />*/}
