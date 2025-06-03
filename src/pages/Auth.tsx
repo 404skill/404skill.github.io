@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button } from "@/components/ui/button.tsx";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -12,7 +12,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card.tsx";
+} from "@/components/ui/card";
 import {
   Form,
   FormControl,
@@ -20,14 +20,14 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form.tsx";
-import { Input } from "@/components/ui/input.tsx";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs.tsx";
-import { useToast } from "@/components/ui/use-toast.ts";
-import Navbar from "@/components/Navbar.tsx";
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useToast } from "@/components/ui/use-toast";
+import Navbar from "@/components/Navbar";
 import { AtSign, KeyRound, UserPlus, UserRound } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client.ts";
-import { trackEvent, AnalyticsEvent } from "@/lib/analytics.ts";
+import { supabase } from "@/integrations/supabase/client";
+import { trackEvent, AnalyticsEvent } from "@/lib/analytics";
 
 const loginSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email address" }),

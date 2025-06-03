@@ -1,7 +1,7 @@
 import axios from 'axios';
-import {Project, TestResult, Task, Test, ProfileTest, ProjectCompletion} from './types';
+import {Project, TestResult, Task, Test, ProfileTest} from './types';
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL;
+const API_BASE = 'http://localhost:8081';
 
 const api = axios.create({
     baseURL: API_BASE,
@@ -50,7 +50,4 @@ export const fetchProjectTestResults = async (projectId: string): Promise<Profil
     return res.data;
 };
 
-export const fetchProjectCompletion = async (projectId: string): Promise<ProjectCompletion> => {
-    const res = await api.get(`/projects/${projectId}/completion`);
-    return res.data;
-};
+

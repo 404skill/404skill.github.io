@@ -33,8 +33,6 @@ export interface UserProject {
   technologies: string[];
   templateUrl: string;
   progress?: UserProgress;
-  passed?: number;
-  total?: number;
 }
 
 export interface ProfileTest {
@@ -66,7 +64,6 @@ export interface TestResult {
   status: 'passed' | 'failed' | 'not-attempted';
   timestamp: string;
   errorMessage?: string;
-  name: string;
 }
 
 export interface HelpRequest {

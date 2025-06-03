@@ -1,7 +1,7 @@
 
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import {BookOpen, Code, HelpCircle, Home, LogOut, Rocket, User} from 'lucide-react';
+import { BookOpen, Code, HelpCircle, Home, LogOut, User } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { supabase } from "@/integrations/supabase/client";
 import { trackEvent } from '@/lib/analytics';
@@ -106,17 +106,7 @@ const Navbar = () => {
             <Home className="h-4 w-4" />
             <span className="hidden sm:inline">Home</span>
           </Link>
-
-          <Link
-              to="/getStarted"
-              className={`text-sm font-medium flex items-center gap-1 transition-colors hover:text-primary ${
-                  location.pathname === '/getStarted' ? 'text-primary' : 'text-muted-foreground'
-              }`}
-          >
-            <Rocket className="h-4 w-4" />
-            <span className="hidden sm:inline">Get Started</span>
-          </Link>
-
+          
           {isLoggedIn && (
             <>
               <Link 

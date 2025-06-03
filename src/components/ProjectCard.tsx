@@ -3,21 +3,19 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Clock, Star } from "lucide-react";
-import {Project, ProjectCompletion} from "@/lib/types";
+import { Project } from "@/lib/types";
 import { Link } from "react-router-dom";
 import { Progress } from "@/components/ui/progress";
 import { CheckIcon } from "@/components/icons/CheckIcon";
-import {ProjectProgress} from "@/pages/ProjectDetails/ProjectProgress.tsx";
-import React from "react";
 
 interface ProjectCardProps {
   project: Project;
   userId: string;
   inProgress?: boolean;
-  completion?: ProjectCompletion;
+  completion?: number;
 }
 
-const ProjectCard = ({ project, userId, inProgress = false, completion }: ProjectCardProps) => {
+const ProjectCard = ({ project, userId, inProgress = false, completion = 0 }: ProjectCardProps) => {
   return (
     <Card className={`overflow-hidden transition-all duration-300 hover:shadow-md flex flex-col h-full animate-fade-in project-card 
       border-slate-200 hover:border-slate-300 
@@ -43,19 +41,18 @@ const ProjectCard = ({ project, userId, inProgress = false, completion }: Projec
         </div>
       </CardHeader>
       <CardContent className="flex-1 flex flex-col pb-4 relative z-10">
-        {/*<p className="text-slate-600 text-sm mb-4 font-mono">{project.description}</p>*/}
+        <p className="text-slate-600 text-sm mb-4 font-mono">{project.description}</p>
         
         {inProgress && (
-            <ProjectProgress completion={completion} />
-          // <div className="mt-auto pt-4">
-          //   <div className="flex justify-between text-xs mb-1.5 font-mono">
-          //     <span className="flex items-center gap-1 text-blue-700 font-medium">
-          //       <Clock className="h-3 w-3" /> In progress
-          //     </span>
-          //     <span className="text-slate-700 font-medium">{Math.round(completion)}% complete</span>
-          //   </div>
-          //   <Progress value={completion} className="h-1 bg-slate-200" />
-          // </div>
+          <div className="mt-auto pt-4">
+            <div className="flex justify-between text-xs mb-1.5 font-mono">
+              <span className="flex items-center gap-1 text-blue-700 font-medium">
+                <Clock className="h-3 w-3" /> In progress
+              </span>
+              <span className="text-slate-700 font-medium">{Math.round(completion)}% complete</span>
+            </div>
+            <Progress value={completion} className="h-1 bg-slate-200" />
+          </div>
         )}
       </CardContent>
       <CardFooter className="pt-4 mt-auto">
