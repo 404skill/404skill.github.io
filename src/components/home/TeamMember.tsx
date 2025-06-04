@@ -1,7 +1,6 @@
-
-import React from "react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
+import React from 'react';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
 
 interface TeamMemberProps {
   name: string;
@@ -18,7 +17,9 @@ const TeamMember = ({ name, role, company, avatar }: TeamMemberProps) => (
     </Avatar>
     <h3 className="font-medium text-lg">{name}</h3>
     <p className="text-sm text-muted-foreground">{role}</p>
-    <Badge variant="outline" className="mt-1">{company}</Badge>
+    <Badge variant="outline" className="mt-1">
+      {company}
+    </Badge>
   </div>
 );
 

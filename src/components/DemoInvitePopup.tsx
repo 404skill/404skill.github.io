@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
+import { useEffect, useState } from 'react';
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -7,15 +7,10 @@ import {
   DialogHeader,
   DialogTitle,
   DialogFooter,
-} from "@/components/ui/dialog";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { Calendar, Clock } from "lucide-react";
-import { trackEvent, AnalyticsEvent } from "@/lib/analytics";
+} from '@/components/ui/dialog';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { Calendar, Clock } from 'lucide-react';
+import { trackEvent, AnalyticsEvent } from '@/lib/analytics';
 
 const DemoInvitePopup = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -23,12 +18,12 @@ const DemoInvitePopup = () => {
 
   useEffect(() => {
     // Check if user has already seen the popup
-    const hasSeenPopup = localStorage.getItem("hasSeenDemoPopup");
+    const hasSeenPopup = localStorage.getItem('hasSeenDemoPopup');
     if (!hasSeenPopup) {
       // Show popup after a short delay
       const timer = setTimeout(() => {
         setIsOpen(true);
-        localStorage.setItem("hasSeenDemoPopup", "true");
+        localStorage.setItem('hasSeenDemoPopup', 'true');
       }, 2000); // 2 second delay
 
       return () => clearTimeout(timer);
@@ -48,7 +43,7 @@ const DemoInvitePopup = () => {
   const handleMaybeLater = () => {
     trackEvent({
       eventType: AnalyticsEvent.CLICKED_MAYBE_LATER,
-      component: "DemoInvitePopup"
+      component: 'DemoInvitePopup',
     });
     setIsOpen(false);
   };
@@ -56,14 +51,14 @@ const DemoInvitePopup = () => {
   const handleScheduleNow = () => {
     trackEvent({
       eventType: AnalyticsEvent.CLICKED_SCHEDULE_NOW,
-      component: "DemoInvitePopup"
+      component: 'DemoInvitePopup',
     });
   };
 
   const handleScheduleButtonClick = () => {
     trackEvent({
       eventType: AnalyticsEvent.CLICKED_SCHEDULE_BUTTON,
-      component: "DemoInvitePopup"
+      component: 'DemoInvitePopup',
     });
     setIsOpen(true);
   };
@@ -78,8 +73,8 @@ const DemoInvitePopup = () => {
               <span>Schedule a Quick Call with Me</span>
             </DialogTitle>
             <DialogDescription className="pt-2">
-              Let's discuss your needs and how we can help you achieve your goals. 
-              I'd love to learn more about your plans for the MVP and provide guidance.
+              Let's discuss your needs and how we can help you achieve your goals. I'd love to learn
+              more about your plans for the MVP and provide guidance.
             </DialogDescription>
           </DialogHeader>
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
@@ -87,19 +82,13 @@ const DemoInvitePopup = () => {
             <span>15-minute call</span>
           </div>
           <DialogFooter>
-            <Button 
-              variant="outline" 
-              onClick={handleMaybeLater}
-            >
+            <Button variant="outline" onClick={handleMaybeLater}>
               Maybe Later
             </Button>
-            <Button 
-              asChild
-              className="bg-blue-600 hover:bg-blue-700"
-            >
-              <a 
-                href="https://cal.com/elirant/15min" 
-                target="_blank" 
+            <Button asChild className="bg-blue-600 hover:bg-blue-700">
+              <a
+                href="https://cal.com/elirant/15min"
+                target="_blank"
                 rel="noopener noreferrer"
                 onClick={handleScheduleNow}
               >
@@ -136,4 +125,4 @@ const DemoInvitePopup = () => {
   );
 };
 
-export default DemoInvitePopup; 
+export default DemoInvitePopup;

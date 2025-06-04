@@ -16,9 +16,9 @@ Each membership type enforces different borrowing limits (books, magazines, DVDs
 
 ### 2.1 Minimal Fields
 
-1. `user_id`: Unique identifier (UUID or auto-increment integer).  
-2. `name`: User’s full name (string).  
-3. `email`: User’s email (string).  
+1. `user_id`: Unique identifier (UUID or auto-increment integer).
+2. `name`: User’s full name (string).
+3. `email`: User’s email (string).
 4. `membership_type`: `"student"`, `"basic"`, or `"premium"`.
 
 ### 2.2 Optional Fields
@@ -35,6 +35,7 @@ Each membership type enforces different borrowing limits (books, magazines, DVDs
 ### 3.1 Storing Users with SQLite
 
 If you’re choosing **SQLite**:
+
 - Create a `.db` file in your Docker container or on your local machine.
 - Define a `users` table, for example:
 
@@ -48,14 +49,14 @@ If you’re choosing **SQLite**:
   );
   ```
 
-- **Pros**: Self-contained, no extra Docker services needed.  
+- **Pros**: Self-contained, no extra Docker services needed.
 - **Cons**: Limited concurrency for large-scale apps.
 
 ### 3.2 Storing Users with Postgres/MySQL (Docker Compose)
 
 If you prefer a more robust DB (Postgres, MySQL, etc.):
 
-- Define your `docker-compose.yml` with both `app` and `db` services.  
+- Define your `docker-compose.yml` with both `app` and `db` services.
 - Create a `users` table in your DB. For example, in PostgreSQL:
 
   ```sql
@@ -85,7 +86,7 @@ If you prefer a more robust DB (Postgres, MySQL, etc.):
 
 - **Warning**: This won’t persist data after your application restarts (unless you’re reading/writing to a file). It’s fine for local practice but less realistic.
 
-> **Tip for Junior/Mid-Level**: If you’re new to SQL, try SQLite first; if you’re comfortable spinning up multi-container setups, go for Postgres or MySQL.  
+> **Tip for Junior/Mid-Level**: If you’re new to SQL, try SQLite first; if you’re comfortable spinning up multi-container setups, go for Postgres or MySQL.
 
 ---
 
@@ -170,12 +171,12 @@ You might want to allow membership changes or the ability to delete users entire
 ### 8.1 SQLite in One Container
 
 - Add SQLite to your Docker image (e.g., for Node.js: `RUN npm install sqlite3`).
-- Store the `.db` file inside your container’s filesystem.  
+- Store the `.db` file inside your container’s filesystem.
 - **Pros**: Single container, no Compose needed.
 
 ### 8.2 Docker Compose with Postgres (Example)
 
-- Add a `db` service to your `docker-compose.yml`.  
+- Add a `db` service to your `docker-compose.yml`.
 - In your `app` service, set environment variables (`DB_HOST=db`, `DB_NAME=library`, etc.).
 - **Migrate** or create tables automatically on startup (using migration tools or custom scripts).
 
@@ -199,11 +200,12 @@ Use a tool like **Postman**, **Insomnia**, or just **curl** to verify correct re
 You have now laid a **solid foundation** for user management in your Library Management System. With **unique user records** and basic membership types in place, you’re ready to integrate the **next component**: **storing items** (books, magazines, DVDs, CDs) and eventually handling the **borrowing** logic that ties users to items.
 
 **Next Page**: [Storing Items & Basic Catalog Management](#)  
-*(Link to the next part of the instructions where you define item data models and implement endpoints for adding and viewing library items.)*
+_(Link to the next part of the instructions where you define item data models and implement endpoints for adding and viewing library items.)_
 
 ---
 
 **Recap**: On this page, you learned how to:
+
 - Create a `users` table or data structure.
 - Implement an endpoint to add new users.
 - Optionally retrieve/update/delete users as needed.

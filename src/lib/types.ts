@@ -1,4 +1,3 @@
-
 export interface User {
   id: string;
   name: string;
@@ -52,6 +51,7 @@ export interface Task {
   id: string;
   name: string;
   description: string;
+  tests: Test[];
 }
 
 export interface Test {
@@ -67,6 +67,7 @@ export interface TestResult {
   timestamp: string;
   errorMessage?: string;
   name: string;
+  testId: string;
 }
 
 export interface HelpRequest {

@@ -1,24 +1,22 @@
-import React from "react";
+import React from 'react';
 
 const RefundPolicy = () => {
   return (
     <div className="container max-w-4xl py-12">
       <h1 className="text-3xl font-bold mb-8">Refund Policy</h1>
-      
+
       <div className="prose prose-gray dark:prose-invert">
         <p className="text-muted-foreground">Last updated: {new Date().toLocaleDateString()}</p>
 
         <h2>1. 14-Day Money-Back Guarantee</h2>
         <p>
           We offer a 14-day money-back guarantee for all new subscriptions. If you're not satisfied
-          with our service within the first 14 days of your subscription, we'll provide a full refund
-          of your payment.
+          with our service within the first 14 days of your subscription, we'll provide a full
+          refund of your payment.
         </p>
 
         <h2>2. Refund Eligibility</h2>
-        <p>
-          To be eligible for a refund:
-        </p>
+        <p>To be eligible for a refund:</p>
         <ul>
           <li>Your refund request must be made within 14 days of your initial subscription</li>
           <li>You must not have used more than 2 code review credits</li>
@@ -26,9 +24,7 @@ const RefundPolicy = () => {
         </ul>
 
         <h2>3. How to Request a Refund</h2>
-        <p>
-          To request a refund:
-        </p>
+        <p>To request a refund:</p>
         <ol>
           <li>Email us at support@404skill.com</li>
           <li>Include your account email and reason for the refund</li>
@@ -42,9 +38,7 @@ const RefundPolicy = () => {
         </p>
 
         <h2>5. Exceptions</h2>
-        <p>
-          We may make exceptions to this policy in cases of:
-        </p>
+        <p>We may make exceptions to this policy in cases of:</p>
         <ul>
           <li>Technical issues preventing access to the service</li>
           <li>Service unavailability for extended periods</li>
@@ -68,4 +62,4 @@ const RefundPolicy = () => {
   );
 };
 
-export default RefundPolicy; 
+export default RefundPolicy;

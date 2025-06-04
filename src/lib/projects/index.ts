@@ -1,4 +1,3 @@
-
 // This file will be the central place to import and export all projects
 // In the future, we could build this dynamically by scanning the directory
 

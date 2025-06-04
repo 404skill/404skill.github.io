@@ -1,32 +1,32 @@
 {
-    "id": "34dcd891-c4ce-4871-afd5-8ee1ad50066e",
-    "title": "Library Management",
-    "description": "A library management system that allows you to manage your library's books, authors, and borrowers.",
-    "difficulty": "Medium",
-    "tasks": [
-        {
-            "id": "fbd84872-4b6d-4960-9541-8f8158f01652",
-            "file_name": "0_overview.md"
-        },
-        {
-            "id": "5844a53e-3db1-463a-83d6-4d61e473f11e",
-            "file_name": "1_storing_users.md"
-        },
-        {
-            "id": "168b155f-2915-4420-b547-3d3d0a95e836",
-            "file_name": "2_creating_items.md"
-        },
-        {
-            "id": "26b7dcb0-6e7d-4db2-8362-40c7af1ef41d",
-            "file_name": "3_borrowing_and_returning.md"
-        },
-        {
-            "id": "04e03e6e-e202-45b5-b53b-0c92f2816fd7",
-            "file_name": "4_add_new_item_cds.md"
-        },
-        {
-            "id": "ff241b46-1b2c-41df-a94b-a0c21b8f2ed2",
-            "file_name": "5_promotion_system.md"
-        }
-    ]
+  "id": "34dcd891-c4ce-4871-afd5-8ee1ad50066e",
+  "title": "Library Management",
+  "description": "A library management system that allows you to manage your library's books, authors, and borrowers.",
+  "difficulty": "Medium",
+  "tasks": [
+    {
+      "id": "fbd84872-4b6d-4960-9541-8f8158f01652",
+      "file_name": "0_overview.md"
+    },
+    {
+      "id": "5844a53e-3db1-463a-83d6-4d61e473f11e",
+      "file_name": "1_storing_users.md"
+    },
+    {
+      "id": "168b155f-2915-4420-b547-3d3d0a95e836",
+      "file_name": "2_creating_items.md"
+    },
+    {
+      "id": "26b7dcb0-6e7d-4db2-8362-40c7af1ef41d",
+      "file_name": "3_borrowing_and_returning.md"
+    },
+    {
+      "id": "04e03e6e-e202-45b5-b53b-0c92f2816fd7",
+      "file_name": "4_add_new_item_cds.md"
+    },
+    {
+      "id": "ff241b46-1b2c-41df-a94b-a0c21b8f2ed2",
+      "file_name": "5_promotion_system.md"
+    }
+  ]
 }

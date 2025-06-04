@@ -1,5 +1,5 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React from 'react';
+import { Link } from 'react-router-dom';
 
 const Footer = () => {
   return (
@@ -9,9 +9,15 @@ const Footer = () => {
           &copy; {new Date().getFullYear()} 404Skill. All rights reserved.
         </p>
         <div className="flex gap-4 text-sm text-muted-foreground font-mono">
-          <Link to="/legal/terms" className="hover:underline">Terms of Service</Link>
-          <Link to="/legal/privacy" className="hover:underline">Privacy Policy</Link>
-          <Link to="/legal/refund" className="hover:underline">Refund Policy</Link>
+          <Link to="/legal/terms" className="hover:underline">
+            Terms of Service
+          </Link>
+          <Link to="/legal/privacy" className="hover:underline">
+            Privacy Policy
+          </Link>
+          <Link to="/legal/refund" className="hover:underline">
+            Refund Policy
+          </Link>
         </div>
       </div>
     </footer>

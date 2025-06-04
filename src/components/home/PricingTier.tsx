@@ -1,9 +1,9 @@
-import React, { ReactNode } from "react";
-import { Button } from "@/components/ui/button";
-import { CheckCircle, ChevronDown, ChevronUp } from "lucide-react";
-import { useNavigate } from "react-router-dom";
-import { toast } from "@/components/ui/use-toast";
-import { trackEvent, AnalyticsEvent } from "@/lib/analytics";
+import React, { ReactNode } from 'react';
+import { Button } from '@/components/ui/button';
+import { CheckCircle, ChevronDown, ChevronUp } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { toast } from '@/components/ui/use-toast';
+import { trackEvent, AnalyticsEvent } from '@/lib/analytics';
 import {
   Card,
   CardContent,
@@ -11,9 +11,9 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { useState } from "react";
+} from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { useState } from 'react';
 
 interface FeatureDetail {
   title: string;
@@ -33,49 +33,52 @@ interface PricingTierProps {
   badge?: ReactNode;
 }
 
-const PricingTier = ({ 
-  title, 
-  price, 
-  description, 
-  features, 
-  highlighted = false, 
+const PricingTier = ({
+  title,
+  price,
+  description,
+  features,
+  highlighted = false,
   buttonText,
   customButton,
   details,
   annualPrice,
-  badge
+  badge,
 }: PricingTierProps) => {
   const navigate = useNavigate();
   const [showDetails, setShowDetails] = useState(false);
 
   const handlePricingClick = () => {
     let eventType = AnalyticsEvent.CLICKED_ON_PRICING_FREE;
-    
+
     if (title === 'Guided') {
       eventType = AnalyticsEvent.CLICKED_ON_PRICING_PRO;
     } else if (title === 'Premium Mentorship') {
       eventType = AnalyticsEvent.CLICKED_ON_PRICING_PRO_PLUS;
     }
-    
+
     trackEvent({
       eventType,
-      component: "PricingTier",
-      eventData: { plan: title, price }
+      component: 'PricingTier',
+      eventData: { plan: title, price },
     });
 
     toast({
-      title: "Demo Mode",
-      description: "Our product is currently in development. Sign up for free, and we'll contact you once everything is ready!",
+      title: 'Demo Mode',
+      description:
+        "Our product is currently in development. Sign up for free, and we'll contact you once everything is ready!",
       duration: 5000,
-      variant: "demo",
-      className: "bg-[#8B5CF6] text-white border-0 shadow-2xl",
+      variant: 'demo',
+      className: 'bg-[#8B5CF6] text-white border-0 shadow-2xl',
     });
 
-    navigate("/auth");
+    navigate('/auth');
   };
 
   return (
-    <Card className={`flex flex-col h-full ${highlighted ? 'border-primary shadow-lg relative overflow-hidden' : ''}`}>
+    <Card
+      className={`flex flex-col h-full ${highlighted ? 'border-primary shadow-lg relative overflow-hidden' : ''}`}
+    >
       {highlighted && (
         <div className="absolute top-0 right-0">
           <Badge className="rounded-bl-lg rounded-tr-lg rounded-br-none rounded-tl-none px-3 py-1 bg-primary text-primary-foreground">
@@ -108,7 +111,7 @@ const PricingTier = ({
             </li>
           ))}
         </ul>
-        
+
         {details && (
           <div className="mt-6">
             <Button
@@ -117,9 +120,13 @@ const PricingTier = ({
               onClick={() => setShowDetails(!showDetails)}
             >
               <span>Learn more about these features</span>
-              {showDetails ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+              {showDetails ? (
+                <ChevronUp className="h-4 w-4" />
+              ) : (
+                <ChevronDown className="h-4 w-4" />
+              )}
             </Button>
-            
+
             {showDetails && (
               <div className="mt-4 space-y-4">
                 {details.map((detail, index) => (
@@ -137,7 +144,7 @@ const PricingTier = ({
         {customButton ? (
           customButton
         ) : (
-          <Button 
+          <Button
             className={`w-full ${highlighted ? 'bg-primary hover:bg-primary/90' : ''}`}
             onClick={handlePricingClick}
           >

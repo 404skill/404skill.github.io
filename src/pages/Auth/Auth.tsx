@@ -1,10 +1,9 @@
-
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { z } from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Button } from "@/components/ui/button.tsx";
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { z } from 'zod';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Button } from '@/components/ui/button.tsx';
 import {
   Card,
   CardContent,
@@ -12,7 +11,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card.tsx";
+} from '@/components/ui/card.tsx';
 import {
   Form,
   FormControl,
@@ -20,104 +19,106 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form.tsx";
-import { Input } from "@/components/ui/input.tsx";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs.tsx";
-import { useToast } from "@/components/ui/use-toast.ts";
-import Navbar from "@/components/Navbar.tsx";
-import { AtSign, KeyRound, UserPlus, UserRound } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client.ts";
-import { trackEvent, AnalyticsEvent } from "@/lib/analytics.ts";
+} from '@/components/ui/form.tsx';
+import { Input } from '@/components/ui/input.tsx';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs.tsx';
+import { useToast } from '@/components/ui/use-toast.ts';
+import Navbar from '@/components/Navbar.tsx';
+import { AtSign, KeyRound, UserPlus, UserRound } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client.ts';
+import { trackEvent, AnalyticsEvent } from '@/lib/analytics.ts';
 
 const loginSchema = z.object({
-  email: z.string().email({ message: "Please enter a valid email address" }),
-  password: z.string().min(8, { message: "Password must be at least 8 characters" }),
+  email: z.string().email({ message: 'Please enter a valid email address' }),
+  password: z.string().min(8, { message: 'Password must be at least 8 characters' }),
 });
 
-const signupSchema = z.object({
-  name: z.string().min(2, { message: "Name must be at least 2 characters" }),
-  email: z.string().email({ message: "Please enter a valid email address" }),
-  password: z.string().min(8, { message: "Password must be at least 8 characters" }),
-  confirmPassword: z.string().min(8, { message: "Please confirm your password" }),
-}).refine((data) => data.password === data.confirmPassword, {
-  message: "Passwords don't match",
-  path: ["confirmPassword"],
-});
+const signupSchema = z
+  .object({
+    name: z.string().min(2, { message: 'Name must be at least 2 characters' }),
+    email: z.string().email({ message: 'Please enter a valid email address' }),
+    password: z.string().min(8, { message: 'Password must be at least 8 characters' }),
+    confirmPassword: z.string().min(8, { message: 'Please confirm your password' }),
+  })
+  .refine(data => data.password === data.confirmPassword, {
+    message: "Passwords don't match",
+    path: ['confirmPassword'],
+  });
 
 const Auth = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [authError, setAuthError] = useState<string | null>(null);
   const navigate = useNavigate();
   const { toast } = useToast();
-  
+
   const loginForm = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      email: "",
-      password: "",
+      email: '',
+      password: '',
     },
   });
-  
+
   const signupForm = useForm<z.infer<typeof signupSchema>>({
     resolver: zodResolver(signupSchema),
     defaultValues: {
-      name: "",
-      email: "",
-      password: "",
-      confirmPassword: "",
+      name: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
     },
   });
-  
+
   async function onLoginSubmit(values: z.infer<typeof loginSchema>) {
     setIsLoading(true);
     setAuthError(null);
-    
+
     try {
       const { data, error } = await supabase.auth.signInWithPassword({
         email: values.email,
         password: values.password,
       });
-      
+
       if (error) {
         throw error;
       }
-      
+
       trackEvent({
         eventType: 'user_login',
         component: 'LoginForm',
-        eventData: { success: true }
+        eventData: { success: true },
       });
-      
+
       toast({
-        title: "Logged in successfully",
-        description: "Welcome back to 404Skill!",
+        title: 'Logged in successfully',
+        description: 'Welcome back to 404Skill!',
       });
-      
-      navigate("/dashboard");
+
+      navigate('/dashboard');
     } catch (error: any) {
-      console.error("Login error:", error);
-      setAuthError(error.message || "Failed to login. Please try again.");
-      
+      console.error('Login error:', error);
+      setAuthError(error.message || 'Failed to login. Please try again.');
+
       trackEvent({
         eventType: 'user_login_error',
         component: 'LoginForm',
-        eventData: { error: error.message }
+        eventData: { error: error.message },
       });
-      
+
       toast({
-        variant: "destructive",
-        title: "Login failed",
-        description: error.message || "Please check your credentials and try again.",
+        variant: 'destructive',
+        title: 'Login failed',
+        description: error.message || 'Please check your credentials and try again.',
       });
     } finally {
       setIsLoading(false);
     }
   }
-  
+
   async function onSignupSubmit(values: z.infer<typeof signupSchema>) {
     setIsLoading(true);
     setAuthError(null);
-    
+
     try {
       const { data, error } = await supabase.auth.signUp({
         email: values.email,
@@ -128,52 +129,52 @@ const Auth = () => {
           },
         },
       });
-      
+
       if (error) {
         throw error;
       }
-      
+
       trackEvent({
         eventType: 'user_signup',
         component: 'SignupForm',
-        eventData: { success: true }
+        eventData: { success: true },
       });
-      
+
       toast({
-        title: "Account created",
-        description: "Welcome to 404Skill!",
+        title: 'Account created',
+        description: 'Welcome to 404Skill!',
       });
-      
+
       // Switch to login tab if email confirmation is required
       if (data.user && !data.session) {
         switchToLogin();
         toast({
-          title: "Email verification required",
-          description: "Please check your email to verify your account before logging in.",
+          title: 'Email verification required',
+          description: 'Please check your email to verify your account before logging in.',
         });
       } else {
-        navigate("/dashboard");
+        navigate('/dashboard');
       }
     } catch (error: any) {
-      console.error("Signup error:", error);
-      setAuthError(error.message || "Failed to create account. Please try again.");
-      
+      console.error('Signup error:', error);
+      setAuthError(error.message || 'Failed to create account. Please try again.');
+
       trackEvent({
         eventType: 'user_signup_error',
         component: 'SignupForm',
-        eventData: { error: error.message }
+        eventData: { error: error.message },
       });
-      
+
       toast({
-        variant: "destructive",
-        title: "Signup failed",
-        description: error.message || "Please try again with different information.",
+        variant: 'destructive',
+        title: 'Signup failed',
+        description: error.message || 'Please try again with different information.',
       });
     } finally {
       setIsLoading(false);
     }
   }
-  
+
   const switchToSignup = () => {
     setAuthError(null);
     const element = document.querySelector('[data-value="signup"]');
@@ -181,7 +182,7 @@ const Auth = () => {
       element.click();
     }
   };
-  
+
   const switchToLogin = () => {
     setAuthError(null);
     const element = document.querySelector('[data-value="login"]');
@@ -189,11 +190,11 @@ const Auth = () => {
       element.click();
     }
   };
-  
+
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
-      
+
       <main className="flex-1 flex items-center justify-center py-12">
         <div className="container max-w-md">
           <Tabs defaultValue="login" className="w-full">
@@ -201,7 +202,7 @@ const Auth = () => {
               <TabsTrigger value="login">Login</TabsTrigger>
               <TabsTrigger value="signup">Sign Up</TabsTrigger>
             </TabsList>
-            
+
             <TabsContent value="login">
               <Card>
                 <CardHeader className="space-y-1">
@@ -209,9 +210,7 @@ const Auth = () => {
                     <UserRound className="h-6 w-6" />
                     Log in
                   </CardTitle>
-                  <CardDescription>
-                    Enter your credentials to access your account
-                  </CardDescription>
+                  <CardDescription>Enter your credentials to access your account</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   {authError && (
@@ -230,11 +229,7 @@ const Auth = () => {
                             <FormControl>
                               <div className="relative">
                                 <AtSign className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                                <Input 
-                                  placeholder="you@example.com" 
-                                  className="pl-10" 
-                                  {...field} 
-                                />
+                                <Input placeholder="you@example.com" className="pl-10" {...field} />
                               </div>
                             </FormControl>
                             <FormMessage />
@@ -250,11 +245,11 @@ const Auth = () => {
                             <FormControl>
                               <div className="relative">
                                 <KeyRound className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                                <Input 
-                                  type="password" 
-                                  placeholder="••••••••" 
-                                  className="pl-10" 
-                                  {...field} 
+                                <Input
+                                  type="password"
+                                  placeholder="••••••••"
+                                  className="pl-10"
+                                  {...field}
                                 />
                               </div>
                             </FormControl>
@@ -263,14 +258,14 @@ const Auth = () => {
                         )}
                       />
                       <Button type="submit" className="w-full" disabled={isLoading}>
-                        {isLoading ? "Logging in..." : "Login"}
+                        {isLoading ? 'Logging in...' : 'Login'}
                       </Button>
                     </form>
                   </Form>
                 </CardContent>
                 <CardFooter className="flex justify-center">
                   <p className="text-sm text-muted-foreground">
-                    Don't have an account?{" "}
+                    Don't have an account?{' '}
                     <a className="text-primary underline cursor-pointer" onClick={switchToSignup}>
                       Sign up
                     </a>
@@ -278,7 +273,7 @@ const Auth = () => {
                 </CardFooter>
               </Card>
             </TabsContent>
-            
+
             <TabsContent value="signup">
               <Card>
                 <CardHeader className="space-y-1">
@@ -286,9 +281,7 @@ const Auth = () => {
                     <UserPlus className="h-6 w-6" />
                     Create an account
                   </CardTitle>
-                  <CardDescription>
-                    Enter your details to create a new account
-                  </CardDescription>
+                  <CardDescription>Enter your details to create a new account</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   {authError && (
@@ -307,11 +300,7 @@ const Auth = () => {
                             <FormControl>
                               <div className="relative">
                                 <UserRound className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                                <Input 
-                                  placeholder="John Doe" 
-                                  className="pl-10" 
-                                  {...field} 
-                                />
+                                <Input placeholder="John Doe" className="pl-10" {...field} />
                               </div>
                             </FormControl>
                             <FormMessage />
@@ -327,11 +316,7 @@ const Auth = () => {
                             <FormControl>
                               <div className="relative">
                                 <AtSign className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                                <Input 
-                                  placeholder="you@example.com" 
-                                  className="pl-10" 
-                                  {...field} 
-                                />
+                                <Input placeholder="you@example.com" className="pl-10" {...field} />
                               </div>
                             </FormControl>
                             <FormMessage />
@@ -347,11 +332,11 @@ const Auth = () => {
                             <FormControl>
                               <div className="relative">
                                 <KeyRound className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                                <Input 
-                                  type="password" 
-                                  placeholder="••••••••" 
-                                  className="pl-10" 
-                                  {...field} 
+                                <Input
+                                  type="password"
+                                  placeholder="••••••••"
+                                  className="pl-10"
+                                  {...field}
                                 />
                               </div>
                             </FormControl>
@@ -368,11 +353,11 @@ const Auth = () => {
                             <FormControl>
                               <div className="relative">
                                 <KeyRound className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                                <Input 
-                                  type="password" 
-                                  placeholder="••••••••" 
-                                  className="pl-10" 
-                                  {...field} 
+                                <Input
+                                  type="password"
+                                  placeholder="••••••••"
+                                  className="pl-10"
+                                  {...field}
                                 />
                               </div>
                             </FormControl>
@@ -381,14 +366,14 @@ const Auth = () => {
                         )}
                       />
                       <Button type="submit" className="w-full" disabled={isLoading}>
-                        {isLoading ? "Creating account..." : "Create Account"}
+                        {isLoading ? 'Creating account...' : 'Create Account'}
                       </Button>
                     </form>
                   </Form>
                 </CardContent>
                 <CardFooter className="flex justify-center">
                   <p className="text-sm text-muted-foreground">
-                    Already have an account?{" "}
+                    Already have an account?{' '}
                     <a className="text-primary underline cursor-pointer" onClick={switchToLogin}>
                       Log in
                     </a>

@@ -1,5 +1,4 @@
-
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
@@ -7,7 +6,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
+} from '@/components/ui/card';
 import {
   Form,
   FormControl,
@@ -16,16 +15,16 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Textarea } from "@/components/ui/textarea";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Input } from "@/components/ui/input";
-import { useToast } from "@/components/ui/use-toast";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { Project, Task } from "@/lib/types";
-import { useEffect } from "react";
+} from '@/components/ui/form';
+import { Textarea } from '@/components/ui/textarea';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Input } from '@/components/ui/input';
+import { useToast } from '@/components/ui/use-toast';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { Project, Task } from '@/lib/types';
+import { useEffect } from 'react';
 
 interface HelpRequestFormProps {
   projectId: string;
@@ -34,55 +33,57 @@ interface HelpRequestFormProps {
 }
 
 const formSchema = z.object({
-  projectId: z.string().min(1, { message: "Please select a project" }),
+  projectId: z.string().min(1, { message: 'Please select a project' }),
   taskId: z.string().optional(),
-  type: z.enum(["help", "code-review"], {
-    required_error: "Please select the type of help you need",
+  type: z.enum(['help', 'code-review'], {
+    required_error: 'Please select the type of help you need',
   }),
   description: z.string().min(20, {
-    message: "Description must be at least 20 characters",
+    message: 'Description must be at least 20 characters',
   }),
   codeSnippet: z.string().optional(),
-  repositoryUrl: z.string().url({ message: "Please enter a valid URL" }).optional().or(z.literal('')),
+  repositoryUrl: z
+    .string()
+    .url({ message: 'Please enter a valid URL' })
+    .optional()
+    .or(z.literal('')),
 });
 
 const HelpRequestForm = ({ projectId, taskId, projects }: HelpRequestFormProps) => {
   const { toast } = useToast();
-  
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      projectId: projectId || "",
-      taskId: taskId || "",
-      type: "help",
-      description: "",
-      codeSnippet: "",
-      repositoryUrl: "",
+      projectId: projectId || '',
+      taskId: taskId || '',
+      type: 'help',
+      description: '',
+      codeSnippet: '',
+      repositoryUrl: '',
     },
   });
 
-  const selectedProject = projects.find(
-    (project) => project.id === form.watch("projectId")
-  );
-  
-  const helpType = form.watch("type");
+  const selectedProject = projects.find(project => project.id === form.watch('projectId'));
+
+  const helpType = form.watch('type');
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     // Handle form submission - in a real app, this would send the request to the backend
     console.log(values);
     toast({
-      title: "Help request submitted",
+      title: 'Help request submitted',
       description: "We'll get back to you as soon as possible.",
     });
     form.reset();
   }
-  
+
   // Reset codeSnippet or repositoryUrl field based on type selection
   useEffect(() => {
-    if (helpType === "help") {
-      form.setValue("repositoryUrl", "");
-    } else if (helpType === "code-review") {
-      form.setValue("codeSnippet", "");
+    if (helpType === 'help') {
+      form.setValue('repositoryUrl', '');
+    } else if (helpType === 'code-review') {
+      form.setValue('codeSnippet', '');
     }
   }, [helpType, form]);
 
@@ -109,7 +110,7 @@ const HelpRequestForm = ({ projectId, taskId, projects }: HelpRequestFormProps) 
                       {...field}
                     >
                       <option value="">Select a project</option>
-                      {projects.map((project) => (
+                      {projects.map(project => (
                         <option key={project.id} value={project.id}>
                           {project.title}
                         </option>
@@ -134,7 +135,7 @@ const HelpRequestForm = ({ projectId, taskId, projects }: HelpRequestFormProps) 
                         {...field}
                       >
                         <option value="">Select a specific task</option>
-                        {selectedProject.tasks.map((task) => (
+                        {selectedProject.tasks.map(task => (
                           <option key={task.id} value={task.id}>
                             {task.name}
                           </option>
@@ -166,17 +167,13 @@ const HelpRequestForm = ({ projectId, taskId, projects }: HelpRequestFormProps) 
                         <FormControl>
                           <RadioGroupItem value="help" />
                         </FormControl>
-                        <FormLabel className="font-normal">
-                          I'm stuck and need help
-                        </FormLabel>
+                        <FormLabel className="font-normal">I'm stuck and need help</FormLabel>
                       </FormItem>
                       <FormItem className="flex items-center space-x-3 space-y-0">
                         <FormControl>
                           <RadioGroupItem value="code-review" />
                         </FormControl>
-                        <FormLabel className="font-normal">
-                          I want my code reviewed
-                        </FormLabel>
+                        <FormLabel className="font-normal">I want my code reviewed</FormLabel>
                       </FormItem>
                     </RadioGroup>
                   </FormControl>
@@ -206,7 +203,7 @@ const HelpRequestForm = ({ projectId, taskId, projects }: HelpRequestFormProps) 
               )}
             />
 
-            {helpType === "help" && (
+            {helpType === 'help' && (
               <FormField
                 control={form.control}
                 name="codeSnippet"
@@ -229,7 +226,7 @@ const HelpRequestForm = ({ projectId, taskId, projects }: HelpRequestFormProps) 
               />
             )}
 
-            {helpType === "code-review" && (
+            {helpType === 'code-review' && (
               <FormField
                 control={form.control}
                 name="repositoryUrl"
@@ -237,10 +234,7 @@ const HelpRequestForm = ({ projectId, taskId, projects }: HelpRequestFormProps) 
                   <FormItem>
                     <FormLabel>Repository URL</FormLabel>
                     <FormControl>
-                      <Input
-                        placeholder="https://github.com/username/repository"
-                        {...field}
-                      />
+                      <Input placeholder="https://github.com/username/repository" {...field} />
                     </FormControl>
                     <FormDescription>
                       Please provide a link to your GitHub or other source control repository.

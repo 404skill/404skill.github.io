@@ -1,7 +1,7 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { ArrowRight, Terminal } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { ArrowRight, Terminal } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 interface HeroSectionProps {
   isLoggedIn: boolean;
@@ -28,31 +28,39 @@ const HeroSection = ({ isLoggedIn, isVisible }: HeroSectionProps) => {
       </h1>
       {/* Subheadline */}
       <p className="text-lg sm:text-xl text-slate-600 max-w-2xl mx-auto text-center mb-10">
-        Build real-world backend systems, get expert feedback, and accelerate your growth as an engineer.
+        Build real-world backend systems, get expert feedback, and accelerate your growth as an
+        engineer.
       </p>
       {/* CTA Button */}
       <div className="flex flex-col items-center gap-3 w-full">
         {isLoggedIn ? (
           <Link to="/dashboard">
-            <Button size="lg" className="gap-2 font-mono bg-primary text-primary-foreground shadow-lg rounded-full px-8 py-3 hover:bg-primary/90 transition-all duration-200">
+            <Button
+              size="lg"
+              className="gap-2 font-mono bg-primary text-primary-foreground shadow-lg rounded-full px-8 py-3 hover:bg-primary/90 transition-all duration-200"
+            >
               Go to Projects
               <ArrowRight className="ml-1 h-5 w-5" />
             </Button>
           </Link>
         ) : (
           <Link to="/auth">
-            <Button size="lg" className="gap-2 font-mono bg-primary text-primary-foreground shadow-lg rounded-full px-8 py-3 hover:bg-primary/90 transition-all duration-200">
+            <Button
+              size="lg"
+              className="gap-2 font-mono bg-primary text-primary-foreground shadow-lg rounded-full px-8 py-3 hover:bg-primary/90 transition-all duration-200"
+            >
               <Terminal className="h-5 w-5" />
               Start Your Growth Journey
               <ArrowRight className="ml-1 h-5 w-5" />
             </Button>
           </Link>
         )}
-        <span className="text-sm text-slate-500 mt-2">14-day risk-free trial • No credit card required</span>
+        <span className="text-sm text-slate-500 mt-2">
+          14-day risk-free trial • No credit card required
+        </span>
       </div>
     </section>
   );
 };
 
 export default HeroSection;
-

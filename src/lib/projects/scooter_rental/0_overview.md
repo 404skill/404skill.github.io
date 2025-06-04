@@ -1,4 +1,3 @@
-
 # Scooter Rental System — Overview
 
 This project challenges you to build a comprehensive system for managing electric scooter rentals. You'll develop a solution that handles user management, scooter inventory, rental logic, location tracking, and payment processing.

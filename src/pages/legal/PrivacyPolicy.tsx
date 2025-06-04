@@ -1,17 +1,15 @@
-import React from "react";
+import React from 'react';
 
 const PrivacyPolicy = () => {
   return (
     <div className="container max-w-4xl py-12">
       <h1 className="text-3xl font-bold mb-8">Privacy Policy</h1>
-      
+
       <div className="prose prose-gray dark:prose-invert">
         <p className="text-muted-foreground">Last updated: {new Date().toLocaleDateString()}</p>
 
         <h2>1. Information We Collect</h2>
-        <p>
-          We collect information that you provide directly to us, including:
-        </p>
+        <p>We collect information that you provide directly to us, including:</p>
         <ul>
           <li>Account information (name, email, password)</li>
           <li>Profile information (bio, profile picture)</li>
@@ -21,9 +19,7 @@ const PrivacyPolicy = () => {
         </ul>
 
         <h2>2. How We Use Your Information</h2>
-        <p>
-          We use the information we collect to:
-        </p>
+        <p>We use the information we collect to:</p>
         <ul>
           <li>Provide, maintain, and improve our services</li>
           <li>Process your transactions</li>
@@ -34,9 +30,7 @@ const PrivacyPolicy = () => {
         </ul>
 
         <h2>3. Information Sharing</h2>
-        <p>
-          We do not share your personal information with third parties except:
-        </p>
+        <p>We do not share your personal information with third parties except:</p>
         <ul>
           <li>With your consent</li>
           <li>To comply with legal obligations</li>
@@ -51,9 +45,7 @@ const PrivacyPolicy = () => {
         </p>
 
         <h2>5. Your Rights</h2>
-        <p>
-          You have the right to:
-        </p>
+        <p>You have the right to:</p>
         <ul>
           <li>Access your personal information</li>
           <li>Correct inaccurate information</li>
@@ -64,9 +56,9 @@ const PrivacyPolicy = () => {
 
         <h2>6. Cookies and Tracking</h2>
         <p>
-          We use cookies and similar tracking technologies to track activity on our Service and
-          hold certain information. You can instruct your browser to refuse all cookies or to
-          indicate when a cookie is being sent.
+          We use cookies and similar tracking technologies to track activity on our Service and hold
+          certain information. You can instruct your browser to refuse all cookies or to indicate
+          when a cookie is being sent.
         </p>
 
         <h2>7. Children's Privacy</h2>
@@ -77,8 +69,8 @@ const PrivacyPolicy = () => {
 
         <h2>8. Changes to This Policy</h2>
         <p>
-          We may update our Privacy Policy from time to time. We will notify you of any changes
-          by posting the new Privacy Policy on this page and updating the "Last updated" date.
+          We may update our Privacy Policy from time to time. We will notify you of any changes by
+          posting the new Privacy Policy on this page and updating the "Last updated" date.
         </p>
 
         <h2>9. Contact Us</h2>
@@ -92,4 +84,4 @@ const PrivacyPolicy = () => {
   );
 };
 
-export default PrivacyPolicy; 
+export default PrivacyPolicy;

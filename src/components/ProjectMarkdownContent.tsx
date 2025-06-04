@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 
@@ -7,7 +6,10 @@ interface ProjectMarkdownContentProps {
   className?: string;
 }
 
-const ProjectMarkdownContent: React.FC<ProjectMarkdownContentProps> = ({ filePath, className = '' }) => {
+const ProjectMarkdownContent: React.FC<ProjectMarkdownContentProps> = ({
+  filePath,
+  className = '',
+}) => {
   const [content, setContent] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -16,20 +18,20 @@ const ProjectMarkdownContent: React.FC<ProjectMarkdownContentProps> = ({ filePat
     const fetchContent = async () => {
       try {
         setIsLoading(true);
-        
+
         // Get the markdown content based on the file path
         const markdownContent = getMarkdownContent(filePath);
-        
+
         if (markdownContent) {
           setContent(markdownContent);
         } else {
-          throw new Error("Failed to load markdown content");
+          throw new Error('Failed to load markdown content');
         }
-        
+
         setIsLoading(false);
       } catch (err) {
-        console.error("Error loading markdown:", err);
-        setError("Failed to load content");
+        console.error('Error loading markdown:', err);
+        setError('Failed to load content');
         setIsLoading(false);
       }
     };
@@ -48,7 +50,7 @@ const ProjectMarkdownContent: React.FC<ProjectMarkdownContentProps> = ({ filePat
       'library_management/4_add_new_item_cds.md': getAddNewItemCds(),
       'library_management/5_promotion_system.md': getPromotionSystem(),
     };
-    
+
     return markdownFiles[path] || '';
   };
 

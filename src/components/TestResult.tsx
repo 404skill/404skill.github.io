@@ -1,8 +1,7 @@
-
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { TestResult as TestResultType } from "@/lib/types";
-import { CheckCircle, XCircle, AlertCircle } from "lucide-react";
-import { formatDistanceToNow } from "date-fns";
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { TestResult as TestResultType } from '@/lib/types';
+import { CheckCircle, XCircle, AlertCircle } from 'lucide-react';
+import { formatDistanceToNow } from 'date-fns';
 
 interface TestResultDisplayProps {
   result: TestResultType;
@@ -35,11 +34,11 @@ const TestResultDisplay = ({ result, taskName }: TestResultDisplayProps) => {
             </span>
           </div>
           <AlertDescription className="mt-1">
-            {result.status === 'passed' 
-              ? 'All tests passed successfully!' 
+            {result.status === 'passed'
+              ? 'All tests passed successfully!'
               : result.errorMessage || 'Test failed'}
           </AlertDescription>
-          
+
           {result.errorMessage && (
             <pre className="mt-2 p-2 bg-card rounded text-xs font-mono overflow-x-auto">
               {result.errorMessage}
