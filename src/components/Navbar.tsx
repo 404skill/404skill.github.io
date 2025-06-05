@@ -128,15 +128,15 @@ const Navbar = () => {
                 <span className="hidden sm:inline">Projects</span>
               </Link>
 
-              <Link
-                to="/help"
-                className={`text-sm font-medium flex items-center gap-1 transition-colors hover:text-primary ${
-                  location.pathname === '/help' ? 'text-primary' : 'text-muted-foreground'
-                }`}
-              >
-                <HelpCircle className="h-4 w-4" />
-                <span className="hidden sm:inline">Get Help</span>
-              </Link>
+              {/*<Link*/}
+              {/*  to="/help"*/}
+              {/*  className={`text-sm font-medium flex items-center gap-1 transition-colors hover:text-primary ${*/}
+              {/*    location.pathname === '/help' ? 'text-primary' : 'text-muted-foreground'*/}
+              {/*  }`}*/}
+              {/*>*/}
+              {/*  <HelpCircle className="h-4 w-4" />*/}
+              {/*  <span className="hidden sm:inline">Get Help</span>*/}
+              {/*</Link>*/}
 
               <Button
                 variant="ghost"

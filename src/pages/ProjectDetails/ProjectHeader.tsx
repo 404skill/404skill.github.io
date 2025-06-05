@@ -60,10 +60,10 @@ export const ProjectHeader: React.FC<ProjectHeaderProps> = ({
         <div className="flex gap-2">
           <Dialog open={isHelpDialogOpen} onOpenChange={setHelpDialogOpen}>
             <DialogTrigger asChild>
-              <Button className="bg-blue-600 hover:bg-blue-700 text-white font-mono">
-                <HelpCircle className="mr-2 h-4 w-4" />
-                Get Help
-              </Button>
+              {/*<Button className="bg-blue-600 hover:bg-blue-700 text-white font-mono">*/}
+              {/*  <HelpCircle className="mr-2 h-4 w-4" />*/}
+              {/*  Get Help*/}
+              {/*</Button>*/}
             </DialogTrigger>
             <DialogContent className="max-w-lg bg-white border-slate-200">
               <HelpRequestForm projectId={project.id} taskId={selectedTaskId} projects={projects} />

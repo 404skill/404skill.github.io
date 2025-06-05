@@ -40,16 +40,16 @@ const ProjectsDashboardHeader: FC<ProjectsDashboardHeaderProps> = ({ userName })
                 Continue learning or start a new project.
               </p>
             </div>
-            <Button
-              variant="default"
-              asChild
-              className="animate-fade-in bg-blue-600 hover:bg-blue-700 font-mono"
-            >
-              <a href="/help" className="flex items-center gap-2">
-                <PlusCircle className="h-4 w-4" />
-                <span>Request Help</span>
-              </a>
-            </Button>
+            {/*<Button*/}
+            {/*  variant="default"*/}
+            {/*  asChild*/}
+            {/*  className="animate-fade-in bg-blue-600 hover:bg-blue-700 font-mono"*/}
+            {/*>*/}
+            {/*  <a href="/help" className="flex items-center gap-2">*/}
+            {/*    <PlusCircle className="h-4 w-4" />*/}
+            {/*    <span>Request Help</span>*/}
+            {/*  </a>*/}
+            {/*</Button>*/}
           </div>
         </div>
       </div>
