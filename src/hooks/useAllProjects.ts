@@ -1,68 +1,20 @@
 // src/hooks/useAllProjects.ts
-import { useEffect, useState } from 'react';
-import type { Project } from '@/lib/types';
+import { useState, useEffect } from 'react';
 import { fetchAllProjects } from '@/lib/api';
-import { convertProjects } from '@/lib/converter';
+import { ProjectDTO } from '@/lib/types';
 
-interface UseAllProjects {
-  projects: Project[];
-  filtered: Project[];
-  searchTerm: string;
-  difficultyFilter: string[];
-  setSearchTerm: (s: string) => void;
-  toggleDifficulty: (level: string) => void;
-  loading: boolean;
-}
-
-export function useAllProjects(): UseAllProjects {
-  const [projects, setProjects] = useState<Project[]>([]);
-  const [filtered, setFiltered] = useState<Project[]>([]);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [difficultyFilter, setDifficultyFilter] = useState<string[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+export function useAllProjects() {
+  const [projects, setProjects] = useState<ProjectDTO[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
-    (async () => {
-      try {
-        const data = await fetchAllProjects();
-        const converted = convertProjects(data);
-        setProjects(converted);
-        setFiltered(converted);
-      } catch (err) {
-        console.error('useAllProjects: failed to load all projects', err);
-      } finally {
-        setLoading(false);
-      }
-    })();
+    setIsLoading(true);
+    fetchAllProjects()
+        .then((data) => setProjects(data))
+        .catch((err) => setError(err))
+        .finally(() => setIsLoading(false));
   }, []);
 
-  useEffect(() => {
-    let temp = projects;
-    if (searchTerm) {
-      temp = temp.filter(
-        p => p.title.toLowerCase().includes(searchTerm.toLowerCase()),
-        // || p.description.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-    }
-    if (difficultyFilter.length) {
-      temp = temp.filter(p => difficultyFilter.includes(p.difficulty));
-    }
-    setFiltered(temp);
-  }, [searchTerm, difficultyFilter, projects]);
-
-  const toggleDifficulty = (level: string) => {
-    setDifficultyFilter(prev =>
-      prev.includes(level) ? prev.filter(x => x !== level) : [...prev, level],
-    );
-  };
-
-  return {
-    projects,
-    filtered,
-    searchTerm,
-    difficultyFilter,
-    setSearchTerm,
-    toggleDifficulty,
-    loading,
-  };
+  return { allProjects: projects, allLoading: isLoading, allError: error };
 }

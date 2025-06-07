@@ -1,5 +1,12 @@
+// src/api.ts
+
 import axios from 'axios';
-import { Project, TestResult, Task, Test, ProfileTest, ProjectCompletion } from './types';
+import {
+  ProjectDTO,
+  ProjectMetricsDTO,
+  TaskWithMetricsDTO,
+  TestsByTaskDTO,
+} from './types';
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
@@ -7,9 +14,9 @@ const api = axios.create({
   baseURL: API_BASE,
 });
 
-api.interceptors.request.use(config => {
+api.interceptors.request.use((config) => {
   const token = JSON.parse(
-    localStorage.getItem('sb-smzmwxqzmiswsnvsvjms-auth-token') || '{}',
+      localStorage.getItem('sb-smzmwxqzmiswsnvsvjms-auth-token') || '{}'
   )?.access_token;
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
@@ -17,42 +24,49 @@ api.interceptors.request.use(config => {
   return config;
 });
 
-export const fetchAllProjects = async (): Promise<Project[]> => {
-  const res = await api.get('/projects');
+// 1. Fetch all available projects (public)
+export const fetchAllProjects = async (): Promise<ProjectDTO[]> => {
+  const res = await api.get<ProjectDTO[]>('/projects');
   return res.data;
 };
 
-export const fetchProject = async (id: string): Promise<Project> => {
-  const res = await api.get(`/projects/${id}`);
+export const fetchProject = async (projectId: string): Promise<ProjectDTO> => {
+  const res = await api.get<ProjectDTO>(`/projects/${projectId}`);
   return res.data;
 };
 
-export const fetchUserProjects = async (id: string): Promise<Project[]> => {
-  const res = await api.get(`/profile-projects/with-projects`);
+// 2. Fetch “my” (authenticated user’s) projects
+export const fetchUserProjects = async (): Promise<ProjectDTO[]> => {
+  const res = await api.get<ProjectDTO[]>('/me/projects');
   return res.data;
 };
 
-export const fetchProjectTasks = async (projectId: string): Promise<Task[]> => {
-  const res = await api.get(`/projects/${projectId}/tasks`);
+// 3. Fetch completion summary for all my projects
+export const fetchAllProjectsCompletion = async (): Promise<ProjectMetricsDTO[]> => {
+  const res = await api.get<ProjectMetricsDTO[]>('/me/projects/completion');
   return res.data;
 };
 
-export const fetchProjectTests = async (projectId: string): Promise<Test[]> => {
-  const res = await api.get(`/projects/${projectId}/tests`);
+// 4. Fetch completion summary for one specific project
+export const fetchProjectCompletion = async (
+    projectId: string
+): Promise<ProjectMetricsDTO> => {
+  const res = await api.get<ProjectMetricsDTO>(`/me/projects/${projectId}/completion`);
   return res.data;
 };
 
-export const fetchTaskTests = async (taskId: string): Promise<Test[]> => {
-  const res = await api.get(`/tasks/${taskId}/tests`);
+// 5. Fetch all tasks (with per-task metrics) under one project
+export const fetchProjectTasks = async (
+    projectId: string
+): Promise<TaskWithMetricsDTO[]> => {
+  const res = await api.get<TaskWithMetricsDTO[]>(`/projects/${projectId}/tasks`);
   return res.data;
 };
 
-export const fetchProjectTestResults = async (projectId: string): Promise<ProfileTest[]> => {
-  const res = await api.get(`/projects/${projectId}/profile-tests`);
-  return res.data;
-};
-
-export const fetchProjectCompletion = async (projectId: string): Promise<ProjectCompletion> => {
-  const res = await api.get(`/projects/${projectId}/completion`);
+// 6. Fetch all tests in a project, grouped by task (with per-test status & per-task aggregates)
+export const fetchTestsByTaskForProject = async (
+    projectId: string
+): Promise<TestsByTaskDTO[]> => {
+  const res = await api.get<TestsByTaskDTO[]>(`/projects/${projectId}/tests`);
   return res.data;
 };

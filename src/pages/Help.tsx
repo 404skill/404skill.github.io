@@ -2,8 +2,6 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { User } from '@/lib/types';
 import Navbar from '@/components/Navbar';
-import HelpRequestForm from '@/components/HelpRequestForm';
-import { projects } from '@/lib/data';
 import { AlertCircle, CheckCircle, Clock, HelpCircle, MessageSquare } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -59,10 +57,6 @@ const Help = () => {
                     My Requests
                   </TabsTrigger>
                 </TabsList>
-
-                <TabsContent value="new-request">
-                  <HelpRequestForm projectId="" projects={projects} />
-                </TabsContent>
 
                 <TabsContent value="my-requests">
                   <div className="space-y-4">

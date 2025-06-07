@@ -1,38 +1,20 @@
 // src/hooks/useProjectCompletion.ts
-import { useEffect, useState } from 'react';
-import { fetchProjectCompletion } from '@/lib/api'; // your helper
 
-interface Completion {
-  passed: number;
-  total: number;
-}
+import { useQuery } from '@tanstack/react-query';
+import { fetchProjectCompletion } from '@/lib/api';
+import type { ProjectMetricsDTO } from '@/lib/types';
 
-export function useProjectCompletion(projectId: string | null) {
-  const [completion, setCompletion] = useState<Completion>({ passed: 0, total: 0 });
-  const [loading, setLoading] = useState<boolean>(false);
+/**
+ * Fetch completion summary for a project.
+ * Returns { metrics, isLoading, error, refetch }.
+ */
+export function useProjectCompletion(projectId: string) {
+  const { data: metrics, isLoading, error, refetch } = useQuery<ProjectMetricsDTO, Error>({
+    queryKey: ['projectCompletion', projectId],
+    queryFn: () => fetchProjectCompletion(projectId),
+    enabled: Boolean(projectId),
+    retry: false,
+  });
 
-  useEffect(() => {
-    if (!projectId) return;
-    let isActive = true;
-    setLoading(true);
-
-    fetchProjectCompletion(projectId)
-      .then((data: Completion) => {
-        if (isActive) {
-          setCompletion({ passed: data.passed, total: data.total });
-        }
-      })
-      .catch(err => {
-        console.error('Failed to fetch completion for', projectId, err);
-      })
-      .finally(() => {
-        if (isActive) setLoading(false);
-      });
-
-    return () => {
-      isActive = false;
-    };
-  }, [projectId]);
-
-  return { completion, loading };
+  return { metrics, isLoading, error, refetch };
 }

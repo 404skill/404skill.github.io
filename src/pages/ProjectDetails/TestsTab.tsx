@@ -1,190 +1,220 @@
-// src/components/TestsTab.tsx
 import React, { useState } from 'react';
 import type { FC } from 'react';
-import type { Project, TestResult, Test } from '@/lib/types';
+
 import {
-  CheckCircle,
-  CircleAlert,
-  CircleHelp,
-  Clock,
-  ChevronDown,
-  ChevronUp,
-  LucideIcon,
+    CheckCircle,
+    CircleAlert,
+    CircleHelp,
+    Clock,
+    ChevronDown,
+    ChevronUp,
+    type LucideIcon,
 } from 'lucide-react';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { formatDistanceToNow } from 'date-fns';
+
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
+import { Button } from '@/components/ui/button';
+
+import type { TestsByTaskDTO } from '@/lib/types';
 import TestRow from '@/components/TestRow';
+import TestsTabSkeleton from "@/components/skeletons/TestsTabSkeleton.tsx";
 
 interface TestsTabProps {
-  project: Project;
-  results: TestResult[];
+    projectId: string;
+    testsByTask: TestsByTaskDTO[];
+    testsLoading: boolean;
+    testsError: Error | null;
+    refetchTests: () => void;
 }
 
-const SuiteStatusIcon = ({ status }: { status: TestResult['status'] | 'not-attempted' }) => {
-  let Icon: LucideIcon;
-  let color: string;
-  let label: string;
+const SuiteStatusIcon = ({ status }: { status: 'passed' | 'failed' | 'not-attempted' }) => {
+    let Icon: LucideIcon;
+    let color: string;
+    let label: string;
 
-  switch (status) {
-    case 'passed':
-      Icon = CheckCircle;
-      color = 'text-green-500';
-      label = 'Passed';
-      break;
-    case 'failed':
-      Icon = CircleAlert;
-      color = 'text-red-500';
-      label = 'Failed';
-      break;
-    case 'not-attempted':
-      Icon = Clock;
-      color = 'text-slate-400';
-      label = 'Not Attempted';
-      break;
-    default:
-      Icon = CircleHelp;
-      color = 'text-slate-400';
-      label = 'Unknown';
-  }
+    switch (status) {
+        case 'passed':
+            Icon = CheckCircle;
+            color = 'text-green-500';
+            label = 'Passed';
+            break;
+        case 'failed':
+            Icon = CircleAlert;
+            color = 'text-red-500';
+            label = 'Failed';
+            break;
+        case 'not-attempted':
+            Icon = Clock;
+            color = 'text-slate-400';
+            label = 'Not Attempted';
+            break;
+        default:
+            Icon = CircleHelp;
+            color = 'text-slate-400';
+            label = 'Unknown';
+    }
 
-  return (
-    <TooltipProvider delayDuration={300}>
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <div className={color}>
-            <Icon className="h-5 w-5" />
-          </div>
-        </TooltipTrigger>
-        <TooltipContent className="bg-white text-slate-800 border-slate-200">
-          <p className="font-mono text-xs">{label}</p>
-        </TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
-  );
+    return (
+        <TooltipProvider delayDuration={300}>
+            <Tooltip>
+                <TooltipTrigger asChild>
+                    <div className={color}>
+                        <Icon className="h-5 w-5" />
+                    </div>
+                </TooltipTrigger>
+                <TooltipContent className="bg-white text-slate-800 border-slate-200">
+                    <p className="font-mono text-xs">{label}</p>
+                </TooltipContent>
+            </Tooltip>
+        </TooltipProvider>
+    );
 };
 
-const TestsTab: FC<TestsTabProps> = ({ project, results }) => {
-  // Track open/closed state per task ID
-  const [openSuites, setOpenSuites] = useState<Record<string, boolean>>({});
+const TestsTab: FC<TestsTabProps> = ({
+                                         projectId,
+                                         testsByTask,
+                                         testsLoading,
+                                         testsError,
+                                         refetchTests,
+                                     }) => {
+    // 1) Local state for open/closed collapse
+    const [openSuites, setOpenSuites] = useState<Record<string, boolean>>({});
 
-  const toggleSuite = (taskId: string) => {
-    setOpenSuites(prev => ({
-      ...prev,
-      [taskId]: !prev[taskId],
-    }));
-  };
+    const toggleSuite = (taskId: string) => {
+        setOpenSuites((prev) => ({
+            ...prev,
+            [taskId]: !prev[taskId],
+        }));
+    };
 
-  return (
-    <div className="space-y-3">
-      <h3 className="text-lg font-medium font-mono text-slate-800 mb-4">Project Tests</h3>
-
-      {project.tasks.map((task, taskIndex) => {
-        // 1) Look up all tests that belong to this task:
-        const allTests: Test[] = task.tests;
-        // If there are no tests defined for this task, skip it entirely.
-        if (allTests.length === 0) {
-          return null;
-        }
-
-        // 2) Of those, find which tests the user has actually run:
-        const taskResults = results.filter(r => r.taskId === task.id);
-
-        // 3) Determine suite status (passed/failed/not-attempted)
-        const hasFailure = taskResults.some(r => r.status === 'failed');
-        const allPassed = taskResults.every(r => r.status === 'passed');
-        // If no results at all, treat as "not-attempted"
-        const suiteStatus: TestResult['status'] = hasFailure
-          ? 'failed'
-          : allPassed && taskResults.length > 0
-            ? 'passed'
-            : 'not-attempted';
-
-        // 4) Find latest timestamp among that suite’s results (if any)
-        const latestTimestamp = taskResults.length
-          ? taskResults.reduce((latest, r) =>
-              new Date(r.timestamp) > new Date(latest.timestamp) ? r : latest,
-            ).timestamp
-          : '';
-
-        // 5) Count how many have passed; but now compute totalCount = number of defined tests
-        const passedCount = taskResults.filter(r => r.status === 'passed').length;
-        const totalCount = allTests.length; // <— ​use number of all tests in this suite
-        const percent = totalCount > 0 ? Math.round((passedCount / totalCount) * 100) : 0;
-
-        const suiteBg =
-          suiteStatus === 'passed'
-            ? 'bg-green-50'
-            : suiteStatus === 'failed'
-              ? 'bg-red-50'
-              : 'bg-slate-100';
-
-        const isOpen = openSuites[task.id] || false;
-        const suiteNumber = taskIndex + 1;
-
+    // 2) Loading / error states
+    if (testsLoading) {
+        return <TestsTabSkeleton />;
+    }
+    if (testsError) {
         return (
-          <React.Fragment key={task.id}>
-            <Collapsible
-              open={isOpen}
-              onOpenChange={() => toggleSuite(task.id)}
-              className={`rounded-lg border ${
-                suiteStatus === 'passed'
-                  ? 'border-green-500/40'
-                  : suiteStatus === 'failed'
-                    ? 'border-red-500/40'
-                    : 'border-slate-200'
-              } ${suiteBg}`}
-            >
-              <div className="p-4">
-                <div className="flex items-start gap-3">
-                  <div className="flex-shrink-0 mt-1">
-                    <SuiteStatusIcon status={suiteStatus} />
-                  </div>
-                  <div className="flex-1">
-                    <div className="flex justify-between items-center">
-                      <CollapsibleTrigger asChild>
-                        <button className="flex items-center gap-2 text-left font-medium font-mono text-slate-800 focus:outline-none">
-                          <span>
-                            {suiteNumber}. {task.name}
-                          </span>
-                          {isOpen ? (
-                            <ChevronUp className="h-4 w-4 text-slate-400" />
-                          ) : (
-                            <ChevronDown className="h-4 w-4 text-slate-400" />
-                          )}
-                        </button>
-                      </CollapsibleTrigger>
+            <div className="py-12 text-center font-mono text-red-500 space-y-2">
+                <div>Error loading tests</div>
+                <Button onClick={() => refetchTests()} className="font-mono text-sm">
+                    Retry fetching tests
+                </Button>
+            </div>
+        );
+    }
+    if (!testsByTask || testsByTask.length === 0) {
+        return (
+            <div className="py-12 text-center font-mono">
+                No tests found for this project.
+            </div>
+        );
+    }
 
-                      <div className="flex items-center gap-12">
-                        {latestTimestamp && (
-                          <span className="text-xs text-slate-500 font-mono">
-                            {formatDistanceToNow(new Date(latestTimestamp), {
-                              addSuffix: true,
-                            })}
+    return (
+        <div className="space-y-3">
+            <h3 className="text-lg font-medium font-mono text-slate-800 mb-4">
+                Project Tests
+            </h3>
+
+            {testsByTask.map((group: TestsByTaskDTO, taskIndex: number) => {
+                // 1) Grab the array of tests under this task
+                const allTests = group.tests;
+
+                // 2) Determine suite status
+                const hasFailure = allTests.some((t) => t.status === 'failed');
+                const allPassed = allTests.every((t) => t.status === 'passed');
+                const hasAnyRun = allTests.some((t) => t.status !== null);
+
+                const suiteStatus: 'passed' | 'failed' | 'not-attempted' = hasFailure
+                    ? 'failed'
+                    : allPassed && hasAnyRun
+                        ? 'passed'
+                        : 'not-attempted';
+
+                // 3) Compute percent (passed count / total count)
+                const passedCount = allTests.filter((t) => t.status === 'passed').length;
+                const totalCount = allTests.length;
+                const percent = totalCount > 0 ? Math.round((passedCount / totalCount) * 100) : 0;
+
+                // 4) CSS classes for status background
+                const suiteBg =
+                    suiteStatus === 'passed'
+                        ? 'bg-green-50'
+                        : suiteStatus === 'failed'
+                            ? 'bg-red-50'
+                            : 'bg-slate-100';
+
+                const isOpen = openSuites[group.taskId] || false;
+                const suiteNumber = taskIndex + 1;
+
+                return (
+                    <React.Fragment key={group.taskId}>
+                        <Collapsible
+                            open={isOpen}
+                            onOpenChange={() => toggleSuite(group.taskId)}
+                            className={`rounded-lg border ${
+                                suiteStatus === 'passed'
+                                    ? 'border-green-500/40'
+                                    : suiteStatus === 'failed'
+                                        ? 'border-red-500/40'
+                                        : 'border-slate-200'
+                            } ${suiteBg}`}
+                        >
+                            <div className="p-4">
+                                <div className="flex items-start gap-3">
+                                    <div className="flex-shrink-0 mt-1">
+                                        <SuiteStatusIcon status={suiteStatus} />
+                                    </div>
+                                    <div className="flex-1">
+                                        <div className="flex justify-between items-center">
+                                            <CollapsibleTrigger asChild>
+                                                <button className="flex items-center gap-2 text-left font-medium font-mono text-slate-800 focus:outline-none">
+                          <span>
+                            {suiteNumber}. {group.taskName}
                           </span>
-                        )}
+                                                    {isOpen ? (
+                                                        <ChevronUp className="h-4 w-4 text-slate-400" />
+                                                    ) : (
+                                                        <ChevronDown className="h-4 w-4 text-slate-400" />
+                                                    )}
+                                                </button>
+                                            </CollapsibleTrigger>
+
+                                            <div className="flex items-center gap-12">
                         <span className="text-xs text-slate-500 font-mono">
                           {percent}% complete ({passedCount}/{totalCount})
                         </span>
-                      </div>
-                    </div>
+                                            </div>
+                                        </div>
 
-                    <CollapsibleContent>
-                      <div className="mt-3 space-y-2">
-                        {taskResults.map((r, idx) => (
-                          <TestRow key={idx} result={r} testName={`${idx + 1}. ${r.name}`} />
-                        ))}
-                      </div>
-                    </CollapsibleContent>
-                  </div>
-                </div>
-              </div>
-            </Collapsible>
-          </React.Fragment>
-        );
-      })}
-    </div>
-  );
+                                        <CollapsibleContent>
+                                            <div className="mt-3 space-y-2">
+                                                {allTests.map((t) => (
+                                                    <TestRow
+                                                        key={t.testId}
+                                                        result={{
+                                                            taskId: group.taskId,
+                                                            projectId,
+                                                            status: t.status!,
+                                                            timestamp: t.lastRun,
+                                                            errorMessage: '',
+                                                            name: t.testName,
+                                                            testId: t.testId,
+                                                        }}
+                                                        testName={t.testName}
+                                                    />
+                                                ))}
+                                            </div>
+                                        </CollapsibleContent>
+                                    </div>
+                                </div>
+                            </div>
+                        </Collapsible>
+                    </React.Fragment>
+                );
+            })}
+        </div>
+    );
 };
 
 export default TestsTab;
