@@ -16,6 +16,7 @@ import ProjectsDashboardHeader from '@/pages/ProjectsDashboard/ProjectsDashboard
 import ProjectFilterBar from '@/pages/ProjectsDashboard/ProjectFilterBar';
 import { AllProjectsTab } from '@/pages/ProjectsDashboard/AllProjectsTab';
 import { MyProjectsTab } from '@/pages/ProjectsDashboard/MyProjectsTab';
+import { Button } from '@/components/ui/button';
 
 const ProjectsDashboard: React.FC = () => {
   const navigate = useNavigate();
@@ -23,8 +24,13 @@ const ProjectsDashboard: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'all-projects' | 'my-projects'>('all-projects');
 
   // 1) Fetch data
-  const { allProjects, allLoading, allError } = useAllProjects();
-  const { userProjects, myProjectsLoading, myProjectsError } = useUserProjects();
+  const {
+    allProjects,
+    allLoading,
+    allError,
+    refetchAllProjects
+  } = useAllProjects();
+  const { userProjects, myProjectsLoading, myProjectsError, refetchUserProjects } = useUserProjects();
 
   // 2) Filter state lifted here
   const [searchTerm, setSearchTerm] = useState<string>('');
@@ -166,6 +172,15 @@ const ProjectsDashboard: React.FC = () => {
                         <p className="text-muted-foreground mt-1 font-mono">
                           {allError.message}
                         </p>
+                        <Button
+                            onClick={() => {
+                              refetchAllProjects();
+                              refetchUserProjects();
+                            }}
+                            className="mt-4 font-mono text-sm"
+                        >
+                          Try Again
+                        </Button>
                       </CardContent>
                     </Card>
                 ) : filteredAllProjects.length === 0 ? (

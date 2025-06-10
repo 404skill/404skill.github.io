@@ -128,6 +128,7 @@ export interface ProjectMetricsDTO {
   passedTests: number;       // how many tests the user passed
   failedTests: number;       // how many tests the user failed
   notRunTests: number;       // totalTests - passedTests - failedTests
+  hasAccess?: boolean;
 }
 
 //

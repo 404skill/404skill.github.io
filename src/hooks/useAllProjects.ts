@@ -1,5 +1,5 @@
 // src/hooks/useAllProjects.ts
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { fetchAllProjects } from '@/lib/api';
 import { ProjectDTO } from '@/lib/types';
 
@@ -8,13 +8,27 @@ export function useAllProjects() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
-  useEffect(() => {
+  const loadProjects = useCallback(async () => {
     setIsLoading(true);
-    fetchAllProjects()
-        .then((data) => setProjects(data))
-        .catch((err) => setError(err))
-        .finally(() => setIsLoading(false));
+    setError(null);
+    try {
+      const data = await fetchAllProjects();
+      setProjects(data);
+    } catch (err) {
+      setError(err as Error);
+    } finally {
+      setIsLoading(false);
+    }
   }, []);
 
-  return { allProjects: projects, allLoading: isLoading, allError: error };
+  useEffect(() => {
+    loadProjects();
+  }, [loadProjects]);
+
+  return {
+    allProjects: projects,
+    allLoading: isLoading,
+    allError: error,
+    refetchAllProjects: loadProjects,
+  };
 }

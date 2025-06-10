@@ -118,6 +118,10 @@ const ProjectDetails: React.FC = () => {
                     Retry fetching project progress
                   </Button>
                 </div>
+            ) : completion?.hasAccess === false ? (
+                <div className="mt-6 text-xs font-mono text-yellow-600">
+                  Get the project before progress can be tracked.
+                </div>
             ) : completion ? (
                 <ProjectProgress completion={completion} />
             ) : null}

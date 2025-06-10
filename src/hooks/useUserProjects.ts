@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+// src/hooks/useUserProjects.ts
+import { useState, useEffect, useCallback } from 'react';
 import { ProjectDTO } from '@/lib/types';
 import { fetchUserProjects } from '@/lib/api';
 
@@ -7,13 +8,27 @@ export function useUserProjects() {
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<Error | null>(null);
 
-    useEffect(() => {
+    const loadUserProjects = useCallback(async () => {
         setIsLoading(true);
-        fetchUserProjects()
-            .then((data) => setProjects(data))
-            .catch((err) => setError(err))
-            .finally(() => setIsLoading(false));
+        setError(null);
+        try {
+            const data = await fetchUserProjects();
+            setProjects(data);
+        } catch (err) {
+            setError(err as Error);
+        } finally {
+            setIsLoading(false);
+        }
     }, []);
 
-    return { userProjects: projects, myProjectsLoading: isLoading, myProjectsError: error };
+    useEffect(() => {
+        loadUserProjects();
+    }, [loadUserProjects]);
+
+    return {
+        userProjects: projects,
+        myProjectsLoading: isLoading,
+        myProjectsError: error,
+        refetchUserProjects: loadUserProjects,
+    };
 }
