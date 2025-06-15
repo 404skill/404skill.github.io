@@ -166,19 +166,19 @@ const TestsTab: FC<TestsTabProps> = ({
                                         <SuiteStatusIcon status={suiteStatus} />
                                     </div>
                                     <div className="flex-1">
-                                        <div className="flex justify-between items-center">
-                                            <CollapsibleTrigger asChild>
+                                        <CollapsibleTrigger asChild>
+                                        <div className="flex justify-between items-center cursor-pointer">
+
                                                 <button className="flex items-center gap-2 text-left font-medium font-mono text-slate-800 focus:outline-none">
-                          <span>
-                            {suiteNumber}. {group.taskName}
-                          </span>
+                                                  <span>
+                                                    {suiteNumber}. {group.taskName}
+                                                  </span>
                                                     {isOpen ? (
                                                         <ChevronUp className="h-4 w-4 text-slate-400" />
                                                     ) : (
                                                         <ChevronDown className="h-4 w-4 text-slate-400" />
                                                     )}
                                                 </button>
-                                            </CollapsibleTrigger>
 
                                             <div className="flex items-center gap-12">
                         <span className="text-xs text-slate-500 font-mono">
@@ -186,7 +186,7 @@ const TestsTab: FC<TestsTabProps> = ({
                         </span>
                                             </div>
                                         </div>
-
+                                    </CollapsibleTrigger>
                                         <CollapsibleContent>
                                             <div className="mt-3 space-y-2">
                                                 {allTests.map((t) => (

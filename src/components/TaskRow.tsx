@@ -1,5 +1,3 @@
-// src/components/ProgressTracker/TaskRow.tsx
-
 import React, { useState } from 'react';
 import type { FC } from 'react';
 import type { TaskWithMetricsDTO, TestResult } from '@/lib/types';
@@ -15,7 +13,7 @@ import {
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { formatDistanceToNow } from 'date-fns';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
-import MarkdownRenderer from '@/components/MarkdownRenderer';
+import MarkdownRenderer from '@/components/markdown-renderer/MarkdownRenderer.tsx';
 
 interface TaskRowProps {
   task: TaskWithMetricsDTO;
@@ -130,8 +128,9 @@ const TaskRow: FC<TaskRowProps> = ({ task, index, results, onRequestHelp, projec
               <TaskStatusIcon status={status} />
             </div>
             <div className="flex-1">
-              <div className="flex justify-between items-center">
-                <CollapsibleTrigger asChild>
+              <CollapsibleTrigger asChild>
+              <div className="flex justify-between items-center cursor-pointer">
+
                   <button className="flex items-center gap-2 text-left font-medium font-mono text-slate-800 focus:outline-none">
                   <span>
                     {taskNumber}. {task.taskName}
@@ -142,7 +141,7 @@ const TaskRow: FC<TaskRowProps> = ({ task, index, results, onRequestHelp, projec
                         <ChevronDown className="h-4 w-4 text-slate-400" />
                     )}
                   </button>
-                </CollapsibleTrigger>
+
 
                 <div className="flex items-center gap-12">
                   {timestamp ? (
@@ -157,7 +156,7 @@ const TaskRow: FC<TaskRowProps> = ({ task, index, results, onRequestHelp, projec
                 </span>
                 </div>
               </div>
-
+              </CollapsibleTrigger>
               <CollapsibleContent>
                 <div className="mt-3 text-sm text-slate-600">
                   <div className="bg-white p-4 rounded-md mb-3 space-y-3 border border-slate-200">
