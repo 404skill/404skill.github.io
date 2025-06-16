@@ -1,33 +1,25 @@
-import React from 'react';
-import ProjectCard from '@/components/ProjectCard';
-import type { ProjectDTO } from '@/lib/types';
+import {GroupedProject} from "@/lib/types.ts";
+import ProjectCard from "@/components/ProjectCard.tsx";
 
 interface AllProjectsTabProps {
-  allProjects: ProjectDTO[];
-  userProjects: ProjectDTO[];
-  onProjectClick: (id: string) => void;
+    groups: GroupedProject[];
+    onVariantSelect: (groupKey: string, projectId: string) => void;
 }
 
 export const AllProjectsTab: React.FC<AllProjectsTabProps> = ({
-                                                         allProjects,
-                                                         userProjects,
-                                                         onProjectClick,
-                                                       }) => {
-  // Build a Set of owned IDs for quick lookup
-  const ownedIds = new Set(userProjects.map((p) => p.projectId));
-
-  return (
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {allProjects.map((proj) => (
-            <div key={proj.projectId}>
-              <ProjectCard
-                  project={proj}
-                  isOwned={ownedIds.has(proj.projectId)}
-              />
-            </div>
+                                                                  groups,
+                                                                  onVariantSelect,
+                                                              }) => (
+    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {groups.map(group => (
+            <ProjectCard
+                key={group.key}
+                project={group.selected}
+                isOwned={group.selected.isOwned}
+                variants={group.variants}
+                selectedVariantId={group.selected.projectId}
+                onVariantSelect={(newId) => onVariantSelect(group.key, newId)}
+            />
         ))}
-      </div>
-  );
-};
-
-export default AllProjectsTab;
+    </div>
+);

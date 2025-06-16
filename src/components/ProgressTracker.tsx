@@ -11,10 +11,9 @@ interface ProgressTrackerProps {
         tasks: TaskWithMetricsDTO[];
     };
     results: TestResult[];
-    onRequestHelp: (taskId: string) => void;
 }
 
-const ProgressTracker: React.FC<ProgressTrackerProps> = ({ project, results, onRequestHelp }) => {
+const ProgressTracker: React.FC<ProgressTrackerProps> = ({ project, results }) => {
     return (
         <div className="space-y-4">
             <h3 className="text-lg font-medium font-mono text-slate-800">Project Tasks</h3>
@@ -26,7 +25,6 @@ const ProgressTracker: React.FC<ProgressTrackerProps> = ({ project, results, onR
                         task={task}
                         index={index}
                         results={results}
-                        onRequestHelp={onRequestHelp}
                     />
                 ))}
             </div>

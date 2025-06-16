@@ -8,7 +8,6 @@ import TasksTabSkeleton from "@/components/skeletons/TasksTabSkeleton.tsx";
 
 interface TasksTabProps {
     projectId: string;
-    onRequestHelp: (taskId: string) => void;
 
     // ↓ tasks‐with‐metrics props (plus refetch)
     tasksWithMetrics: TaskWithMetricsDTO[];
@@ -25,7 +24,6 @@ interface TasksTabProps {
 
 export const TasksTab: FC<TasksTabProps> = ({
                                                 projectId,
-                                                onRequestHelp,
                                                 tasksWithMetrics,
                                                 tasksLoading,
                                                 tasksError,
@@ -103,7 +101,6 @@ export const TasksTab: FC<TasksTabProps> = ({
         <ProgressTracker
             project={pseudoProject}
             results={flattenedResults}
-            onRequestHelp={onRequestHelp}
         />
     );
 };

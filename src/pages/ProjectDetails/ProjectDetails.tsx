@@ -1,171 +1,140 @@
-import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
+// src/pages/ProjectDetails/ProjectDetails.tsx
+import React, { useState, useMemo } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 
 import Navbar from '@/components/Navbar';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Separator } from '@/components/ui/separator';
-import { Button } from '@/components/ui/button'; // ← for our Retry button
+import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 
 import { useGetProject } from '@/hooks/useGetProject';
 import { useProjectCompletion } from '@/hooks/useProjectCompletion';
 import { useGetTasksByProject } from '@/hooks/useGetTasksByProject';
 import { useGetTestsByTaskForProject } from '@/hooks/useGetTestsByTaskForProject';
+import { useProjectVariants } from '@/hooks/useProjectVariants';
 
 import { ProjectHeader } from './ProjectHeader';
 import { ProjectProgress } from './ProjectProgress';
 import { TasksTab } from './TasksTab';
 import { DetailsTab } from './DetailsTab';
 import TestsTab from './TestsTab';
-import ProjectDetailsSkeleton from "@/components/skeletons/ProjectDetailsSkeleton.tsx";
+import ProjectDetailsSkeleton from '@/components/skeletons/ProjectDetailsSkeleton';
 
 const ProjectDetails: React.FC = () => {
-  // 1) Read the param (we assume App.tsx uses `:projectId`)
-  const { projectId } = useParams<{ projectId: string }>();
+  const { projectId = '' } = useParams<{ projectId: string }>();
+  const navigate = useNavigate();
+  const { toast } = useToast();
 
-  // 2) Fetch project metadata, plus refetch
+  // 1) Core data hooks
+  const { project, isLoading: projLoading, error: projError, refetch: refetchProject } =
+      useGetProject(projectId);
+  const { metrics: completion, isLoading: compLoading, error: compError, refetch: refetchCompletion } =
+      useProjectCompletion(projectId);
+  const { tasks: tasksWithMetrics = [], isLoading: tasksLoading, error: tasksError, refetch: refetchTasks } =
+      useGetTasksByProject(projectId);
+  const { testsByTask = [], isLoading: testsLoading, error: testsError, refetch: refetchTests } =
+      useGetTestsByTaskForProject(projectId);
+
   const {
-    project,
-    isLoading: projectLoading,
-    error: projectError,
-    refetch: refetchProject,
-  } = useGetProject(projectId || '');
+    projectVariants = [],
+    isLoading: variantsLoading,
+    error: variantsError,
+    refetch: refetchVariants,
+  } = useProjectVariants(projectId);
 
-  // 3) Fetch completion data, plus refetch
-  const {
-    metrics: completion,
-    isLoading: completionLoading,
-    error: completionError,
-    refetch: refetchCompletion,
-  } = useProjectCompletion(projectId || '');
+  const variantOptions = useMemo(
+      () =>
+          projectVariants.map((variant) => ({
+            value: variant?.projectId,
+            label: variant?.technologies?.split(',').map((tech) => tech.trim()).join(', '),
+          })),
+      [projectVariants]
+  );
 
-  // 4) Fetch tasks with metrics, plus refetch
-  const {
-    tasks: tasksWithMetrics,   // TaskWithMetricsDTO[] | undefined
-    isLoading: tasksLoading,
-    error: tasksError,
-    refetch: refetchTasks,
-  } = useGetTasksByProject(projectId || '');
 
-  // 5) Fetch “tests by task,” plus refetch
-  const {
-    testsByTask,         // TestsByTaskDTO[] | undefined
-    isLoading: testsLoading,
-    error: testsError,
-    refetch: refetchTests,
-  } = useGetTestsByTaskForProject(projectId || '');
+  const handleVariantChange = (newId: string) => navigate(`/projects/${newId}`);
 
-  // 6) Local UI state for “Request Help”
-  const [selectedTaskId, setSelectedTaskId] = useState<string | undefined>();
-  const [isHelpDialogOpen, setHelpDialogOpen] = useState(false);
-  const { toast: uiToast } = useToast();
-
-  // 7) While project is loading or errored, show fallback
-  if (projectLoading) {
-    return <ProjectDetailsSkeleton />;
-  }
-  if (projectError || !project) {
+  // 5) Loading / error
+  if (projLoading) return <ProjectDetailsSkeleton />;
+  if (projError || !project)
     return (
         <div className="py-12 text-center font-mono text-red-500 space-y-4">
-          <div>
-            {projectError
-                ? `Error loading project`
-                : 'Project not found.'}
-          </div>
-          <Button onClick={() => refetchProject()} className="font-mono text-sm">
+          <div>{projError ? 'Error loading project.' : 'Project not found.'}</div>
+          <Button onClick={() => refetchProject} className="font-mono text-sm">
             Try Again
           </Button>
         </div>
     );
-  }
-
-  // 8) “Download Template” callback
-  const handleDownloadTemplate = () => {
-    uiToast({
-      title: 'Template downloaded',
-      description: `You have downloaded the starter template for ${project.name}.`,
-    });
-  };
-
-  // 9) “Request Help” callback
-  const handleRequestHelp = (taskId: string) => {
-    setSelectedTaskId(taskId);
-    setHelpDialogOpen(true);
-  };
 
   return (
       <div className="min-h-screen flex flex-col bg-white text-slate-800">
         <Navbar />
 
-        <main className="flex-1 py-8">
-          <div className="container">
-            {/* Project Header */}
-            <ProjectHeader
-                project={project}
-                selectedTaskId={selectedTaskId}
-                isHelpDialogOpen={isHelpDialogOpen}
-                setHelpDialogOpen={setHelpDialogOpen}
-                onDownload={handleDownloadTemplate}
-            />
+        <main className="flex-1 py-8 container">
+          <ProjectHeader
+              project={project}
+              variants={variantOptions}
+              selectedVariantId={projectId}
+              onVariantChange={handleVariantChange}
+          />
 
-            {/* Project Progress: if it errors, show retry */}
-            {completionLoading ? (
-                <div className="mt-6 h-4 bg-slate-200 animate-pulse rounded-md" />
-            ) : completionError ? (
-                <div className="mt-6 text-xs font-mono text-red-500 space-y-2">
-                  <div>Error loading progress</div>
-                  <Button onClick={() => refetchCompletion()} className="font-mono text-sm">
-                    Retry fetching project progress
-                  </Button>
-                </div>
-            ) : completion?.hasAccess === false ? (
-                <div className="mt-6 text-xs font-mono text-yellow-600">
-                  Get the project before progress can be tracked.
-                </div>
-            ) : completion ? (
-                <ProjectProgress completion={completion} />
-            ) : null}
+          {/* Progress */}
+          {compLoading ? (
+              <div className="mt-6 h-4 bg-slate-200 animate-pulse rounded-md" />
+          ) : compError ? (
+              <div className="mt-6 text-xs font-mono text-red-500 space-y-2">
+                <div>Error loading progress</div>
+                <Button onClick={() => refetchCompletion} className="font-mono text-sm">
+                  Retry fetching progress
+                </Button>
+              </div>
+          ) : completion?.hasAccess === false ? (
+              <div className="mt-6 text-xs font-mono text-yellow-600">
+                Get the project before progress can be tracked.
+              </div>
+          ) : (
+              completion && <ProjectProgress completion={completion} />
+          )}
 
-            <Separator className="my-6 bg-slate-200" />
+          <Separator className="my-6 bg-slate-200" />
 
-            {/* Tabs (Tasks / Tests / Details) */}
-            <Tabs defaultValue="tasks" className="mt-6">
-              <TabsList className="bg-slate-100 border border-slate-200 p-1">
-                <TabsTrigger value="tasks">Tasks</TabsTrigger>
-                <TabsTrigger value="tests">Tests</TabsTrigger>
-                <TabsTrigger value="details">Details</TabsTrigger>
-              </TabsList>
+          {/* Tabs */}
+          <Tabs defaultValue="tasks" className="mt-6">
+            <TabsList className="bg-slate-100 border border-slate-200 p-1">
+              <TabsTrigger value="tasks">Tasks</TabsTrigger>
+              <TabsTrigger value="tests">Tests</TabsTrigger>
+              <TabsTrigger value="details">Details</TabsTrigger>
+            </TabsList>
 
-              <TabsContent value="tasks">
-                <TasksTab
-                    projectId={project.projectId}
-                    onRequestHelp={handleRequestHelp}
-                    tasksWithMetrics={tasksWithMetrics || []}
-                    tasksLoading={tasksLoading}
-                    tasksError={tasksError}
-                    refetchTasks={refetchTasks}
-                    testsByTask={testsByTask || []}
-                    testsLoading={testsLoading}
-                    testsError={testsError}
-                    refetchTests={refetchTests}
-                />
-              </TabsContent>
+            <TabsContent value="tasks">
+              <TasksTab
+                  projectId={project.projectId}
+                  tasksWithMetrics={tasksWithMetrics}
+                  tasksLoading={tasksLoading}
+                  tasksError={tasksError}
+                  refetchTasks={refetchTasks}
+                  testsByTask={testsByTask}
+                  testsLoading={testsLoading}
+                  testsError={testsError}
+                  refetchTests={refetchTests}
+              />
+            </TabsContent>
 
-              <TabsContent value="tests">
-                <TestsTab
-                    projectId={project.projectId}
-                    testsByTask={testsByTask || []}
-                    testsLoading={testsLoading}
-                    testsError={testsError}
-                    refetchTests={refetchTests}
-                />
-              </TabsContent>
+            <TabsContent value="tests">
+              <TestsTab
+                  projectId={project.projectId}
+                  testsByTask={testsByTask}
+                  testsLoading={testsLoading}
+                  testsError={testsError}
+                  refetchTests={refetchTests}
+              />
+            </TabsContent>
 
-              <TabsContent value="details">
-                <DetailsTab project={project} />
-              </TabsContent>
-            </Tabs>
-          </div>
+            <TabsContent value="details">
+              <DetailsTab project={project} />
+            </TabsContent>
+          </Tabs>
         </main>
       </div>
   );

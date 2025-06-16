@@ -20,7 +20,6 @@ interface TaskRowProps {
   projectId: string;
   index: number;
   results: TestResult[];
-  onRequestHelp: (taskId: string) => void;
 }
 
 const TaskStatusIcon = ({ status }: { status: TestResult['status'] | undefined }) => {
@@ -66,7 +65,7 @@ const TaskStatusIcon = ({ status }: { status: TestResult['status'] | undefined }
   );
 };
 
-const TaskRow: FC<TaskRowProps> = ({ task, index, results, onRequestHelp, projectId }) => {
+const TaskRow: FC<TaskRowProps> = ({ task, index, results, projectId }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   // 1) All results for this task (including "not-attempted"):

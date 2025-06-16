@@ -70,3 +70,8 @@ export const fetchTestsByTaskForProject = async (
   const res = await api.get<TestsByTaskDTO[]>(`/projects/${projectId}/tests`);
   return res.data;
 };
+
+export const fetchProjectVariants = async (projectId: string): Promise<any> => {
+  const res = await api.get<any>(`/projects/${projectId}/variants`);
+  return res.data;
+};
