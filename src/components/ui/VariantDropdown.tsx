@@ -1,3 +1,5 @@
+// src/components/ui/VariantDropdown.tsx
+
 import * as React from 'react';
 import { Button } from '@/components/ui/button';
 import { ChevronRight } from 'lucide-react';
@@ -7,8 +9,9 @@ import {
     DropdownMenuTrigger,
     DropdownMenuContent,
     DropdownMenuItem,
-    DropdownMenuPortal
-} from "@radix-ui/react-dropdown-menu";
+    DropdownMenuPortal,
+} from '@radix-ui/react-dropdown-menu';
+import { Badge } from '@/components/ui/badge';
 
 export interface VariantOption {
     value: string;
@@ -21,22 +24,54 @@ interface VariantDropdownProps {
     onChange: (value: string) => void;
 }
 
+const formatTechLabel = (raw: string): string  => {
+    const clean = raw.trim().toLowerCase();
+    return clean.length > 0
+        ? clean[0].toUpperCase() + clean.slice(1)
+        : '';
+}
+
+const renderTechBadges = (
+    label: string,
+    isSelected: boolean
+): React.ReactNode[] => {
+    return label
+        .split(',')
+        .map(formatTechLabel)
+        .filter(Boolean)
+        .map((tech) => (
+            <Badge
+                key={tech}
+                variant={isSelected ? 'dropdownselected' : 'dropdown'}
+                className="text-xs font-mono px-2 py-0.5"
+            >
+                {tech}
+            </Badge>
+        ));
+}
+
 export const VariantDropdown: React.FC<VariantDropdownProps> = ({
                                                                     options,
                                                                     value,
                                                                     onChange,
                                                                 }) => {
-    const selected = options.find((option) => option.value === value) || options[0];
+    const selected = options.find(o => o.value === value) || options[0];
 
     return (
         <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-                <Button
-                    variant="outline"
-                    size="sm"
-                    className="font-mono text-sm flex items-center gap-1"
+            <DropdownMenuTrigger
+                asChild>
+                <Button variant="outline"
+                  size="sm"
+                  className="
+                    font-mono text-sm flex items-center gap-1
+                    border border-gray-300 bg-transparent
+                    hover:bg-transparent
+                    hover:border-2 hover:border-blue-500
+                    focus:ring-2 focus:ring-blue-300
+                  "
                 >
-                    {selected.label}
+                    <div className="flex flex-wrap gap-1">{renderTechBadges(selected.label, false)}</div>
                     <ChevronRight className="h-4 w-4 rotate-90" />
                 </Button>
             </DropdownMenuTrigger>
@@ -44,7 +79,7 @@ export const VariantDropdown: React.FC<VariantDropdownProps> = ({
             <DropdownMenuPortal>
                 <DropdownMenuContent
                     className={cn(
-                        'z-50 min-w-[8rem] rounded-md border border-gray-200 bg-white p-1 shadow-lg cursor-pointer',
+                        'z-50 min-w-[8rem] rounded-md border border-gray-200 bg-white p-2 shadow-lg',
                         'focus:outline-none'
                     )}
                 >
@@ -55,13 +90,16 @@ export const VariantDropdown: React.FC<VariantDropdownProps> = ({
                                 key={option.value}
                                 onSelect={() => onChange(option.value)}
                                 className={cn(
-                                    'px-3 py-2 text-sm font-mono rounded-sm transition-colors',
+                                    'px-2 py-1 rounded-md hover:border hover:border-gray-300 transition-colors',
+                                    'focus:outline-none focus:ring-0',
                                     isSelected
-                                        ? 'bg-blue-100 text-blue-800 font-semibold'
+                                        ? 'bg-gray-100'
                                         : 'hover:bg-gray-100'
                                 )}
                             >
-                                {option.label}
+                                <div className="flex flex-wrap gap-1">
+                                    {renderTechBadges(option.label, isSelected)}
+                                </div>
                             </DropdownMenuItem>
                         );
                     })}
