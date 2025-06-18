@@ -1,63 +1,92 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { ArrowRight, Terminal } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import React from "react";
+import { Link } from "react-router-dom";
+import { ArrowRight, Terminal } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 interface HeroSectionProps {
   isLoggedIn: boolean;
-  isVisible: boolean;
 }
 
-const HeroSection = ({ isLoggedIn, isVisible }: HeroSectionProps) => {
+const HeroSection = ({ isLoggedIn }: HeroSectionProps) => {
   return (
-    <section className="relative min-h-[90vh] flex flex-col items-center justify-center bg-gradient-to-b from-[#f8fafc] to-[#e0e7ef] px-4">
-      {/* Badge */}
-      <div className="mb-8 mt-12 sm:mt-0">
-        <span className="inline-flex items-center px-4 py-1.5 rounded-full font-mono text-base bg-primary/10 text-primary border border-primary/20 shadow-sm">
-          <span className="mr-2 text-lg">✨</span> Level Up Your Backend Skills
-        </span>
-      </div>
-      {/* Headline with blue highlight */}
-      <h1
-        className="text-4xl sm:text-6xl md:text-7xl font-extrabold text-center leading-[1.18] mb-1 pb-2 select-text"
-        style={{ minHeight: '1.5em' }}
-      >
-        <span className="text-slate-900">Become a Better</span>
-        <br />
-        <span className="text-primary">Backend Engineer</span>
-      </h1>
-      {/* Subheadline */}
-      <p className="text-lg sm:text-xl text-slate-600 max-w-2xl mx-auto text-center mb-10">
-        Build real-world backend systems, get expert feedback, and accelerate your growth as an
-        engineer.
-      </p>
-      {/* CTA Button */}
-      <div className="flex flex-col items-center gap-3 w-full">
-        {isLoggedIn ? (
-          <Link to="/dashboard">
-            <Button
-              size="lg"
-              className="gap-2 font-mono bg-primary text-primary-foreground shadow-lg rounded-full px-8 py-3 hover:bg-primary/90 transition-all duration-200"
+    <section className="relative flex items-center bg-gradient-to-b from-[#f8fafc] to-[#e0e7ef] min-h-[80vh]">
+      <div className="container mx-auto px-4 flex flex-col lg:flex-row items-center gap-10">
+        {/* 📄  LEFT – copy */}
+        <div className="flex-1 text-center lg:text-left">
+          {/* Problem hook */}
+          <p className="text-sm font-semibold text-primary/90 uppercase tracking-wide mb-2">
+            Tutorials don’t make you production-ready
+          </p>
+
+          {/* Headline */}
+          <h1
+            className="text-4xl sm:text-6xl md:text-7xl font-extrabold leading-[1.18] mb-3 select-text"
+            style={{ minHeight: "1.5em" }}
+          >
+            <span className="text-slate-900">Ship Real-World</span>
+            <br />
+            <span className="text-primary">Backend Systems</span>
+          </h1>
+
+          {/* Sub-headline */}
+          <p className="text-lg sm:text-xl text-slate-600 max-w-xl mx-auto lg:mx-0 mb-8">
+            Build APIs with databases & queues, get senior code reviews, and
+            land senior-level skills.
+          </p>
+
+          {/* CTA + reassurance */}
+          <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-3">
+            {isLoggedIn ? (
+              <Link to="/dashboard">
+                <Button
+                  size="lg"
+                  className="gap-2 font-mono bg-primary text-primary-foreground shadow-lg rounded-full px-8 py-3 hover:bg-primary/90 transition-all"
+                >
+                  Go to Projects
+                  <ArrowRight className="ml-1 h-5 w-5" />
+                </Button>
+              </Link>
+            ) : (
+              <Link to="/auth">
+                <Button
+                  size="lg"
+                  className="gap-2 font-mono bg-primary text-primary-foreground shadow-lg rounded-full px-8 py-3 hover:bg-primary/90 transition-all"
+                >
+                  <Terminal className="h-5 w-5" />
+                  Start Free in&nbsp;5&nbsp;min
+                  <ArrowRight className="ml-1 h-5 w-5" />
+                </Button>
+              </Link>
+            )}
+            <span className="text-sm text-slate-500">
+              14-day trial • No credit card
+            </span>
+          </div>
+
+          {/* Micro-proof */}
+          <p className="text-xs text-slate-400">4 443 tests run last week</p>
+        </div>
+
+        {/* 🎥  RIGHT – demo placeholder (hidden on mobile) */}
+        <div className="flex-1 hidden lg:flex justify-center">
+          <div className="relative w-full max-w-md aspect-video rounded-2xl ring-1 ring-slate-300/40 overflow-hidden">
+            {/* Swap src with your real demo.mp4 or a GIF */}
+            <video
+              className="w-full h-full object-cover"
+              autoPlay
+              muted
+              loop
+              playsInline
             >
-              Go to Projects
-              <ArrowRight className="ml-1 h-5 w-5" />
-            </Button>
-          </Link>
-        ) : (
-          <Link to="/auth">
-            <Button
-              size="lg"
-              className="gap-2 font-mono bg-primary text-primary-foreground shadow-lg rounded-full px-8 py-3 hover:bg-primary/90 transition-all duration-200"
-            >
-              <Terminal className="h-5 w-5" />
-              Start Your Growth Journey
-              <ArrowRight className="ml-1 h-5 w-5" />
-            </Button>
-          </Link>
-        )}
-        <span className="text-sm text-slate-500 mt-2">
-          14-day risk-free trial • No credit card required
-        </span>
+              <source src="/assets/hero-demo.mp4" type="video/mp4" />
+            </video>
+
+            {/* Fallback skeleton while video loads */}
+            <div className="absolute inset-0 flex items-center justify-center bg-white text-slate-400 text-sm">
+              Product demo
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );
