@@ -1,5 +1,5 @@
 import React, { useState, useEffect, FC } from 'react'
-import { Sparkles, X } from 'lucide-react'
+import { Lightbulb, X } from 'lucide-react'
 import { useFloating, offset, flip, shift, autoUpdate } from '@floating-ui/react-dom'
 
 interface HintProps {
@@ -40,7 +40,7 @@ export const Hint: FC<HintProps> = ({ children }) => {
                 className="text-blue-600 hover:text-blue-800 focus:outline-none align-text-bottom transition-transform duration-200 ease-in-out hover:scale-110 hover:-translate-y-0.5"
                 aria-label="Show hint"
             >
-                <Sparkles className="h-5 w-5" />
+                <Lightbulb className="h-5 w-5" />
             </button>
 
             {open && (
