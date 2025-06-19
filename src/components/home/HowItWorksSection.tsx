@@ -54,8 +54,8 @@ const HowItWorksSection = ({ isVisible }: HowItWorksSectionProps) => {
         {/* 3-step rail */}
         <div className="mt-24 relative max-w-6xl mx-auto grid gap-12 md:grid-cols-3">
           {/* connecting arrows (desktop) */}
-          <ArrowRight className="hidden md:block absolute left-1/3 top-[40%] -translate-y-1/2 text-primary/30 w-12 h-12" />
-          <ArrowRight className="hidden md:block absolute left-2/3 top-[40%] -translate-y-1/2 text-primary/30 w-12 h-12" />
+          <ArrowRight className="hidden md:block absolute left-1/3 top-1/2 -translate-x-1/2 -translate-y-1/2 text-primary/30 w-12 h-12" />
+          <ArrowRight className="hidden md:block absolute left-2/3 top-1/2 -translate-x-1/2 -translate-y-1/2 text-primary/30 w-12 h-12" />
 
           {/* step 1 */}
           <div {...fadeIn(200)}>

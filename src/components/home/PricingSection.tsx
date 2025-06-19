@@ -306,6 +306,7 @@ const PricingSection = () => {
 
           <PricingTier
             title="Guided"
+            disabled={true}
             price={isAnnual ? '$720' : '$79'}
             description="Perfect if you want expert feedback without the price of live coaching"
             features={[
@@ -336,6 +337,7 @@ const PricingSection = () => {
 
           <PricingTier
             title="Premium Mentorship"
+            disabled={true}
             price={isAnnual ? '$1,920' : '$199'}
             description="Direct 1-on-1 calls with a mentor"
             features={[
@@ -344,7 +346,7 @@ const PricingSection = () => {
               '4 code-review credits/month',
               'Discounted mock interview & resume makeover sessions',
             ]}
-            customButton={<PremiumApplicationButton />}
+            // customButton={<PremiumApplicationButton />}
             buttonText="Apply for Premium"
             details={[
               {

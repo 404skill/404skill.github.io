@@ -67,7 +67,7 @@ const HeroSection = ({ isLoggedIn }: HeroSectionProps) => {
         </div>
 
         {/* 🎥  RIGHT – demo placeholder (hidden on mobile) */}
-        <div className="flex-1 hidden lg:flex justify-center">
+        <div className="flex-1 flex justify-center">
           <div className="relative w-full max-w-md aspect-video rounded-2xl ring-1 ring-slate-300/40 overflow-hidden">
             {/* Swap src with your real demo.mp4 or a GIF */}
             <video

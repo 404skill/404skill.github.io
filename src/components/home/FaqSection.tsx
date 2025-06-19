@@ -1,11 +1,22 @@
 // src/sections/FaqSection.tsx
 import React from "react";
 import { ChevronDown } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const faqs = [
   {
     q: "Do I need to install anything?",
-    a: "Yes. Each project ships as a containerised starter repository so you can run databases, queues, and the test suites locally in minutes. You will need to download both Docker Desktop and our CLI tool through NPM - See \"Get Started\" Page.",
+    a: (
+      <>
+        Yes. Each project ships as a containerised starter repository so you can run databases,
+        queues, and the test suites locally in minutes. You will need to download both Docker
+        Desktop and our CLI tool through NPM – see the{" "}
+        <Link to="/getStarted" className="text-blue-600 font-medium decoration-2 decoration-blue-400 hover:text-blue-800 hover:decoration-blue-600transition-colors">
+          Get&nbsp;Started
+        </Link>{" "}
+        page.
+      </>
+    )  
   },
   {
     q: "How hard are the projects? Are there beginner-friendly ones?",
@@ -17,7 +28,15 @@ const faqs = [
   },
   {
     q: "How do I run tests and submit my solution?",
-    a: "You will run the tests using our cli tool, see the \"Get Started\" page."
+    a: (
+      <>
+        You will run the tests using our CLI tool – see the{" "}
+        <Link to="/getStarted" className="text-blue-600 font-medium decoration-2 decoration-blue-400 hover:text-blue-800 hover:decoration-blue-600transition-colors">
+          Get&nbsp;Started
+        </Link>{" "}
+        page.
+      </>
+    )
   },
   {
     q: "How long does a typical project take to complete?",
