@@ -44,11 +44,10 @@ const HowItWorksSection = ({ isVisible }: HowItWorksSectionProps) => {
             Your Path to Growth
           </div>
           <h2 className="font-display text-4xl md:text-5xl font-bold mb-6">
-            Ship Production-Grade Back-Ends in&nbsp;3 Steps
+            Ship Production-Grade software in&nbsp;3 Steps
           </h2>
           <p className="text-lg text-muted-foreground max-w-[42rem] mx-auto leading-relaxed">
-            Follow the exact loop top companies use to level-up new hires—pick a
-            challenge, beat the tests, polish with expert review.
+            Pick a challenge, beat the tests, polish with expert review.
           </p>
         </div>
 
@@ -69,7 +68,7 @@ const HowItWorksSection = ({ isVisible }: HowItWorksSectionProps) => {
                 Start a Real-World Challenge
               </h3>
               <p className="text-sm text-muted-foreground">
-                Spin up a fully containerised starter repo, and implement the project requirements, task by task.
+                Spin up a fully containerised starter repository, and implement the project requirements, task by task.
               </p>
             </div>
           </div>
@@ -97,10 +96,10 @@ const HowItWorksSection = ({ isVisible }: HowItWorksSectionProps) => {
                 3
               </span> */}
               <BadgeCheck className="h-8 w-8 text-primary mb-3" />
-              <h3 className="font-semibold mb-2">Get Senior Code Review</h3>
+              <h3 className="font-semibold mb-2">Get Guidance & Code Review</h3>
               <p className="text-sm text-muted-foreground">
                 Submit your repo for line-by-line feedback from engineers who’ve
-                shipped at scale—walk away with concrete lessons.
+                shipped at scale, and walk away with concrete lessons.
               </p>
             </div>
           </div>

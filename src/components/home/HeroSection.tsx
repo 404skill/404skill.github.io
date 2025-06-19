@@ -23,15 +23,14 @@ const HeroSection = ({ isLoggedIn }: HeroSectionProps) => {
             className="text-4xl sm:text-6xl md:text-7xl font-extrabold leading-[1.18] mb-3 select-text"
             style={{ minHeight: "1.5em" }}
           >
-            <span className="text-slate-900">Ship Real-World</span>
+            <span className="text-slate-900">Become a Better</span>
             <br />
-            <span className="text-primary">Backend Systems</span>
+            <span className="text-primary">Software Engineer</span>
           </h1>
 
           {/* Sub-headline */}
           <p className="text-lg sm:text-xl text-slate-600 max-w-xl mx-auto lg:mx-0 mb-8">
-            Build APIs with databases & queues, get senior code reviews, and
-            land senior-level skills.
+          Build real-world software, get expert feedback, and accelerate your growth as an engineer.
           </p>
 
           {/* CTA + reassurance */}
@@ -53,18 +52,18 @@ const HeroSection = ({ isLoggedIn }: HeroSectionProps) => {
                   className="gap-2 font-mono bg-primary text-primary-foreground shadow-lg rounded-full px-8 py-3 hover:bg-primary/90 transition-all"
                 >
                   <Terminal className="h-5 w-5" />
-                  Start Free in&nbsp;5&nbsp;min
+                  Start for Free in&nbsp;5&nbsp;min
                   <ArrowRight className="ml-1 h-5 w-5" />
                 </Button>
               </Link>
             )}
             <span className="text-sm text-slate-500">
-              14-day trial • No credit card
+              No credit card required
             </span>
           </div>
 
           {/* Micro-proof */}
-          <p className="text-xs text-slate-400">4 443 tests run last week</p>
+          {/* <p className="text-xs text-slate-400">4 443 tests run last week</p> */}
         </div>
 
         {/* 🎥  RIGHT – demo placeholder (hidden on mobile) */}

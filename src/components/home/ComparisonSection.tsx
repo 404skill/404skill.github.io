@@ -4,52 +4,45 @@ import React from "react";
 const rows = [
   {
     feature: "Learning format",
-    skill: "Interactive projects + local test-runner",
+    skill: "Learn by building real-world software",
     udemy: "Pre-recorded video lectures",
-    exercism: "Small text-based exercises",
+    exercism: "Small scope exercises",
     bootcamp: "Live instructor-led cohort",
   },
   {
     feature: "Project scope",
-    skill: "Production-style back-end systems",
+    skill: "Comprehensive production-grade software",
     udemy: "Toy demo apps",
     exercism: "Micro-exercises",
-    bootcamp: "Capstone projects (varies)",
+    bootcamp: "Simple CRUD apps",
   },
   {
     feature: "Automated test suite",
     skill: "✔️",
     udemy: "❌",
     exercism: "✔️",
-    bootcamp: "➖",
+    bootcamp: "❌",
   },
   {
-    feature: "Senior code review",
-    skill: "✔️ (paid tier)",
+    feature: "Guidance and code reviews",
+    skill: "✔️ (TBA)",
     udemy: "❌",
     exercism: "✔️ (volunteer)",
     bootcamp: "✔️ (instructor/TA)",
   },
   {
-    feature: "Language coverage",
-    skill: "Polyglot via Docker",
-    udemy: "Course-specific",
-    exercism: "77 languages",
-    bootcamp: "1 primary stack",
-  },
-  {
     feature: "Career / job support",
-    skill: "Portfolio & community review",
+    skill: "✔️ (TBA)",
     udemy: "❌",
     exercism: "❌",
     bootcamp: "Job-placement help",
   },
   {
     feature: "Typical cost",
-    skill: "$29 / mo",
+    skill: "Free",
     udemy: "$15-30 per course",
     exercism: "Free",
-    bootcamp: "$12k-14k",
+    bootcamp: "> $5,000",
   },
   {
     feature: "Time commitment",
@@ -64,7 +57,7 @@ const ComparisonSection: React.FC = () => (
   <section id="compare" className="py-20 bg-gray-50">
     <div className="container mx-auto px-6 overflow-x-auto">
       <h2 className="text-center text-3xl sm:text-4xl font-bold mb-12">
-        Why 404Skill Beats Other Options
+        How 404Skill Compares to Other Options
       </h2>
 
       <table className="min-w-full text-sm text-left">

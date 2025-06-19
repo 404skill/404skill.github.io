@@ -4,29 +4,25 @@ import { ChevronDown } from "lucide-react";
 
 const faqs = [
   {
-    q: "Do I need Docker installed?",
-    a: "Yes. Each project ships as a containerised starter repo so you can run databases, queues, and the test harness locally in minutes. Docker Desktop (or podman) is all you need.",
-  },
-  {
-    q: "Which programming languages are supported?",
-    a: "Any language that can run in a Linux container—Go, Python, Java, C#, Rust, Node, you name it. The CLI just mounts your source folder and executes your tests inside the container.",
+    q: "Do I need to install anything?",
+    a: "Yes. Each project ships as a containerised starter repository so you can run databases, queues, and the test suites locally in minutes. You will need to download both Docker Desktop and our CLI tool through NPM - See \"Get Started\" Page.",
   },
   {
     q: "How hard are the projects? Are there beginner-friendly ones?",
-    a: "Projects are tiered Rookie → Pro. Rookie projects assume 6 months of coding experience and walk you through fundamentals; Pro projects mimic production outages, distributed tracing, etc.",
-  },
-  {
-    q: "How does the 14-day trial work?",
-    a: "Sign up with just an email—no card upfront. You get full access to every project and one free senior code review credit. Keep your work even if you cancel.",
+    a: "There are projects in varying difficulty levels, some are also beginner-friendly and include more guidance and hints.",
   },
   {
     q: "What if I get stuck?",
-    a: "You can run `404skill hint` to reveal incremental tips, ask in our Discord, or book a paid mentor session for line-by-line debugging.",
+    a: "Ask questions in the community discord, use the hints and guidance in the project's specs.",
   },
   {
-    q: "Can I cancel anytime?",
-    a: "Absolutely. Subscriptions are month-to-month. One click in your dashboard and you won’t be billed again.",
+    q: "How do I run tests and submit my solution?",
+    a: "You will run the tests using our cli tool, see the \"Get Started\" page."
   },
+  {
+    q: "How long does a typical project take to complete?",
+    a: "Depends on your pace. Some finish a project in a day, others take a week. Each one’s broken into clear checkpoints so you can move at your own speed without getting lost."
+  }
 ];
 
 const FaqSection: React.FC = () => (
