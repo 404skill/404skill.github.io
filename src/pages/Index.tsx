@@ -9,6 +9,9 @@ import PricingSection from '@/components/home/PricingSection';
 import CtaSection from '@/components/home/CtaSection';
 import Footer from '@/components/home/Footer';
 import { trackPageView } from '@/lib/analytics';
+import ProjectsSection from '@/components/home/ProjectsSection';
+import ComparisonSection from '@/components/home/ComparisonSection';
+import FaqSection from '@/components/home/FaqSection';
 
 const Index = () => {
   const isLoggedIn = localStorage.getItem('sb-smzmwxqzmiswsnvsvjms-auth-token') !== null;
@@ -28,8 +31,9 @@ const Index = () => {
       <main className="flex-1">
         <HeroSection isLoggedIn={isLoggedIn} isVisible={isVisible} />
         <HowItWorksSection isVisible={isVisible} />
-        <TechStackSection />
+        <ComparisonSection />
         <PricingSection />
+        <FaqSection />
         <CtaSection isLoggedIn={isLoggedIn} />
       </main>
 

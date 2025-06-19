@@ -31,6 +31,7 @@ interface PricingTierProps {
   details?: FeatureDetail[];
   annualPrice?: string;
   badge?: ReactNode;
+  disabled?: boolean;
 }
 
 const PricingTier = ({
@@ -44,6 +45,7 @@ const PricingTier = ({
   details,
   annualPrice,
   badge,
+  disabled = false,
 }: PricingTierProps) => {
   const navigate = useNavigate();
   const [showDetails, setShowDetails] = useState(false);
@@ -77,12 +79,19 @@ const PricingTier = ({
 
   return (
     <Card
-      className={`flex flex-col h-full ${highlighted ? 'border-primary shadow-lg relative overflow-hidden' : ''}`}
+      className={`relative flex flex-col h-full justify-between ${highlighted ? 'border-primary shadow-lg relative overflow-hidden' : ''} ${disabled ? 'opacity-50 pointer-events-none relative' : ''}`}
     >
       {highlighted && (
         <div className="absolute top-0 right-0">
           <Badge className="rounded-bl-lg rounded-tr-lg rounded-br-none rounded-tl-none px-3 py-1 bg-primary text-primary-foreground">
             Popular
+          </Badge>
+        </div>
+      )}
+      {disabled && (
+        <div className="absolute top-2 right-2">
+          <Badge className="bg-gray-200 text-gray-600 px-2 py-0.5 rounded">
+            Coming Soon
           </Badge>
         </div>
       )}
@@ -102,7 +111,7 @@ const PricingTier = ({
           )}
         </div>
       </CardHeader>
-      <CardContent className="flex-grow">
+      <CardContent className="flex-grow flex flex-col gap-8">
         <ul className="space-y-2">
           {features.map((feature, index) => (
             <li key={index} className="flex items-start">
@@ -113,9 +122,9 @@ const PricingTier = ({
         </ul>
 
         {details && (
-          <div className="mt-6">
+          <div className="relative mt-auto ">
             <Button
-              variant="ghost"
+              variant="secondary"
               className="w-full flex items-center justify-between text-sm text-muted-foreground hover:text-foreground"
               onClick={() => setShowDetails(!showDetails)}
             >
@@ -128,7 +137,15 @@ const PricingTier = ({
             </Button>
 
             {showDetails && (
-              <div className="mt-4 space-y-4">
+              <div
+                className="
+                  absolute top-full left-0 w-full mt-2
+                  bg-white dark:bg-gray-800
+                  rounded-lg shadow-lg
+                  p-4 space-y-4
+                  z-50
+                "
+              >
                 {details.map((detail, index) => (
                   <div key={index} className="bg-muted/50 p-4 rounded-lg">
                     <h4 className="font-medium mb-2">{detail.title}</h4>
@@ -145,9 +162,10 @@ const PricingTier = ({
           customButton
         ) : (
           <Button
-            className={`w-full ${highlighted ? 'bg-primary hover:bg-primary/90' : ''}`}
-            onClick={handlePricingClick}
-          >
+             className={`w-full ${highlighted ? 'bg-primary hover:bg-primary/90' : ''}`}
+             onClick={handlePricingClick}
+             disabled={disabled}
+           >
             {buttonText}
           </Button>
         )}

@@ -282,14 +282,12 @@ const PricingSection = () => {
         <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
           <PricingTier
             title="Self-Paced"
-            price={isAnnual ? '$240' : '$29'}
+            price='Free'
             description="Perfect for independent learners"
             features={[
-              'Project library & test suites',
+              'Limited access to project library',
               'Progress dashboard',
-              'Community Discord',
-              '1 final project review',
-              'Community support',
+              'Community Discord'
             ]}
             buttonText="Start Learning"
             details={[
@@ -308,16 +306,16 @@ const PricingSection = () => {
 
           <PricingTier
             title="Guided"
+            disabled={true}
             price={isAnnual ? '$720' : '$79'}
             description="Perfect if you want expert feedback without the price of live coaching"
             features={[
               'Everything in Self-Paced',
-              'Direct mentor Q&A (< 24h)',
+              'Unimited access to project library',
               '2 code-review credits/month',
-              'Weekly written feedback',
-              'Career assets & job board',
+              'Email support and Q&A',
             ]}
-            highlighted={true}
+            //highlighted={true}
             buttonText="Get Guidance"
             details={[
               {
@@ -339,16 +337,16 @@ const PricingSection = () => {
 
           <PricingTier
             title="Premium Mentorship"
+            disabled={true}
             price={isAnnual ? '$1,920' : '$199'}
-            description="Direct 1-on-1 calls with the founder"
+            description="Direct 1-on-1 calls with a mentor"
             features={[
               'Everything in Guided',
-              '2 × 30-min Zoom calls/month',
+              '30-min Zoom calls/month',
               '4 code-review credits/month',
-              'Mock interview & resume makeover',
-              '12-hour response SLA',
+              'Discounted mock interview & resume makeover sessions',
             ]}
-            customButton={<PremiumApplicationButton />}
+            // customButton={<PremiumApplicationButton />}
             buttonText="Apply for Premium"
             details={[
               {
@@ -367,15 +365,15 @@ const PricingSection = () => {
                   'Mock interviews, resume makeover, and personalized job search strategy.',
               },
             ]}
-            badge={<Badge variant="secondary">{premiumSeatsAvailable} seats available</Badge>}
+            //badge={<Badge variant="secondary">{premiumSeatsAvailable} seats available</Badge>}
           />
         </div>
 
-        <div className="mt-16 text-center space-y-4">
+        {/* <div className="mt-16 text-center space-y-4">
           <p className="text-sm text-muted-foreground">
             All plans include a 14‑day money‑back guarantee. No questions asked.
           </p>
-        </div>
+        </div> */}
       </div>
 
       {/* Application Modal */}
