@@ -68,22 +68,13 @@ const HeroSection = ({ isLoggedIn }: HeroSectionProps) => {
 
         {/* 🎥  RIGHT – demo placeholder (hidden on mobile) */}
         <div className="flex-1 flex justify-center">
-          <div className="relative w-full max-w-md aspect-video rounded-2xl ring-1 ring-slate-300/40 overflow-hidden">
+          <div className="relative w-full max-w-xl aspect-video rounded-2xl ring-1 ring-slate-300/40 overflow-hidden">
             {/* Swap src with your real demo.mp4 or a GIF */}
-            <video
+            <img
+              src="/404skill-cli-demo.gif"
+              alt="404Skill CLI demo"
               className="w-full h-full object-cover"
-              autoPlay
-              muted
-              loop
-              playsInline
-            >
-              <source src="/assets/hero-demo.mp4" type="video/mp4" />
-            </video>
-
-            {/* Fallback skeleton while video loads */}
-            <div className="absolute inset-0 flex items-center justify-center bg-white text-slate-400 text-sm">
-              Product demo
-            </div>
+            />
           </div>
         </div>
       </div>
