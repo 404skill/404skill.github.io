@@ -5,10 +5,13 @@ import { User } from '@/lib/types';
 import Navbar from '@/components/Navbar';
 import { Card, CardContent } from '@/components/ui/card';
 import { Download, Terminal, UserPlus, Package, Code, Play } from 'lucide-react';
+import { NpmStatsApi } from './../../lib/npmApi';
 
 const GetStarted = () => {
   const navigate = useNavigate();
+  const npmApi = new NpmStatsApi();
   const [user, setUser] = useState<User | null>(null);
+  const [downloadsToday, setDownloadsToday] = useState<number | null>(null);
 
   useEffect(() => {
     const userStr = localStorage.getItem('sb-smzmwxqzmiswsnvsvjms-auth-token');
@@ -24,6 +27,15 @@ const GetStarted = () => {
     } as User;
     setUser(userData);
   }, [navigate]);
+
+  useEffect(() => {
+   npmApi.getDownloadCount('404skill', 'last-day')
+     .then(data => setDownloadsToday(data.downloads))
+     .catch(err => {
+       console.error('Failed to fetch npm downloads:', err);
+       setDownloadsToday(null);
+     });
+  }, []);
 
   if (!user) return null;
 
@@ -47,12 +59,18 @@ const GetStarted = () => {
               <CardContent className="flex items-start gap-4 p-6">
                 <Download className="h-6 w-6 text-purple-500 mt-1" />
                 <div className="flex-1">
-                  <h3 className="font-semibold font-mono text-lg">1. Download CLI Tool</h3>
+                  <h3 className="font-semibold font-mono text-lg">1. Download CLI Tool
+                    {downloadsToday !== null && (
+                      <p className="mt-1 text-xs text-muted-foreground">
+                        Downloaded <strong>{downloadsToday.toLocaleString()}</strong> times in the last 24 hours.
+                      </p>
+                    )}
+                  </h3>
                   <p className="mt-2 text-sm text-muted-foreground">
                     Grab our official CLI package from npm (e.g.{' '}
-                    <code className="bg-slate-100 px-1 rounded">npm install -g 404skill-cli</code>)
-                    or GitHub releases, and install it globally.
+                    <code className="bg-slate-100 px-1 rounded">npm install -g 404skill</code>)
                   </p>
+                  
                 </div>
               </CardContent>
             </Card>
@@ -64,7 +82,7 @@ const GetStarted = () => {
                   <h3 className="font-semibold font-mono text-lg">2. Verify CLI Installation</h3>
                   <p className="mt-2 text-sm text-muted-foreground">
                     In your terminal, run{' '}
-                    <code className="bg-slate-100 px-1 rounded">404skill --version</code> to ensure
+                    <code className="bg-slate-200 px-1 rounded">404skill</code> to ensure
                     the CLI is installed correctly.
                   </p>
                 </div>
@@ -76,8 +94,7 @@ const GetStarted = () => {
                 <UserPlus className="h-8 w-8 text-green-500 mx-auto mb-3" />
                 <h3 className="font-semibold font-mono text-lg mb-2">3. Register Your Account</h3>
                 <p className="text-sm text-muted-foreground">
-                  Run <code className="bg-slate-100 px-1 rounded">404skill register</code> and
-                  follow the interactive prompts to link your account with the CLI.
+                  Follow the interactive prompts to link your account with the CLI.
                 </p>
               </CardContent>
             </Card>
@@ -92,11 +109,7 @@ const GetStarted = () => {
                 </h3>
 
                 <p className="text-sm text-muted-foreground mb-4">
-                  Choose a project from our catalog and run&nbsp;
-                  <code className="bg-slate-100 px-1 rounded">
-                    404skill import &lt;project-id&gt;
-                  </code>
-                  &nbsp;to pull down the starter template locally.
+                  Choose a project from our catalog and download it to pull down the starter template and pre-made tests locally.
                 </p>
 
                 <Link to="/dashboard">
@@ -127,9 +140,8 @@ const GetStarted = () => {
                 <div className="flex-1">
                   <h3 className="font-semibold font-mono text-lg">6. Run Tests</h3>
                   <p className="mt-2 text-sm text-muted-foreground">
-                    Use the CLI command{' '}
-                    <code className="bg-slate-100 px-1 rounded">404skill test</code> to execute the
-                    built-in test suite. You’ll see pass/fail output in real time.
+                    Use the CLI to execute the
+                    built-in test suite. You’ll see its output in real time.
                   </p>
                 </div>
               </CardContent>
