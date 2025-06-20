@@ -7,13 +7,13 @@ const packageName = '404skill';
 export interface DownloadPointDTO {
   package: string;
   downloads: number;
-  start: string;  // e.g. "2025-06-13"
-  end: string;    // e.g. "2025-06-19"
+  start: string;
+  end: string;
   unit: 'day' | 'week' | 'month';
 }
 
 export interface DownloadRangePoint {
-  day: string;      // "2025-06-13"
+  day: string;
   downloads: number;
 }
 
@@ -68,5 +68,10 @@ export class NpmStatsApi {
   async getPackageMetadata(pkg: string): Promise<PackageMeta> {
     const res = await this.npmRegistry.get<PackageMeta>(`/${pkg}`);
     return res.data;
+  }
+
+    async getCurrentVersion(pkg: string): Promise<string> {
+    const meta = await this.getPackageMetadata(pkg);
+    return meta['dist-tags'].latest;
   }
 }

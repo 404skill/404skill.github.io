@@ -12,6 +12,10 @@ const GetStarted = () => {
   const npmApi = new NpmStatsApi();
   const [user, setUser] = useState<User | null>(null);
   const [downloadsToday, setDownloadsToday] = useState<number | null>(null);
+  const [isDownloadsLoading, setIsDownloadsLoading] = useState<boolean>(true);
+
+  const [currentVersion, setCurrentVersion] = useState<string | null>(null);
+  const [isVersionLoading, setIsVersionLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const userStr = localStorage.getItem('sb-smzmwxqzmiswsnvsvjms-auth-token');
@@ -20,22 +24,38 @@ const GetStarted = () => {
       return;
     }
     const _parsedUserData = JSON.parse(userStr).user.user_metadata;
-    const userData = {
+    setUser({
       id: _parsedUserData.sub,
       name: _parsedUserData.name,
       email: _parsedUserData.email,
-    } as User;
-    setUser(userData);
+    });
   }, [navigate]);
 
   useEffect(() => {
-   npmApi.getDownloadCount('404skill', 'last-day')
-     .then(data => setDownloadsToday(data.downloads))
-     .catch(err => {
-       console.error('Failed to fetch npm downloads:', err);
-       setDownloadsToday(null);
-     });
-  }, []);
+    async function fetchNpmStats() {
+      try {
+        const dl = await npmApi.getDownloadCount('404skill', 'last-day');
+        setDownloadsToday(dl.downloads);
+      } catch (err) {
+        console.error('Failed to fetch npm downloads:', err);
+        setDownloadsToday(null);
+      } finally {
+        setIsDownloadsLoading(false);
+      }
+
+      try {
+        const ver = await npmApi.getCurrentVersion('404skill');
+        setCurrentVersion(ver);
+      } catch (err) {
+        console.error('Failed to fetch npm current version:', err);
+        setCurrentVersion(null);
+      } finally {
+        setIsVersionLoading(false);
+      }
+    }
+
+    fetchNpmStats();
+  }, [npmApi]);
 
   if (!user) return null;
 
@@ -59,18 +79,36 @@ const GetStarted = () => {
               <CardContent className="flex items-start gap-4 p-6">
                 <Download className="h-6 w-6 text-purple-500 mt-1" />
                 <div className="flex-1">
-                  <h3 className="font-semibold font-mono text-lg">1. Download CLI Tool
-                    {downloadsToday !== null && (
-                      <p className="mt-1 text-xs text-muted-foreground">
-                        Downloaded <strong>{downloadsToday.toLocaleString()}</strong> times in the last 24 hours.
-                      </p>
-                    )}
+                  <h3 className="font-semibold font-mono text-lg">
+                    1. Download CLI Tool
+                    {isVersionLoading && (
+                    <p className="mt-1 text-xs text-muted-foreground">
+                      Loading version…
+                    </p>
+                  )}
+                  {!isVersionLoading && currentVersion && (
+                    <p className="mt-1 text-xs text-muted-foreground">
+                      Latest version on npm: <strong>{currentVersion}</strong>
+                    </p>
+                  )}
+
+                  {isDownloadsLoading && (
+                    <p className="mt-1 text-xs text-muted-foreground">
+                      Loading downloads…
+                    </p>
+                  )}
+                  {!isDownloadsLoading && downloadsToday !== null && (
+                    <p className="mt-1 text-xs text-muted-foreground">
+                      Downloaded <strong>{downloadsToday.toLocaleString()}</strong> times in
+                      the last 24 hours.
+                    </p>
+                  )}
                   </h3>
                   <p className="mt-2 text-sm text-muted-foreground">
-                    Grab our official CLI package from npm (e.g.{' '}
+                    Grab our official CLI package from npm (e.g. run{' '}
                     <code className="bg-slate-100 px-1 rounded">npm install -g 404skill</code>)
+                    from your terminal, and install it globally.
                   </p>
-                  
                 </div>
               </CardContent>
             </Card>
