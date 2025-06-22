@@ -117,11 +117,10 @@ const GetStarted = () => {
               <CardContent className="flex items-start gap-4 p-6">
                 <Terminal className="h-6 w-6 text-blue-500 mt-1" />
                 <div className="flex-1">
-                  <h3 className="font-semibold font-mono text-lg">2. Verify CLI Installation</h3>
+                  <h3 className="font-semibold font-mono text-lg">2. Run 404skill CLI tool</h3>
                   <p className="mt-2 text-sm text-muted-foreground">
                     In your terminal, run{' '}
-                    <code className="bg-slate-200 px-1 rounded">404skill</code> to ensure
-                    the CLI is installed correctly.
+                    <code className="bg-slate-200 px-1 rounded">404skill</code> to start the CLI tool.
                   </p>
                 </div>
               </CardContent>
@@ -132,7 +131,7 @@ const GetStarted = () => {
                 <UserPlus className="h-8 w-8 text-green-500 mx-auto mb-3" />
                 <h3 className="font-semibold font-mono text-lg mb-2">3. Register Your Account</h3>
                 <p className="text-sm text-muted-foreground">
-                  Follow the interactive prompts to link your account with the CLI.
+                  Use your 404skill account credentials to login through the CLI. (same as your 404skill website login details)
                 </p>
               </CardContent>
             </Card>
@@ -147,7 +146,9 @@ const GetStarted = () => {
                 </h3>
 
                 <p className="text-sm text-muted-foreground mb-4">
-                  Choose a project from our catalog and download it to pull down the starter template and pre-made tests locally.
+                  Choose a project from our catalog, then pick your prefered technologies and difficulty level.
+                  <br></br>
+                  download it to pull the starter template and pre-made tests locally.
                 </p>
 
                 <Link to="/dashboard">

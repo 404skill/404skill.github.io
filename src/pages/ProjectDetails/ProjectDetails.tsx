@@ -91,7 +91,7 @@ const ProjectDetails: React.FC = () => {
               </div>
           ) : completion?.hasAccess === false ? (
               <div className="mt-6 text-xs font-mono text-yellow-600">
-                Get the project before progress can be tracked.
+                Download this project through the 404skill CLI tool so we can track your progress.
               </div>
           ) : (
               completion && <ProjectProgress completion={completion} />
