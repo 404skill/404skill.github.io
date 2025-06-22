@@ -34,8 +34,8 @@ const GetStarted = () => {
   useEffect(() => {
     async function fetchNpmStats() {
       try {
-        const dl = await npmApi.getDownloadCount('404skill', 'last-day');
-        setDownloadsToday(dl.downloads);
+        const data = await npmApi.getDownloadCount('404skill', 'last-day');
+        setDownloadsToday(data.downloads);
       } catch (err) {
         console.error('Failed to fetch npm downloads:', err);
         setDownloadsToday(null);

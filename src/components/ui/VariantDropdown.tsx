@@ -79,7 +79,7 @@ export const VariantDropdown: React.FC<VariantDropdownProps> = ({
             <DropdownMenuPortal>
                 <DropdownMenuContent
                     className={cn(
-                        'z-50 min-w-[8rem] rounded-md border border-gray-200 bg-white p-2 shadow-lg',
+                        'z-50 min-w-[8rem] rounded-md border border-gray-200 bg-white p-2 shadow-lg cursor-pointer',
                         'focus:outline-none'
                     )}
                 >

@@ -141,7 +141,7 @@ const Navbar = () => {
               <Button
                 variant="ghost"
                 size="sm"
-                className="text-muted-foreground hover:text-primary flex items-center gap-1"
+                className="text-muted-foreground hover:text-secondary flex items-center gap-1"
                 onClick={handleLogout}
               >
                 <LogOut className="h-4 w-4" />

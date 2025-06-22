@@ -88,9 +88,9 @@ const TaskRow: FC<TaskRowProps> = ({ task, index, results, projectId }) => {
   //    - Else if hasFailure OR runCount < realTotal → “failed” (red)
   //    - Else (runCount === realTotal and no failures) → “passed” (green)
   let status: TestResult['status'];
-  if (runCount === 0) {
+  if (runCount < realTotal) {
     status = 'not-attempted';
-  } else if (hasFailure || runCount < realTotal) {
+  } else if (hasFailure) {
     status = 'failed';
   } else {
     status = 'passed';
