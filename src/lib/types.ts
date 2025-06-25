@@ -57,6 +57,7 @@ export interface TaskWithMetricsDTO {
   passedTests: number;
   failedTests: number;
   notRunTests: number;
+  position?: number
 }
 
 export interface TestStatusDTO {

@@ -74,6 +74,12 @@ const MarkdownRenderer: FC<MarkdownRendererProps> = ({ content }) => {
                 {children}
             </p>
         ),
+        ul: ({ children }: { children: React.ReactNode }) => (
+            <ul className="list-disc list-inside ml-4">{children}</ul>
+        ),
+        li: ({ children }: { children: React.ReactNode }) => (
+            <li className="mb-1">{children}</li>
+        ),
     } as Components & {
         [K in
             | 'hint'
