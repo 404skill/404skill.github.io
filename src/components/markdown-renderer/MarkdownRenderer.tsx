@@ -8,7 +8,7 @@ import { visit } from 'unist-util-visit'
 import { Hint }     from '@/components/markdown-renderer/Hint'
 import { Warning }  from '@/components/markdown-renderer/Warning'
 import { Note }     from '@/components/markdown-renderer/Note'
-import { Recap }      from '@/components/markdown-renderer/Recap'
+import { Tip }      from '@/components/markdown-renderer/Tip'
 import { Example }  from '@/components/markdown-renderer/Example'
 import { Solution } from '@/components/markdown-renderer/Solution'
 
@@ -17,7 +17,7 @@ function remarkCustomContainers() {
         visit(tree, (node: any) => {
             if (
                 node.type === 'containerDirective' &&
-                ['hint','warning','note','recap','example','solution'].includes(node.name)
+                ['hint','warning','note','tip','example','solution'].includes(node.name)
             ) {
                 node.data = node.data || {}
                 node.data.hName       = node.name
@@ -54,7 +54,7 @@ const MarkdownRenderer: FC<MarkdownRendererProps> = ({ content }) => {
         hint: ({ children }: { children: any })    => <Hint>{children}</Hint>,
         warning: ({ children }: { children: any }) => <Warning>{children}</Warning>,
         note: ({ children }: { children: any })    => <Note>{children}</Note>,
-        recap: ({ children }: { children: any })     => <Recap>{children}</Recap>,
+        tip: ({ children }: { children: any })     => <Tip>{children}</Tip>,
         example: ({ children }: { children: any }) => <Example>{children}</Example>,
         solution: ({ children }: { children: any })=> <Solution>{children}</Solution>,
 
@@ -79,7 +79,7 @@ const MarkdownRenderer: FC<MarkdownRendererProps> = ({ content }) => {
             | 'hint'
             | 'warning'
             | 'note'
-            | 'recap'
+            | 'tip'
             | 'example'
             | 'solution'
         ]: FC<{ children: any }>
