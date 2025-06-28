@@ -51,6 +51,8 @@ const PricingTier = ({
   const [showDetails, setShowDetails] = useState(false);
 
   const handlePricingClick = () => {
+    const isLoggedIn = localStorage.getItem('sb-smzmwxqzmiswsnvsvjms-auth-token') !== null;
+
     let eventType = AnalyticsEvent.CLICKED_ON_PRICING_FREE;
 
     if (title === 'Guided') {
@@ -65,16 +67,18 @@ const PricingTier = ({
       eventData: { plan: title, price },
     });
 
-    toast({
-      title: 'Demo Mode',
-      description:
-        "Our product is currently in development. Sign up for free, and we'll contact you once everything is ready!",
-      duration: 5000,
-      variant: 'demo',
-      className: 'bg-[#8B5CF6] text-white border-0 shadow-2xl',
-    });
+    if (isLoggedIn) {
+      navigate('/getStarted');
+    } else {
+      toast({
+        title: 'Login Required',
+        description: 'Please login or sign up to continue',
+        duration: 5000,
+        variant: 'default',
+      });
 
-    navigate('/auth');
+      navigate('/auth');
+    }
   };
 
   return (
@@ -90,9 +94,7 @@ const PricingTier = ({
       )}
       {disabled && (
         <div className="absolute top-2 right-2">
-          <Badge className="bg-gray-200 text-gray-600 px-2 py-0.5 rounded">
-            Coming Soon
-          </Badge>
+          <Badge className="bg-gray-200 text-gray-600 px-2 py-0.5 rounded">Coming Soon</Badge>
         </div>
       )}
       <CardHeader>
@@ -162,10 +164,10 @@ const PricingTier = ({
           customButton
         ) : (
           <Button
-             className={`w-full ${highlighted ? 'bg-primary hover:bg-primary/90' : ''}`}
-             onClick={handlePricingClick}
-             disabled={disabled}
-           >
+            className={`w-full ${highlighted ? 'bg-primary hover:bg-primary/90' : ''}`}
+            onClick={handlePricingClick}
+            disabled={disabled}
+          >
             {buttonText}
           </Button>
         )}
