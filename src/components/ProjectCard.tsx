@@ -109,7 +109,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
             </CardContent>
 
             <CardFooter className="pt-2 mt-auto">
-                <Link to={`/projects/${project.projectId}`} className="w-full">
+                <Link to={`/projects/${project.projectId}`} className="w-full" state={{ isOwned }}>
                     <Button
                         variant={isOwned ? 'secondary' : 'default'}
                         className={`w-full transition-all duration-300 group font-mono

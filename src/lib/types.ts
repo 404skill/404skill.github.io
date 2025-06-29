@@ -57,7 +57,7 @@ export interface TaskWithMetricsDTO {
   passedTests: number;
   failedTests: number;
   notRunTests: number;
-  position?: number
+  position?: number;
 }
 
 export interface TestStatusDTO {
@@ -76,4 +76,26 @@ export interface TestsByTaskDTO {
   passedTests: number;
   failedTests: number;
   notRunTests: number;
+}
+
+export interface GenericTaskDTO {
+  taskId: string;
+  taskName: string;
+  description: string;
+  position: number;
+  totalTests: number;
+}
+
+export interface GenericTestDTO {
+  testId: string;
+  testName: string;
+  description: string | null;
+}
+
+export interface GenericTestsByTaskDTO {
+  taskId: string;
+  taskName: string;
+  tests: GenericTestDTO[];
+  totalTests: number;
+  position: number;
 }

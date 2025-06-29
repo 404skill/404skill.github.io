@@ -6,6 +6,8 @@ import {
   ProjectMetricsDTO,
   TaskWithMetricsDTO,
   TestsByTaskDTO,
+  GenericTaskDTO,
+  GenericTestsByTaskDTO,
 } from './types';
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL;
@@ -56,22 +58,30 @@ export const fetchProjectCompletion = async (
 };
 
 // 5. Fetch all tasks (with per-task metrics) under one project
-export const fetchProjectTasks = async (
-    projectId: string
-): Promise<TaskWithMetricsDTO[]> => {
-  const res = await api.get<TaskWithMetricsDTO[]>(`/projects/${projectId}/tasks`);
+export const fetchProjectTasks = async (projectId: string): Promise<TaskWithMetricsDTO[]> => {
+  const res = await api.get<TaskWithMetricsDTO[]>(`/me/projects/${projectId}/tasks`);
   return res.data;
 };
 
 // 6. Fetch all tests in a project, grouped by task (with per-test status & per-task aggregates)
-export const fetchTestsByTaskForProject = async (
-    projectId: string
-): Promise<TestsByTaskDTO[]> => {
-  const res = await api.get<TestsByTaskDTO[]>(`/projects/${projectId}/tests`);
+export const fetchTestsByTaskForProject = async (projectId: string): Promise<TestsByTaskDTO[]> => {
+  const res = await api.get<TestsByTaskDTO[]>(`/me/projects/${projectId}/tests`);
   return res.data;
 };
 
 export const fetchProjectVariants = async (projectId: string): Promise<any> => {
-  const res = await api.get<any>(`/projects/${projectId}/variants`);
+  const res = await api.get<any>(`/me/projects/${projectId}/variants`);
+  return res.data;
+};
+
+export const fetchGenericProjectTasks = async (projectId: string): Promise<GenericTaskDTO[]> => {
+  const res = await api.get<GenericTaskDTO[]>(`/projects/${projectId}/tasks`);
+  return res.data;
+};
+
+export const fetchGenericTestsByTaskForProject = async (
+  projectId: string,
+): Promise<GenericTestsByTaskDTO[]> => {
+  const res = await api.get<GenericTestsByTaskDTO[]>(`/projects/${projectId}/tests`);
   return res.data;
 };
