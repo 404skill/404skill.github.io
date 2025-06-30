@@ -65,6 +65,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
                         {project.difficulty}
                     </Badge>
                 </div>
+                <p className="text-sm text-slate-500">{project.shortDescription}</p>
             </CardHeader>
 
             <div className="h-10 flex items-center px-4">

@@ -88,7 +88,7 @@ const ProjectDetails: React.FC = () => {
   const handleVariantChange = (newId: string) => {
     const variant = projectVariants.find(variant => variant.projectId === newId)
     const isOwned = variant?.isOwned
-  
+
     navigate(`/projects/${newId}`, {
       state: { isOwned: isOwned }
     })
@@ -156,7 +156,7 @@ const ProjectDetails: React.FC = () => {
         <Separator className="my-6 bg-slate-200" />
 
         {/* Tabs */}
-        <Tabs defaultValue="tasks" className="mt-6">
+        <Tabs defaultValue="details" className="mt-6">
           <TabsList className="bg-slate-100 border border-slate-200 p-1">
             <TabsTrigger value="tasks">Tasks</TabsTrigger>
             <TabsTrigger value="tests">Tests</TabsTrigger>
