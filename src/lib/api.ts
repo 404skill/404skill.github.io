@@ -27,8 +27,16 @@ api.interceptors.request.use((config) => {
 });
 
 // 1. Fetch all available projects (public)
+// export const fetchAllProjects = async (): Promise<ProjectDTO[]> => {
+//   const res = await api.get<ProjectDTO[]>('/projects');
+//   return res.data;
+// };
+
+// get all projects with draft: true
 export const fetchAllProjects = async (): Promise<ProjectDTO[]> => {
-  const res = await api.get<ProjectDTO[]>('/projects');
+  const res = await api.get<ProjectDTO[]>('/projects', {
+    params: { draft: true },
+  });
   return res.data;
 };
 

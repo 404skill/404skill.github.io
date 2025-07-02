@@ -30,6 +30,7 @@ export interface ProjectDTO {
   lastRan: string;
   isOwned?: boolean;
   shortDescription: string;
+  tags?: string;
 }
 
 export type Variant = ProjectDTO & { techs: string[] };
