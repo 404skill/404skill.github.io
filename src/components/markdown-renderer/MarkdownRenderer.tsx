@@ -38,10 +38,10 @@ const MarkdownRenderer: FC<MarkdownRendererProps> = ({ content }) => {
             if (!inline && match) {
                 return (
                     <pre className="bg-slate-100 rounded-md p-4 overflow-auto">
-            <code className={className} {...props}>
-              {children}
-            </code>
-          </pre>
+                        <code className={className} {...props}>
+                            {children}
+                        </code>
+                    </pre>
                 )
             }
             return (
@@ -58,7 +58,6 @@ const MarkdownRenderer: FC<MarkdownRendererProps> = ({ content }) => {
         example: ({ children }: { children: any }) => <Example>{children}</Example>,
         solution: ({ children }: { children: any })=> <Solution>{children}</Solution>,
 
-        // your existing overrides…
         h1: ({ children, ...props }: any) => (
             <h1 className="text-2xl font-bold mt-8 mb-4 font-mono" {...props}>
                 {children}
@@ -70,12 +69,12 @@ const MarkdownRenderer: FC<MarkdownRendererProps> = ({ content }) => {
             </h2>
         ),
         p: ({ children, ...props }: any) => (
-            <p className="leading-relaxed font-mono text-slate-700" {...props}>
+            <p className="leading-relaxed font-mono text-slate-700 mb-4" {...props}>
                 {children}
             </p>
         ),
         ul: ({ children }: { children: React.ReactNode }) => (
-            <ul className="list-disc list-inside ml-4">{children}</ul>
+            <ul className="list-disc list-inside ml-4 mb-4">{children}</ul>
         ),
         li: ({ children }: { children: React.ReactNode }) => (
             <li className="mb-1">{children}</li>
@@ -92,13 +91,15 @@ const MarkdownRenderer: FC<MarkdownRendererProps> = ({ content }) => {
     }
 
     return (
-        <ReactMarkdown
-            remarkPlugins={[remarkGfm, remarkDirective, remarkCustomContainers]}
-            rehypePlugins={[rehypeRaw]}
-            components={components}
-        >
-            {content}
-        </ReactMarkdown>
+        <div className="space-y-6">
+            <ReactMarkdown
+                remarkPlugins={[remarkGfm, remarkDirective, remarkCustomContainers]}
+                rehypePlugins={[rehypeRaw]}
+                components={components}
+            >
+                {content}
+            </ReactMarkdown>
+        </div>
     )
 }
 

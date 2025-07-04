@@ -96,7 +96,7 @@ const GenericTestsTab: FC<GenericTestsTabProps> = ({
                       >
                         <div className="flex items-center gap-2">
                           <span className="font-mono text-sm text-slate-800">
-                            {index + 1}.{test.testName}
+                            {index + 1}. {test.testName}
                           </span>
                         </div>
                       </div>
