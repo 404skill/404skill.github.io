@@ -129,7 +129,7 @@ const GetStarted = () => {
             <Card className="shadow-md">
               <CardContent className="p-6 text-center">
                 <UserPlus className="h-8 w-8 text-green-500 mx-auto mb-3" />
-                <h3 className="font-semibold font-mono text-lg mb-2">3. Register Your Account</h3>
+                <h3 className="font-semibold font-mono text-lg mb-2">3. Login to your account</h3>
                 <p className="text-sm text-muted-foreground">
                   Use your 404skill account credentials to login through the CLI. (same as your 404skill website login details)
                 </p>
