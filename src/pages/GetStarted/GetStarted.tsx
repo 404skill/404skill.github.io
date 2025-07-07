@@ -6,6 +6,7 @@ import Navbar from '@/components/Navbar';
 import { Card, CardContent } from '@/components/ui/card';
 import { Download, Terminal, UserPlus, Package, Code, Play } from 'lucide-react';
 import { NpmStatsApi } from './../../lib/npmApi';
+import { trackEvent, AnalyticsEvent } from '@/lib/analytics';
 
 const GetStarted = () => {
   const navigate = useNavigate();
@@ -57,6 +58,33 @@ const GetStarted = () => {
     fetchNpmStats();
   }, [npmApi]);
 
+  // Track page view when component loads
+  useEffect(() => {
+    if (user) {
+      trackEvent({
+        eventType: AnalyticsEvent.VIEWED_GET_STARTED_PAGE,
+        component: 'GetStarted',
+        eventData: {
+          userId: user.id,
+          userName: user.name,
+          userEmail: user.email,
+        },
+      });
+    }
+  }, [user]);
+
+  // Track browse projects button click
+  const handleBrowseProjectsClick = () => {
+    trackEvent({
+      eventType: AnalyticsEvent.CLICKED_BROWSE_PROJECTS,
+      component: 'GetStarted',
+      eventData: {
+        userId: user?.id,
+        fromPage: 'GetStarted',
+      },
+    });
+  };
+
   if (!user) return null;
 
   return (
@@ -85,24 +113,24 @@ const GetStarted = () => {
                     <p className="mt-1 text-xs text-muted-foreground">
                       Loading version…
                     </p>
-                  )}
-                  {!isVersionLoading && currentVersion && (
-                    <p className="mt-1 text-xs text-muted-foreground">
-                      Latest version on npm: <strong>{currentVersion}</strong>
-                    </p>
-                  )}
+                    )}
+                    {!isVersionLoading && currentVersion && (
+                      <p className="mt-1 text-xs text-muted-foreground">
+                        Latest version on npm: <strong>{currentVersion}</strong>
+                      </p>
+                    )}
 
-                  {isDownloadsLoading && (
+                    {isDownloadsLoading && (
                     <p className="mt-1 text-xs text-muted-foreground">
                       Loading downloads…
                     </p>
-                  )}
-                  {!isDownloadsLoading && downloadsToday !== null && (
-                    <p className="mt-1 text-xs text-muted-foreground">
+                    )}
+                    {!isDownloadsLoading && downloadsToday !== null && (
+                      <p className="mt-1 text-xs text-muted-foreground">
                       Downloaded <strong>{downloadsToday.toLocaleString()}</strong> times in
                       the last 24 hours.
-                    </p>
-                  )}
+                      </p>
+                    )}
                   </h3>
                   <p className="mt-2 text-sm text-muted-foreground">
                     Grab our official CLI package from npm (e.g. run{' '}
@@ -152,7 +180,10 @@ const GetStarted = () => {
                 </p>
 
                 <Link to="/dashboard">
-                  <button className="mt-auto bg-blue-500 text-white px-4 py-2 rounded font-mono text-sm hover:bg-blue-600 transition">
+                  <button
+                    className="mt-auto bg-blue-500 text-white px-4 py-2 rounded font-mono text-sm hover:bg-blue-600 transition"
+                    onClick={handleBrowseProjectsClick}
+                  >
                     Browse Available Projects
                   </button>
                 </Link>

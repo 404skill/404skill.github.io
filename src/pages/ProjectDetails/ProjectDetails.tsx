@@ -1,5 +1,5 @@
 // src/pages/ProjectDetails/ProjectDetails.tsx
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { useParams, useNavigate, useLocation, Link } from 'react-router-dom';
 
 import Navbar from '@/components/Navbar';
@@ -7,6 +7,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
+import { trackEvent, AnalyticsEvent } from '@/lib/analytics';
 
 import { useGetProject } from '@/hooks/useGetProject';
 import { useProjectCompletion } from '@/hooks/useProjectCompletion';
@@ -86,13 +87,80 @@ const ProjectDetails: React.FC = () => {
   );
 
   const handleVariantChange = (newId: string) => {
-    const variant = projectVariants.find(variant => variant.projectId === newId)
-    const isOwned = variant?.isOwned
+    const variant = projectVariants.find(variant => variant.projectId === newId);
+    const isOwned = variant?.isOwned;
+
+    // Track variant change
+    trackEvent({
+      eventType: AnalyticsEvent.CHANGED_PROJECT_VARIANT,
+      component: 'ProjectDetails',
+      eventData: {
+        fromVariant: projectId,
+        toVariant: newId,
+        technologies: variant?.technologies,
+        isOwned: isOwned,
+      },
+    });
 
     navigate(`/projects/${newId}`, {
-      state: { isOwned: isOwned }
-    })
-  }
+      state: { isOwned: isOwned },
+    });
+  };
+
+  // Track page view when component loads
+  useEffect(() => {
+    if (project) {
+      trackEvent({
+        eventType: AnalyticsEvent.VIEWED_PROJECT_DETAILS,
+        component: 'ProjectDetails',
+        eventData: {
+          projectId: project.projectId,
+          projectName: project.name,
+          isOwned: isOwned,
+          technologies: project.technologies,
+          difficulty: project.difficulty,
+        },
+      });
+    }
+  }, [project, isOwned]);
+
+  // Track tab switches
+  const handleTabChange = (tabValue: string) => {
+    trackEvent({
+      eventType: AnalyticsEvent.SWITCHED_PROJECT_TAB,
+      component: 'ProjectDetails',
+      eventData: {
+        projectId: project?.projectId,
+        tabName: tabValue,
+        isOwned: isOwned,
+      },
+    });
+  };
+
+  // Track retry actions
+  const handleRetryProgress = () => {
+    trackEvent({
+      eventType: AnalyticsEvent.CLICKED_RETRY_PROGRESS,
+      component: 'ProjectDetails',
+      eventData: {
+        projectId: project?.projectId,
+        isOwned: isOwned,
+      },
+    });
+    refetchCompletion();
+  };
+
+  // Track download project link clicks
+  const handleDownloadProjectClick = () => {
+    trackEvent({
+      eventType: AnalyticsEvent.CLICKED_DOWNLOAD_PROJECT_LINK,
+      component: 'ProjectDetails',
+      eventData: {
+        projectId: project?.projectId,
+        isOwned: isOwned,
+      },
+    });
+  };
   // 5) Loading / error
   if (projLoading) return <ProjectDetailsSkeleton />;
   if (projError || !project)
@@ -123,7 +191,7 @@ const ProjectDetails: React.FC = () => {
         ) : compError ? (
           <div className="mt-6 text-xs font-mono text-red-500 space-y-2">
             <div>Error loading progress</div>
-            <Button onClick={() => refetchCompletion} className="font-mono text-sm">
+            <Button onClick={handleRetryProgress} className="font-mono text-sm">
               Retry fetching progress
             </Button>
           </div>
@@ -141,6 +209,7 @@ const ProjectDetails: React.FC = () => {
                   <Link
                     to="/getStarted"
                     className="underline font-medium text-amber-800 hover:text-amber-900"
+                    onClick={handleDownloadProjectClick}
                   >
                     Download this project through the 404skill CLI tool
                   </Link>{' '}
@@ -156,7 +225,7 @@ const ProjectDetails: React.FC = () => {
         <Separator className="my-6 bg-slate-200" />
 
         {/* Tabs */}
-        <Tabs defaultValue="details" className="mt-6">
+        <Tabs defaultValue="details" className="mt-6" onValueChange={handleTabChange}>
           <TabsList className="bg-slate-100 border border-slate-200 p-1">
             <TabsTrigger value="tasks">Tasks</TabsTrigger>
             <TabsTrigger value="tests">Tests</TabsTrigger>

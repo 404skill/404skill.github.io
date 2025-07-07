@@ -16,6 +16,15 @@ export enum AnalyticsEvent {
   CLICKED_SCHEDULE_BUTTON = 'ClickedScheduleButton',
   CLICKED_MAYBE_LATER = 'ClickedMaybeLater',
   CLICKED_SCHEDULE_NOW = 'ClickedScheduleNow',
+  // ProjectDetails events
+  VIEWED_PROJECT_DETAILS = 'ViewedProjectDetails',
+  SWITCHED_PROJECT_TAB = 'SwitchedProjectTab',
+  CHANGED_PROJECT_VARIANT = 'ChangedProjectVariant',
+  CLICKED_RETRY_PROGRESS = 'ClickedRetryProgress',
+  CLICKED_DOWNLOAD_PROJECT_LINK = 'ClickedDownloadProjectLink',
+  // GetStarted events
+  VIEWED_GET_STARTED_PAGE = 'ViewedGetStartedPage',
+  CLICKED_BROWSE_PROJECTS = 'ClickedBrowseProjects',
 }
 
 // Initialize session ID if not exists
